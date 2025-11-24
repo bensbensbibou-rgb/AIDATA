@@ -1,0 +1,941 @@
+
+
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  LayoutDashboard, Zap, Droplets, Thermometer, Wind, Activity, Settings, LogOut, Plus, Search,
+  Menu, X, ChevronRight, ChevronDown, Folder, Radio, Server, Globe, Bot, Sparkles, Pencil, Check,
+  LayoutGrid, FileText, BarChart3, Sun, Shield, Wrench, Car, Calendar, GripVertical, PieChart as PieIcon,
+  LineChart as LineIcon, ScatterChart as ScatterIcon, Table as TableIcon, Grid3x3, Workflow, MoreVertical,
+  Building, Layers, Box, Layout, Trash2, Map, Lightbulb, Fan, Wifi, Cpu, AlertTriangle, Battery, Leaf, Factory,
+  KeyRound, Lock, GripHorizontal, CornerDownRight, Gauge, Scale, Circle, Disc, Target, SlidersHorizontal, List, Bell,
+  CloudSun, Settings2, BookOpen, Monitor, Snowflake, Briefcase, Users, Coffee, Utensils, Armchair, Bed, Dumbbell,
+  AreaChart as AreaChartIcon, ArrowLeftRight, Undo2, Languages
+} from 'lucide-react';
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar,
+  PieChart, Pie, Legend, LineChart, Line, Cell, RadialBarChart, RadialBar
+} from 'recharts';
+
+import { GoogleGenAI, Type } from "@google/genai";
+import { Card, KpiCard, ChartToolbar, PeriodSelector, ChatBubble, ChatInput, Button, EditableInput, EnergyLabelWidget, GaugeWidget, FloorPlanWidget, PredictiveAlarmsWidget, SliderWidget, ScheduleWidget, DataboxWidget, AlarmConsoleWidget, WeatherWidget, HVACWidget, SynopticWidget, ZoneWidget, LogicWidget } from './components/Widgets';
+import { HeatmapChart, ThermometerChart, SimpleTable, FlowChart } from './components/Charts';
+import {
+  TRANSLATIONS, MOCK_CHART_DATA, INITIAL_SITE_TREE, INITIAL_DASHBOARDS, INITIAL_MODULES
+} from './constants';
+import { Period, Language, DataNode, ChatMessage, NodeType, DashboardWidget, AppModule, DataboxNode } from './types';
+
+// --- Icon Mapping ---
+const ICON_MAP: Record<string, any> = {
+  LayoutDashboard, Zap, Droplets, Wind, FileText, Sparkles, Settings, LayoutGrid,
+  BarChart3, PieIcon, Activity, Calendar, Shield, Building, Layout,
+  Lightbulb, Fan, Wifi, Cpu, AlertTriangle, Battery, Leaf, Factory, Map, Server, Box, Wrench,
+  Thermometer, Workflow, TableIcon, LineIcon, ScatterIcon, AreaChart: AreaChartIcon, Grid3x3, Gauge, Scale,
+  Circle, Disc, Target, SlidersHorizontal, List, Bell, CloudSun, Settings2, BookOpen, Monitor,
+  Briefcase, Users, Coffee, Utensils, Armchair, Bed, Dumbbell
+};
+
+const AVAILABLE_ICONS = Object.keys(ICON_MAP);
+
+const findNodeById = (nodes: DataNode[], id: string): DataNode | undefined => {
+   for (const node of nodes) {
+      if (node.id === id) return node;
+      if (node.children) {
+         const found = findNodeById(node.children, id);
+         if (found) return found;
+      }
+   }
+   return undefined;
+};
+
+const generateVariableHistory = (variableId: string, period: Period): any[] => {
+   const seed = variableId.split('').reduce((a,b) => a + b.charCodeAt(0), 0);
+   const random = (i: number) => { const x = Math.sin(seed + i) * 10000; return x - Math.floor(x); };
+   let length = 24; if (period === 'm') length = 30; if (period === 'a') length = 12; if (period === 'd') length = 10;
+   const base = (seed % 100) + 20; 
+   return Array.from({length}, (_, i) => ({
+      name: period === 'j' ? `${i}h` : period === 'm' ? `D${i+1}` : period === 'a' ? `M${i+1}` : `${2020+i}`,
+      value: Math.floor(base + (random(i) * (base/2)))
+   }));
+};
+
+const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#111827', '#9ca3af'];
+
+const SiteTreeNode: React.FC<{ 
+  node: DataNode; 
+  level: number; 
+  onAddNode: (parentId: string, type: NodeType) => void;
+  onDeleteNode: (id: string) => void;
+  viewMode: 'site' | 'equipment';
+}> = ({ node, level, onAddNode, onDeleteNode, viewMode }) => {
+  const [isOpen, setIsOpen] = useState(level < 2); 
+  const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleDragStart = (e: React.DragEvent) => {
+    if (node.type === 'variable') {
+       e.stopPropagation();
+       const dragData = JSON.stringify({ type: 'variable', id: node.id, label: node.label, unit: node.unit });
+       if (e.dataTransfer) {
+           e.dataTransfer.setData("application/json", dragData);
+           e.dataTransfer.setData("text/plain", `VAR:${node.id}`); 
+           e.dataTransfer.effectAllowed = "copy";
+       }
+    }
+  };
+
+  const getIcon = () => {
+    switch(node.type) {
+      case 'site': return <Globe size={14} className="text-blue-500" />;
+      case 'building': return <Building size={14} className="text-orange-500" />;
+      case 'floor': return <Layers size={14} className="text-purple-500" />;
+      case 'space': return <Layout size={14} className="text-green-500" />;
+      case 'equipment': return <Box size={14} className="text-gray-500" />;
+      case 'variable': return <Radio size={14} className="text-red-500" />;
+      default: return <Folder size={14} />;
+    }
+  };
+
+  const canHaveChildren = node.type !== 'variable';
+
+  return (
+    <div className="select-none relative">
+      <div 
+        className={`group flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer ${node.type === 'variable' ? 'cursor-grab active:cursor-grabbing' : ''}`}
+        style={{ paddingLeft: `${level * 12 + 8}px` }}
+        onClick={() => canHaveChildren && setIsOpen(!isOpen)}
+        draggable={node.type === 'variable'}
+        onDragStart={handleDragStart}
+      >
+        <div className="flex items-center gap-1 min-w-[20px]">
+           {canHaveChildren && <span className="text-gray-300 hover:text-gray-500">{isOpen ? <ChevronDown size={10} /> : <ChevronRight size={10} />}</span>}
+        </div>
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          {getIcon()}
+          <div className="flex-1 min-w-0">
+            <div className="text-xs font-medium dark:text-gray-200 truncate">{node.label}</div>
+            {node.type === 'variable' && <div className="text-[10px] text-gray-400">{String(node.value)} {node.unit}</div>}
+          </div>
+        </div>
+        <button onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }} className="opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-200 dark:hover:bg-white/10 rounded transition-opacity"><MoreVertical size={12} /></button>
+        {showMenu && (
+          <div ref={menuRef} className="absolute right-2 top-6 z-50 w-40 bg-white dark:bg-[#2c2c2e] shadow-xl rounded-lg border border-gray-100 dark:border-white/5 py-1 z-[60]">
+             {['building', 'floor', 'space', 'equipment'].includes(node.type) || node.type === 'site' ? 
+               <button onClick={() => onAddNode(node.id, 'equipment')} className="w-full text-left px-3 py-2 text-xs hover:bg-blue-50 dark:hover:bg-white/10 flex items-center gap-2">Add Child</button> : null
+             }
+             {node.type !== 'site' && <button onClick={() => onDeleteNode(node.id)} className="w-full text-left px-3 py-2 text-xs hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2 text-red-500"><Trash2 size={12} /> Delete</button>}
+          </div>
+        )}
+      </div>
+      {canHaveChildren && isOpen && node.children && (
+        <div className="border-l border-gray-100 dark:border-white/5 ml-3 my-1">
+          {node.children.map(child => <SiteTreeNode key={child.id} node={child} level={level + 1} onAddNode={onAddNode} onDeleteNode={onDeleteNode} viewMode={viewMode} />)}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// --- AI CHAT WIDGET WITH GEMINI ---
+
+interface AIChatWidgetProps {
+  onSendMessage: (text: string) => Promise<{ text: string, predictions?: any[] }>;
+}
+
+const AIChatWidget: React.FC<AIChatWidgetProps> = ({ onSendMessage }) => {
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [isTyping, setIsTyping] = useState(false);
+  const chatEndRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => { if (messages.length === 0) setMessages([{ id: '1', role: 'assistant', text: "Hello! I am connected to your dashboard data. Ask me to analyze charts or predict equipment failures.", timestamp: new Date() }]); }, []);
+  useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, isTyping]);
+  
+  const handleSend = async (text: string) => {
+     const userMsg = { id: Date.now().toString(), role: 'user' as const, text, timestamp: new Date() };
+     setMessages(prev => [...prev, userMsg]);
+     setIsTyping(true);
+     
+     try {
+       const response = await onSendMessage(text);
+       setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), role: 'assistant', text: response.text, timestamp: new Date() }]);
+     } catch (error) {
+       setMessages(prev => [...prev, { id: (Date.now() + 1).toString(), role: 'assistant', text: "Sorry, I encountered an error analyzing the data.", timestamp: new Date() }]);
+       console.error(error);
+     } finally {
+       setIsTyping(false);
+     }
+  };
+
+  return (
+    <div className="flex flex-col h-full bg-gray-50 dark:bg-black/20">
+       <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          {messages.map(msg => <ChatBubble key={msg.id} message={msg} />)}
+          {isTyping && <ChatBubble message={{ role: 'assistant', text: '', id: 'typing', timestamp: new Date() }} isTyping={true} />}
+          <div ref={chatEndRef} />
+       </div>
+       <div className="p-2"><ChatInput onSend={handleSend} disabled={isTyping} /></div>
+    </div>
+  );
+};
+
+// --- TYPES FOR UNDO ---
+type DeletedItem = 
+  | { type: 'widget'; data: DashboardWidget; dashboardId: string; index: number }
+  | { type: 'module'; data: AppModule; parentId: string | 'root' };
+
+// --- MAIN APP ---
+
+const App: React.FC = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [period, setPeriod] = useState<Period>('j');
+  const [language, setLanguage] = useState<Language>('en');
+  const [darkMode, setDarkMode] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarWidth, setSidebarWidth] = useState(288);
+  const [isResizingSidebar, setIsResizingSidebar] = useState(false);
+
+  const [modules, setModules] = useState<AppModule[]>(INITIAL_MODULES);
+  const [dashboards, setDashboards] = useState<Record<string, DashboardWidget[]>>(INITIAL_DASHBOARDS);
+  const [treeData, setTreeData] = useState<DataNode[]>(INITIAL_SITE_TREE);
+  const [viewMode, setViewMode] = useState<'site' | 'equipment'>('site');
+  const [isAddNodeModalOpen, setIsAddNodeModalOpen] = useState(false);
+  const [nodeParentId, setNodeParentId] = useState<string | null>(null);
+  const [nodeTypeToAdd, setNodeTypeToAdd] = useState<NodeType>('equipment');
+  const [newNodeLabel, setNewNodeLabel] = useState('');
+  const [isTabCreatorOpen, setIsTabCreatorOpen] = useState(false);
+  const [newTabName, setNewTabName] = useState('');
+  const [newTabIcon, setNewTabIcon] = useState('LayoutDashboard');
+  const [parentForNewTab, setParentForNewTab] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState(true);
+  const [showWidgetPalette, setShowWidgetPalette] = useState(false);
+  const [draggedItemIndex, setDraggedItemIndex] = useState<number | null>(null);
+  const [draggedModuleId, setDraggedModuleId] = useState<string | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
+  const [expandedWidgetId, setExpandedWidgetId] = useState<string | null>(null);
+  const [swappingWidgetId, setSwappingWidgetId] = useState<string | null>(null);
+
+  const [undoStack, setUndoStack] = useState<DeletedItem[]>([]);
+  const [aiPredictiveData, setAiPredictiveData] = useState<any[]>([]);
+
+  useEffect(() => { if (darkMode) document.documentElement.classList.add('dark'); else document.documentElement.classList.remove('dark'); }, [darkMode]);
+  const t = TRANSLATIONS[language];
+  const chartData = MOCK_CHART_DATA[period];
+
+  useEffect(() => {
+      const handleMouseMove = (e: MouseEvent) => {
+          if (isResizingSidebar) {
+              const newWidth = Math.max(200, Math.min(600, e.clientX));
+              setSidebarWidth(newWidth);
+          }
+      };
+      const handleMouseUp = () => {
+          setIsResizingSidebar(false);
+          document.body.style.cursor = 'default';
+      };
+      
+      if (isResizingSidebar) {
+          window.addEventListener('mousemove', handleMouseMove);
+          window.addEventListener('mouseup', handleMouseUp);
+          document.body.style.cursor = 'col-resize';
+      }
+      return () => {
+          window.removeEventListener('mousemove', handleMouseMove);
+          window.removeEventListener('mouseup', handleMouseUp);
+          document.body.style.cursor = 'default';
+      };
+  }, [isResizingSidebar]);
+
+  const collectGlobalDashboardData = () => {
+    const context: any[] = [];
+    Object.entries(dashboards).forEach(([dashId, widgets]) => {
+        const widgetList = widgets as DashboardWidget[];
+        widgetList.forEach(w => {
+            if (w.variables && w.variables.length > 0) {
+                 const widgetData = {
+                     dashboard: dashId,
+                     title: w.title,
+                     type: w.type,
+                     variables: w.variables.map(v => {
+                         const hist = generateVariableHistory(v.id, period);
+                         const last = hist[hist.length-1].value;
+                         const avg = hist.reduce((a,b) => a+b.value, 0) / hist.length;
+                         return { label: v.label, current: last, avg: avg.toFixed(1), unit: v.unit };
+                     })
+                 };
+                 context.push(widgetData);
+            } else if (w.staticData) {
+                 context.push({ dashboard: dashId, title: w.title, value: w.staticData.value, unit: w.staticData.unit });
+            }
+        });
+    });
+    return context;
+  };
+
+  const handleAiChat = async (userText: string) => {
+    try {
+        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const contextData = collectGlobalDashboardData();
+        
+        const schema = {
+             type: Type.OBJECT,
+             properties: {
+                 response: { type: Type.STRING, description: "The conversational response." },
+                 predictions: {
+                     type: Type.ARRAY,
+                     items: {
+                         type: Type.OBJECT,
+                         properties: {
+                             asset: { type: Type.STRING },
+                             risk: { type: Type.STRING, enum: ["High", "Medium", "Low"] },
+                             prob: { type: Type.STRING },
+                             issue: { type: Type.STRING }
+                         }
+                     }
+                 }
+             }
+        };
+
+        const prompt = `
+            You are an advanced AI Facility Manager for a university campus.
+            Current BMS Data: ${JSON.stringify(contextData).substring(0, 20000)} ...
+            User Query: "${userText}"
+            Return JSON.
+        `;
+
+        const result = await ai.models.generateContent({
+             model: 'gemini-2.5-flash',
+             contents: prompt,
+             config: { responseMimeType: 'application/json', responseSchema: schema }
+        });
+
+        const jsonText = result.text || '{}';
+        const json = JSON.parse(jsonText);
+        
+        if (json.predictions && json.predictions.length > 0) {
+            setAiPredictiveData(json.predictions);
+        }
+
+        return { text: json.response || "Analysis complete." };
+    } catch (e) {
+        console.error("AI Error:", e);
+        return { text: "I'm having trouble connecting to the analysis engine right now." };
+    }
+  };
+
+  const handleUpdateLogicVariable = (id: string, value: any, label: string, type: 'number' | 'string' | 'boolean', unit?: string) => {
+     let logicFolder = findNodeById(treeData, 'logic_vars');
+     if (!logicFolder) return;
+
+     let existing = logicFolder.children?.find(c => c.id === id);
+     if (existing) {
+         if (existing.value !== value || (unit && existing.unit !== unit)) {
+            const updateRecursive = (nodes: DataNode[]): DataNode[] => nodes.map(n => {
+               if (n.id === id) return { ...n, value, unit: unit || n.unit };
+               if (n.children) return { ...n, children: updateRecursive(n.children) };
+               return n;
+            });
+            setTreeData(updateRecursive(treeData));
+         }
+     } else {
+         const newNode: DataNode = { id, label, type: 'variable', value, unit: unit || (type === 'boolean' ? '' : type === 'string' ? '' : '#') };
+         const addRecursive = (nodes: DataNode[]): DataNode[] => nodes.map(n => {
+             if (n.id === 'logic_vars') return { ...n, children: [...(n.children||[]), newNode] };
+             if (n.children) return { ...n, children: addRecursive(n.children) };
+             return n;
+         });
+         setTreeData(addRecursive(treeData));
+     }
+  };
+
+  const flattenModules = (list: AppModule[]): AppModule[] => { return list.reduce((acc: AppModule[], curr) => { acc.push(curr); if (curr.children) acc.push(...flattenModules(curr.children)); return acc; }, []); };
+  const findAndRemove = (list: AppModule[], id: string): { item: AppModule | null, newList: AppModule[], parentId: string | 'root' } => { 
+      let item: AppModule | null = null; 
+      let parentId: string | 'root' = 'root';
+      const traverse = (currentList: AppModule[], currentParent: string | 'root'): AppModule[] => { 
+          const result: AppModule[] = []; 
+          for (const node of currentList) { 
+              if (node.id === id) { item = node; parentId = currentParent; continue; } 
+              if (node.children) { const updatedChildren = traverse(node.children, node.id); result.push({ ...node, children: updatedChildren }); } else { result.push(node); } 
+          } 
+          return result; 
+      }; 
+      const newList = traverse(list, 'root'); 
+      return { item, newList, parentId }; 
+  };
+  const addToParent = (list: AppModule[], parentId: string, item: AppModule): AppModule[] => { return list.map(node => { if (node.id === parentId) { return { ...node, children: [...(node.children || []), item], isOpen: true }; } if (node.children) { return { ...node, children: addToParent(node.children, parentId, item) }; } return node; }); };
+  const getAllIds = (nodes: AppModule[]): string[] => { return nodes.reduce((acc: string[], curr) => { return [...acc, curr.id, ...(curr.children ? getAllIds(curr.children) : [])]; }, []); };
+  const findModule = (nodes: AppModule[], id: string): AppModule | null => { for (const node of nodes) { if (node.id === id) return node; if (node.children) { const found = findModule(node.children, id); if (found) return found; } } return null; };
+  const handleAddDashboard = () => { if (!newTabName.trim()) return; const id = newTabName.toLowerCase().replace(/\s+/g, '_') + '_' + Date.now(); const newModule: AppModule = { id, label: newTabName, iconKey: newTabIcon, type: 'dashboard', color: COLORS[modules.length % COLORS.length], description: 'Custom Dashboard', isRemovable: true, isPinned: true }; if (parentForNewTab) { setModules(addToParent(modules, parentForNewTab, newModule)); } else { setModules([...modules, newModule]); } setDashboards(prev => ({ ...prev, [id]: [] })); setNewTabName(''); setIsTabCreatorOpen(false); setParentForNewTab(null); if (!parentForNewTab) setActiveTab(id); };
+  
+  const handleDeleteModule = (id: string) => { 
+      const { item, newList, parentId } = findAndRemove(modules, id); 
+      if (item) {
+          setUndoStack(prev => [...prev, { type: 'module', data: item, parentId }]);
+          setModules(newList); 
+          if (activeTab === id) setActiveTab('dashboard'); 
+      }
+  };
+
+  const togglePinModule = (id: string) => { const mapRecursive = (list: AppModule[]): AppModule[] => { return list.map(m => { if (m.id === id) return { ...m, isPinned: !m.isPinned }; if (m.children) return { ...m, children: mapRecursive(m.children) }; return m; }); }; setModules(mapRecursive(modules)); };
+  const toggleModuleOpen = (id: string) => { const mapRecursive = (list: AppModule[]): AppModule[] => { return list.map(m => { if (m.id === id) return { ...m, isOpen: !m.isOpen }; if (m.children) return { ...m, children: mapRecursive(m.children) }; return m; }); }; setModules(mapRecursive(modules)); };
+  const handleRenameModule = (id: string, newLabel: string) => { const mapRecursive = (list: AppModule[]): AppModule[] => { return list.map(m => { if (m.id === id) return { ...m, label: newLabel }; if (m.children) return { ...m, children: mapRecursive(m.children) }; return m; }); }; setModules(mapRecursive(modules)); };
+  const handleModuleDragStart = (e: React.DragEvent, id: string) => { e.stopPropagation(); setDraggedModuleId(id); if (e.dataTransfer) { e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", id); } };
+  const handleModuleDragOver = (e: React.DragEvent, targetId: string) => { e.preventDefault(); e.stopPropagation(); if (!draggedModuleId || draggedModuleId === targetId) return; const draggedNode = findModule(modules, draggedModuleId); if (draggedNode && draggedNode.children && getAllIds(draggedNode.children).includes(targetId)) { return; } setDragOverId(targetId); };
+  
+  const handleModuleDrop = (e: React.DragEvent, targetId: string) => { 
+      e.preventDefault(); e.stopPropagation(); setDragOverId(null); 
+      if (!e.dataTransfer) return;
+      const draggedId = draggedModuleId || e.dataTransfer.getData("text/plain"); 
+      if (!draggedId || draggedId === targetId) return; 
+      const draggedNode = findModule(modules, draggedId); 
+      if (draggedNode && draggedNode.children && getAllIds(draggedNode.children).includes(targetId)) { return; } 
+      const { item, newList } = findAndRemove(modules, draggedId); 
+      if (!item) return; 
+      let finalModules; 
+      if (targetId === 'root') { finalModules = [...newList, item]; } else { finalModules = addToParent(newList, targetId, item); } 
+      setModules(finalModules); 
+      setDraggedModuleId(null); 
+  };
+
+  const currentWidgets = dashboards[activeTab] || [];
+  const updateWidgets = (newWidgets: DashboardWidget[]) => { setDashboards(prev => ({ ...prev, [activeTab]: newWidgets })); };
+  const handleWidgetUpdate = (id: string, updates: Partial<DashboardWidget>) => { updateWidgets(currentWidgets.map(w => w.id === id ? { ...w, ...updates } : w)); };
+  
+  const removeVariable = (widgetId: string, variableId: string) => {
+    updateWidgets(currentWidgets.map(w => {
+      if (w.id !== widgetId) return w;
+      return { ...w, variables: w.variables?.filter(v => v.id !== variableId) };
+    }));
+  };
+
+  const handleVariableStyleChange = (widgetId: string, variableId: string, updates: { color?: string, fontSize?: string, fontFamily?: string }) => {
+      updateWidgets(currentWidgets.map(w => {
+          if (w.id !== widgetId) return w;
+          return { ...w, variables: w.variables?.map(v => v.id === variableId ? { ...v, ...updates } : v) };
+      }));
+  };
+
+  const addWidget = (type: string, chartType?: DashboardWidget['chartType']) => {
+      let widgetType = type as DashboardWidget['type'];
+      if (type === 'kpi-power') widgetType = 'kpi';
+      let newWidget: DashboardWidget = {
+         id: `w_${Date.now()}`, type: widgetType, chartType,
+         title: `New ${type === 'hvac' ? 'HVAC Symbol' : type === 'synoptic' ? 'Synoptic View' : type === 'logic' ? 'Logic Editor' : type}`,
+         subtitle: 'Configure in edit mode',
+         colSpan: (type === 'kpi' || type === 'thermometer' || type === 'dpe' || type === 'gauge' || type === 'slider' || type === 'weather' || type === 'hvac' || type === 'databox' || type === 'zone') ? 2 : 2,
+         height: 400, colorTheme: 'default', variables: [], hiddenVariables: [], staticData: { value: 0 }
+      };
+
+      if (type === 'kpi-power') { newWidget.title = 'Total Power'; newWidget.colSpan = 2; newWidget.height = 350; newWidget.colorTheme = 'orange'; newWidget.variables = [{ id: 'var_main_elec', label: 'Main Grid', unit: 'kW' }]; }
+      else if (type === 'kpi') { newWidget.colSpan = 2; newWidget.height = 350; } 
+      else if (type === 'floorplan') { 
+          newWidget.floorPlanConfig = { 
+              imageUrl: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b91d?q=80&w=1000&auto=format&fit=crop', 
+              objects: [],
+              layers: [{ id: 'l1', name: 'Base', visible: true }]
+          }; 
+          newWidget.colSpan = 3; newWidget.height = 550; newWidget.noPadding = true;
+      }
+      else if (type === 'schedule') { newWidget.colSpan = 3; newWidget.height = 450; newWidget.scheduleConfig = { showWeekends: true, startOnSunday: false, is24hFormat: true, allowlist: [] }; }
+      else if (type === 'databox') { newWidget.colSpan = 2; newWidget.height = 400; newWidget.databoxConfig = { showHeader: true, headerText: 'Details', showImage: false, showLabels: true, nodes: [] }; }
+      else if (type === 'zone') { newWidget.colSpan = 2; newWidget.height = 400; newWidget.zoneConfig = {}; newWidget.title = "New Zone"; newWidget.subtitle = "Drag & Drop Variables"; }
+      else if (type === 'alarm') { newWidget.colSpan = 3; newWidget.height = 450; newWidget.alarmConfig = { playSound: false, soundUrl: '/assets/alarm.mp3', minPriority: 'Critical' }; }
+      else if (type === 'weather') { newWidget.colSpan = 2; newWidget.height = 350; newWidget.weatherConfig = { location: 'New York', units: 'C' }; }
+      else if (type === 'predictive') { newWidget.colSpan = 2; newWidget.height = 350; }
+      else if (type === 'hvac') { newWidget.colSpan = 2; newWidget.height = 350; newWidget.hvacConfig = { symbol: 'pump', orientation: 'up', showValue: true, animate: true }; }
+      else if (type === 'synoptic') { newWidget.colSpan = 4; newWidget.height = 650; newWidget.synopticConfig = { width: 1000, height: 600, elements: [] }; }
+      else if (type === 'logic') { newWidget.colSpan = 4; newWidget.height = 700; newWidget.logicConfig = { blocks: [], connections: [] }; }
+
+      if (swappingWidgetId) {
+          const index = currentWidgets.findIndex(w => w.id === swappingWidgetId);
+          if (index >= 0) {
+              const old = currentWidgets[index];
+              newWidget.colSpan = old.colSpan; newWidget.height = old.height; newWidget.variables = old.variables;
+              const updatedWidgets = [...currentWidgets]; updatedWidgets[index] = newWidget;
+              updateWidgets(updatedWidgets);
+          }
+          setSwappingWidgetId(null);
+      } else { updateWidgets([...currentWidgets, newWidget]); }
+      setShowWidgetPalette(false);
+  };
+
+  const removeWidget = (id: string) => {
+      const index = currentWidgets.findIndex(w => w.id === id);
+      if (index !== -1) {
+          const widget = currentWidgets[index];
+          setUndoStack(prev => [...prev, { type: 'widget', data: widget, dashboardId: activeTab, index }]);
+          updateWidgets(currentWidgets.filter(w => w.id !== id));
+      }
+  };
+
+  const handleUndo = () => {
+    if (undoStack.length === 0) return;
+    const item = undoStack[undoStack.length - 1];
+    const newStack = undoStack.slice(0, -1);
+    setUndoStack(newStack);
+
+    if (item.type === 'widget') {
+        const { data, dashboardId, index } = item;
+        setDashboards(prev => {
+            const list = [...(prev[dashboardId] || [])];
+            // Safe insertion at index
+            if (index >= 0 && index <= list.length) {
+                list.splice(index, 0, data);
+            } else {
+                list.push(data);
+            }
+            return { ...prev, [dashboardId]: list };
+        });
+        if (activeTab !== dashboardId) setActiveTab(dashboardId);
+    } else if (item.type === 'module') {
+        const { data, parentId } = item;
+        if (parentId === 'root') {
+            setModules(prev => [...prev, data]);
+        } else {
+            setModules(prev => addToParent(prev, parentId, data));
+        }
+    }
+  };
+
+  const handleWidgetResize = (id: string, w: number, h: number) => { const containerW = window.innerWidth - (sidebarOpen ? 300 : 100); const colW = containerW / 4; let span = Math.round(w / colW); if (span < 1) span = 1; if (span > 4) span = 4; updateWidgets(currentWidgets.map(wd => wd.id === id ? { ...wd, colSpan: span as any, height: h } : wd)); };
+  const handleWidgetWiden = (id: string) => { const w = currentWidgets.find(x => x.id === id); if(!w) return; const nextSpan = w.colSpan === 1 ? 2 : w.colSpan === 2 ? 4 : w.colSpan === 4 ? 1 : 2; handleWidgetUpdate(id, { colSpan: nextSpan as any }); };
+  const handleWidgetExtend = (id: string) => { const w = currentWidgets.find(x => x.id === id); if(!w) return; const currentH = w.height || 300; const nextH = currentH >= 600 ? 300 : currentH + 150; handleWidgetUpdate(id, { height: nextH }); };
+  const handleExport = (widget: DashboardWidget) => { const rows = widget.variables?.map(v => { const hist = generateVariableHistory(v.id, period); return hist.map(h => ({ time: h.name, variable: v.label, value: h.value, unit: v.unit })); }).flat() || []; if (rows.length === 0) { alert("No data to export"); return; } const csvContent = "data:text/csv;charset=utf-8," + "Time,Variable,Value,Unit\n" + rows.map(e => `${e.time},${e.variable},${e.value},${e.unit}`).join("\n"); const encodedUri = encodeURI(csvContent); const link = document.createElement("a"); link.setAttribute("href", encodedUri); link.setAttribute("download", `${widget.title}_export.csv`); document.body.appendChild(link); link.click(); document.body.removeChild(link); };
+  const handleLegendClick = (w: DashboardWidget, e: any) => { const targetId = e.dataKey; if (!targetId) return; const isHidden = w.hiddenVariables?.includes(targetId); let newHidden; if (isHidden) newHidden = w.hiddenVariables?.filter(id => id !== targetId) || []; else newHidden = [...(w.hiddenVariables || []), targetId]; updateWidgets(currentWidgets.map(cw => cw.id === w.id ? { ...cw, hiddenVariables: newHidden } : cw)); };
+
+  const handleAddNode = () => { if (!nodeParentId || !newNodeLabel) return; const newNode: DataNode = { id: `n_${Date.now()}`, label: newNodeLabel, type: nodeTypeToAdd, children: [] }; const addRecursive = (nodes: DataNode[]): DataNode[] => nodes.map(n => { if (n.id === nodeParentId) return { ...n, children: [...(n.children||[]), newNode] }; if (n.children) return { ...n, children: addRecursive(n.children) }; return n; }); setTreeData(addRecursive(treeData)); setIsAddNodeModalOpen(false); };
+  const handleDeleteNode = (id: string) => { const delRecursive = (nodes: DataNode[]): DataNode[] => nodes.filter(n => n.id !== id).map(n => ({ ...n, children: n.children ? delRecursive(n.children) : [] })); setTreeData(delRecursive(treeData)); };
+  
+  const handleDataDrop = (widgetId: string, variableId: string) => { 
+    const node = findNodeById(treeData, variableId); if (!node) return; 
+    const newWidgets = currentWidgets.map(w => { 
+        if (w.id !== widgetId) return w; 
+        const vars = w.variables || []; const existing = vars.find(v => v.id === variableId); 
+        const newVariables = existing ? vars : [...vars, { id: variableId, label: node.label, unit: node.unit }]; 
+        if (w.type === 'databox' && w.databoxConfig) { 
+            if (w.databoxConfig.nodes.find(n => n.id === variableId)) return w; 
+            const newNodeConfig: DataboxNode = { id: variableId, labelOverride: node.label, showUnit: true, numberFormat: '#.00', color: COLORS[w.databoxConfig.nodes.length % COLORS.length] }; 
+            return { ...w, variables: newVariables, databoxConfig: { ...w.databoxConfig, nodes: [...w.databoxConfig.nodes, newNodeConfig] } }; 
+        } 
+        if (w.type === 'zone' && w.zoneConfig) {
+            const unit = (node.unit || '').toLowerCase(); const label = (node.label || '').toLowerCase();
+            let newConfig = { ...w.zoneConfig };
+            if (unit.includes('c') || unit.includes('f') || unit.includes('k')) { if (!newConfig.tempId) newConfig.tempId = variableId; else if (!newConfig.setpointId) newConfig.setpointId = variableId; } 
+            else if (unit.includes('%') || unit.includes('rh')) { if (label.includes('valve') || label.includes('out')) { if (!newConfig.valveId) newConfig.valveId = variableId; } else { if (!newConfig.humidityId) newConfig.humidityId = variableId; } } 
+            else if (unit.includes('ppm')) { if (!newConfig.co2Id) newConfig.co2Id = variableId; } 
+            else if (label.includes('mode')) { if (!newConfig.modeId) newConfig.modeId = variableId; } 
+            else if (label.includes('valve')) { if (!newConfig.valveId) newConfig.valveId = variableId; }
+            return { ...w, variables: newVariables, zoneConfig: newConfig };
+        }
+        return { ...w, variables: newVariables }; 
+    }); updateWidgets(newWidgets); 
+  };
+  
+  const handleGridDrop = (e: React.DragEvent) => { 
+      e.preventDefault(); e.stopPropagation(); if (!e.dataTransfer) return;
+      try { const raw = e.dataTransfer.getData("application/json"); if (raw) { const data = JSON.parse(raw); if (data.type === 'new-widget') { addWidget(data.widgetType, data.chartType); } } } catch (err) {} 
+  };
+
+  const activeModuleDef = findModule(modules, activeTab);
+  const expandedWidget = currentWidgets.find(w => w.id === expandedWidgetId);
+
+  const getResponsiveColSpan = (span: number) => {
+     switch(span) {
+         case 1: return 'col-span-1 md:col-span-1 xl:col-span-1';
+         case 2: return 'col-span-1 md:col-span-2 xl:col-span-2';
+         case 3: return 'col-span-1 md:col-span-2 xl:col-span-3'; 
+         case 4: return 'col-span-1 md:col-span-2 xl:col-span-4';
+         default: return 'col-span-1';
+     }
+  };
+
+  const renderWidget = (w: DashboardWidget, isExpanded = false) => {
+      const commonProps = { isEditing, onConfigChange: (cfg: any) => handleWidgetUpdate(w.id, cfg), language };
+      
+      // Enrich variables with current values from treeData
+      const enrichedVariables = w.variables?.map(v => ({
+          ...v,
+          value: findNodeById(treeData, v.id)?.value
+      }));
+
+      switch (w.type) {
+          case 'kpi': return <KpiCard label={w.title} value={w.staticData?.value || (enrichedVariables?.[0]?.value || 0)} sub={w.subtitle} trend={5} variableConfig={w.variables?.[0]} chartData={w.variables?.[0] ? generateVariableHistory(w.variables[0].id, period) : undefined} isEditing={isEditing} onLabelChange={v=>handleWidgetUpdate(w.id, {title:v})} onValueChange={v=>handleWidgetUpdate(w.id, {staticData:{...w.staticData, value:v}})} onSubChange={v=>handleWidgetUpdate(w.id, {subtitle:v})} colorTheme={w.colorTheme} language={language} />;
+          case 'chart': return (
+               <div className="w-full h-full min-h-[200px]">
+                   <ResponsiveContainer width="100%" height="100%">
+                       {w.chartType === 'line' ? ( <LineChart data={w.variables?.[0] ? generateVariableHistory(w.variables[0].id, period) : chartData}> <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" /> <XAxis dataKey="name" hide={!isExpanded} /> <YAxis hide={!isExpanded} /> <Tooltip /> <Legend onClick={(e) => handleLegendClick(w, e)} /> {w.variables?.map((v, i) => !w.hiddenVariables?.includes(v.id) && <Line key={v.id} type="monotone" dataKey="value" name={v.label} stroke={v.color || COLORS[i % COLORS.length]} strokeWidth={2} dot={false} />)} </LineChart> ) :
+                        w.chartType === 'bar' ? ( <BarChart data={w.variables?.[0] ? generateVariableHistory(w.variables[0].id, period) : chartData}> <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" /> <XAxis dataKey="name" hide={!isExpanded} /> <YAxis hide={!isExpanded} /> <Tooltip /> <Legend /> {w.variables?.map((v, i) => !w.hiddenVariables?.includes(v.id) && <Bar key={v.id} dataKey="value" name={v.label} fill={v.color || COLORS[i % COLORS.length]} radius={[4, 4, 0, 0]} />)} </BarChart> ) :
+                        w.chartType === 'area' ? ( <AreaChart data={w.variables?.[0] ? generateVariableHistory(w.variables[0].id, period) : chartData}> <defs> {w.variables?.map((v, i) => ( <linearGradient key={v.id} id={`color${v.id}`} x1="0" y1="0" x2="0" y2="1"> <stop offset="5%" stopColor={v.color || COLORS[i % COLORS.length]} stopOpacity={0.3}/> <stop offset="95%" stopColor={v.color || COLORS[i % COLORS.length]} stopOpacity={0}/> </linearGradient> ))} </defs> <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" /> <XAxis dataKey="name" hide={!isExpanded} /> <YAxis hide={!isExpanded} /> <Tooltip /> <Legend /> {w.variables?.map((v, i) => !w.hiddenVariables?.includes(v.id) && <Area key={v.id} type="monotone" dataKey="value" name={v.label} stroke={v.color || COLORS[i % COLORS.length]} fillOpacity={1} fill={`url(#color${v.id})`} />)} </AreaChart> ) :
+                        w.chartType === 'pie' ? ( <PieChart> <Pie data={enrichedVariables?.map(v => ({ name: v.label, value: v.value || Math.random()*100 })) || [{name:'A', value:40}, {name:'B', value:60}]} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value"> {w.variables?.map((v, i) => <Cell key={`cell-${i}`} fill={v.color || COLORS[i % COLORS.length]} />)} </Pie> <Tooltip /> <Legend /> </PieChart> ) :
+                        w.chartType === 'radial' ? ( <RadialBarChart cx="50%" cy="50%" innerRadius="10%" outerRadius="80%" barSize={10} data={enrichedVariables?.map(v => ({ name: v.label, value: v.value || Math.random()*100, fill: v.color })) || []}> <RadialBar label={{ position: 'insideStart', fill: '#fff' }} background dataKey="value" /> <Legend iconSize={10} layout="vertical" verticalAlign="middle" wrapperStyle={{ top: '50%', right: 0, transform: 'translate(0, -50%)', lineHeight: '24px' }} /> <Tooltip /> </RadialBarChart> ) :
+                        w.chartType === 'heatmap' ? ( <HeatmapChart data={[]} /> ) : null}
+                   </ResponsiveContainer>
+               </div>
+          );
+          case 'table': return <SimpleTable data={w.customData || []} />;
+          case 'weather': return <WeatherWidget config={w.weatherConfig} {...commonProps} />;
+          case 'dpe': return <EnergyLabelWidget value={w.staticData?.value || 0} unit={w.staticData?.unit} isEditing={isEditing} onValueChange={v => handleWidgetUpdate(w.id, {staticData:{...w.staticData, value:v}})} />;
+          case 'gauge': return <GaugeWidget value={w.staticData?.value || 0} min={w.staticData?.min || 0} max={w.staticData?.max || 100} unit={w.staticData?.unit || ''} isEditing={isEditing} onConfigChange={cfg => handleWidgetUpdate(w.id, {staticData:{...w.staticData, ...cfg}})} />;
+          case 'slider': return <SliderWidget value={w.staticData?.value || 0} min={w.staticData?.min || 0} max={w.staticData?.max || 100} unit={w.staticData?.unit || ''} isEditing={isEditing} onValueChange={v => handleWidgetUpdate(w.id, {staticData:{...w.staticData, value:v}})} />;
+          case 'schedule': return <ScheduleWidget config={w.scheduleConfig} {...commonProps} />;
+          case 'databox': return <DataboxWidget config={w.databoxConfig!} variables={enrichedVariables} isEditing={isEditing} onConfigChange={cfg => handleWidgetUpdate(w.id, {databoxConfig: {...w.databoxConfig, ...cfg}})} onRemoveNode={(vid) => removeVariable(w.id, vid)} />;
+          case 'alarm': return <AlarmConsoleWidget config={w.alarmConfig} {...commonProps} />;
+          case 'flow': return <FlowChart />;
+          case 'thermometer': return <ThermometerChart value={enrichedVariables?.[0]?.value || w.staticData?.value || 20} unit={enrichedVariables?.[0]?.unit} />;
+          case 'floorplan': return <FloorPlanWidget config={w.floorPlanConfig!} variables={enrichedVariables} isEditing={isEditing} onConfigChange={cfg => handleWidgetUpdate(w.id, {floorPlanConfig: {...w.floorPlanConfig, ...cfg}})} language={language} />;
+          case 'predictive': return <PredictiveAlarmsWidget alarms={aiPredictiveData} />;
+          case 'hvac': return <HVACWidget config={w.hvacConfig!} variables={enrichedVariables} isEditing={isEditing} onConfigChange={cfg => handleWidgetUpdate(w.id, {hvacConfig: {...w.hvacConfig, ...cfg}})} />;
+          case 'synoptic': return <SynopticWidget config={w.synopticConfig!} variables={getAllVariables()} isEditing={isEditing} onConfigChange={cfg => handleWidgetUpdate(w.id, {synopticConfig: cfg})} />;
+          case 'zone': return <ZoneWidget config={w.zoneConfig!} variables={enrichedVariables} isEditing={isEditing} onConfigChange={cfg => handleWidgetUpdate(w.id, {zoneConfig: {...w.zoneConfig, ...cfg}})} />;
+          case 'logic': return <LogicWidget config={w.logicConfig!} isEditing={isEditing} onConfigChange={cfg => handleWidgetUpdate(w.id, {logicConfig: cfg})} variables={getAllVariables()} onUpdateVariable={handleUpdateLogicVariable} />;
+          case 'ai': return <AIChatWidget onSendMessage={handleAiChat} />;
+          default: return <div className="flex items-center justify-center h-full text-gray-400">Widget {w.type}</div>;
+      }
+  };
+
+  const getAllVariables = () => {
+     const vars: { id: string, label: string, value: any }[] = [];
+     const traverse = (nodes: DataNode[]) => {
+        nodes.forEach(n => {
+           if (n.type === 'variable') vars.push({ id: n.id, label: n.label, value: n.value });
+           if (n.children) traverse(n.children);
+        });
+     };
+     traverse(treeData);
+     return vars;
+  };
+
+  const renderSidebarItem = (m: AppModule, level = 0) => {
+      if (!m.isPinned && m.type !== 'system' && m.id !== 'apps') return null;
+      const Icon = ICON_MAP[m.iconKey] || Layout;
+      const isActive = activeTab === m.id;
+      const hasChildren = m.children && m.children.length > 0;
+      const isDragging = draggedModuleId === m.id;
+      const isOver = dragOverId === m.id;
+
+      return (
+          <div key={m.id} className="mb-0.5" style={{ paddingLeft: level === 0 ? 0 : 8 }}>
+              {m.type === 'folder' ? (
+                  <div className="mb-1">
+                      <div 
+                          className={`flex items-center justify-between px-3 py-2 cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group ${isOver ? 'bg-blue-50 dark:bg-blue-900/20 ring-2 ring-blue-500' : ''}`}
+                          onClick={() => toggleModuleOpen(m.id)}
+                          draggable={isEditing}
+                          onDragStart={(e) => isEditing && handleModuleDragStart(e, m.id)}
+                          onDragOver={(e) => isEditing && handleModuleDragOver(e, m.id)}
+                          onDrop={(e) => isEditing && handleModuleDrop(e, m.id)}
+                      >
+                          <div className="flex items-center gap-2 overflow-hidden">
+                              <span className="text-gray-400">{m.isOpen ? <ChevronDown size={12}/> : <ChevronRight size={12}/>}</span>
+                              <span className="text-xs font-bold text-gray-500 uppercase tracking-wider truncate">{t[m.label] || m.label}</span>
+                          </div>
+                          {isEditing && (
+                             <div className="opacity-0 group-hover:opacity-100 flex gap-1">
+                                <button onClick={(e) => { e.stopPropagation(); setParentForNewTab(m.id); setIsTabCreatorOpen(true); }} className="p-1 hover:bg-white dark:hover:bg-white/10 rounded"><Plus size={12} className="text-gray-500"/></button>
+                                {m.isRemovable && <button onClick={(e) => { e.stopPropagation(); handleDeleteModule(m.id); }} className="p-1 hover:bg-white dark:hover:bg-white/10 rounded text-red-500"><Trash2 size={12}/></button>}
+                             </div>
+                          )}
+                      </div>
+                      {m.isOpen && hasChildren && (
+                          <div className="mt-0.5 space-y-0.5">
+                              {m.children!.map(child => renderSidebarItem(child, level + 1))}
+                          </div>
+                      )}
+                  </div>
+              ) : (
+                  <div 
+                      className={`
+                          group flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-all duration-200 relative
+                          ${isActive ? `bg-${m.color || 'blue'}-50 dark:bg-${m.color || 'blue'}-900/20 text-${m.color || 'blue'}-600 dark:text-${m.color || 'blue'}-400 font-bold shadow-sm` : `text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5`}
+                          ${isDragging ? 'opacity-50' : ''}
+                          ${isOver ? 'ring-2 ring-blue-500' : ''}
+                      `}
+                      onClick={() => setActiveTab(m.id)}
+                      draggable={isEditing}
+                      onDragStart={(e) => isEditing && handleModuleDragStart(e, m.id)}
+                      onDragOver={(e) => isEditing && handleModuleDragOver(e, m.id)}
+                      onDrop={(e) => isEditing && handleModuleDrop(e, m.id)}
+                  >
+                      <Icon size={18} strokeWidth={isActive ? 2.5 : 2} className="shrink-0" />
+                      {sidebarOpen && (
+                          <div className="flex-1 truncate text-sm">
+                             {isEditing && m.isRemovable ? (
+                                <input 
+                                   value={m.label} 
+                                   onChange={(e) => handleRenameModule(m.id, e.target.value)}
+                                   onClick={(e) => e.stopPropagation()}
+                                   className="bg-transparent outline-none w-full"
+                                />
+                             ) : (
+                                <span>{t[m.label] || m.label}</span>
+                             )}
+                          </div>
+                      )}
+                      {isEditing && sidebarOpen && (
+                          <div className="opacity-0 group-hover:opacity-100 flex items-center gap-1 absolute right-2 bg-white/80 dark:bg-black/80 rounded px-1">
+                              <button onClick={(e) => { e.stopPropagation(); togglePinModule(m.id); }} className="p-1 hover:text-blue-500"><LogOut size={12} className="rotate-180"/></button>
+                              {m.isRemovable && <button onClick={(e) => { e.stopPropagation(); handleDeleteModule(m.id); }} className="p-1 hover:text-red-500"><Trash2 size={12}/></button>}
+                          </div>
+                      )}
+                  </div>
+              )}
+          </div>
+      );
+  };
+
+  const renderContent = () => {
+      if (activeTab === 'apps') {
+          return (
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                  {flattenModules(modules).filter(m => m.type !== 'folder' && m.id !== 'apps').map(m => {
+                      const Icon = ICON_MAP[m.iconKey] || Layout;
+                      return (
+                          <div 
+                              key={m.id} 
+                              onClick={() => setActiveTab(m.id)} 
+                              className="bg-white dark:bg-[#1c1c1e] p-6 rounded-2xl border border-gray-200 dark:border-white/5 shadow-sm hover:shadow-xl transition-all cursor-pointer flex flex-col items-center gap-4 group"
+                          >
+                              <div className={`w-16 h-16 rounded-2xl bg-${m.color}-100 dark:bg-${m.color}-900/20 text-${m.color}-600 dark:text-${m.color}-400 flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                                  <Icon size={32} />
+                              </div>
+                              <div className="text-center">
+                                  <div className="font-bold text-lg dark:text-white">{t[m.label] || m.label}</div>
+                                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{m.description}</div>
+                              </div>
+                              {isEditing && m.isRemovable && (
+                                  <button 
+                                      onClick={(e) => { e.stopPropagation(); handleDeleteModule(m.id); }} 
+                                      className="absolute top-2 right-2 p-2 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                  >
+                                      <Trash2 size={16} />
+                                  </button>
+                              )}
+                          </div>
+                      );
+                  })}
+                  {isEditing && (
+                       <button 
+                          onClick={() => { setParentForNewTab(null); setIsTabCreatorOpen(true); }}
+                          className="bg-gray-100 dark:bg-white/5 p-6 rounded-2xl border-2 border-dashed border-gray-300 dark:border-white/10 hover:border-blue-500 dark:hover:border-blue-500 cursor-pointer flex flex-col items-center justify-center gap-2 text-gray-400 hover:text-blue-500 transition-colors"
+                       >
+                          <Plus size={32} />
+                          <span className="font-bold">{t.createDashboard}</span>
+                       </button>
+                  )}
+              </div>
+          );
+      }
+
+      return (
+          <div 
+            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 auto-rows-min pb-20 min-h-[500px]"
+            onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            onDrop={handleGridDrop}
+          >
+              {currentWidgets.map(w => (
+                  <Card 
+                      key={w.id}
+                      {...w}
+                      isEditing={isEditing}
+                      onRemove={() => removeWidget(w.id)}
+                      onSwap={() => { setSwappingWidgetId(w.id); setShowWidgetPalette(true); }}
+                      onResize={(width, height) => handleWidgetResize(w.id, width, height)}
+                      onTitleChange={(val) => handleWidgetUpdate(w.id, { title: val })}
+                      onSubtitleChange={(val) => handleWidgetUpdate(w.id, { subtitle: val })}
+                      onColorChange={(color) => handleWidgetUpdate(w.id, { colorTheme: color })}
+                      onBackgroundChange={(color) => handleWidgetUpdate(w.id, { backgroundColor: color })}
+                      dragHandleProps={isEditing ? { 
+                          draggable: true, 
+                          onDragStart: (e: React.DragEvent) => {
+                               setDraggedItemIndex(currentWidgets.indexOf(w));
+                               e.dataTransfer.effectAllowed = "move";
+                               e.dataTransfer.setData("text/plain", "reorder"); 
+                          },
+                          onDragEnd: () => setDraggedItemIndex(null)
+                      } : undefined}
+                      onReorderDragOver={(e) => {
+                          if(draggedItemIndex === null) return;
+                          const dragIndex = draggedItemIndex;
+                          const hoverIndex = currentWidgets.indexOf(w);
+                          if(dragIndex === hoverIndex) return;
+                          
+                          const newItems = [...currentWidgets];
+                          const [reorderedItem] = newItems.splice(dragIndex, 1);
+                          newItems.splice(hoverIndex, 0, reorderedItem);
+                          updateWidgets(newItems);
+                          setDraggedItemIndex(hoverIndex);
+                      }}
+                      tools={{ onExpand: () => setExpandedWidgetId(w.id), onExport: () => handleExport(w), onWiden: () => handleWidgetWiden(w.id), onExtend: () => handleWidgetExtend(w.id) }}
+                      className={`${getResponsiveColSpan(w.colSpan || 1)} row-span-1 ${w.type === 'synoptic' || w.type === 'logic' || w.type === 'floorplan' ? 'overflow-hidden' : ''}`}
+                      style={{ height: w.height || 300 }}
+                      onDataDrop={(varId) => handleDataDrop(w.id, varId)}
+                      variables={w.variables}
+                      onRemoveVariable={(vid) => removeVariable(w.id, vid)}
+                      onVariableStyleChange={(vid, style) => handleVariableStyleChange(w.id, vid, style)}
+                      language={language}
+                  >
+                      {renderWidget(w)}
+                  </Card>
+              ))}
+              {isEditing && (
+                  <div 
+                      className="col-span-1 h-[300px] border-2 border-dashed border-gray-300 dark:border-white/10 rounded-3xl flex items-center justify-center text-gray-400 hover:text-blue-500 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all cursor-pointer"
+                      onClick={() => setShowWidgetPalette(true)}
+                  >
+                      <div className="flex flex-col items-center gap-2">
+                          <Plus size={32} />
+                          <span className="font-bold">Add Widget</span>
+                      </div>
+                  </div>
+              )}
+          </div>
+      );
+  };
+
+  return (
+    <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-black text-gray-900 dark:text-white font-sans selection:bg-blue-500 selection:text-white">
+       <aside 
+          className={`${sidebarOpen ? '' : 'w-0 overflow-hidden'} transition-all duration-300 bg-white dark:bg-[#1c1c1e] border-r border-gray-100 dark:border-white/5 flex flex-col shrink-0 z-20 shadow-xl shadow-gray-200/50 dark:shadow-none relative`}
+          style={{ width: sidebarOpen ? sidebarWidth : 0 }}
+        >
+          <div className="p-6 flex items-center gap-3"><div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-600/20"><Zap size={20} fill="currentColor" /></div><div className="font-bold text-xl tracking-tight">EnergyPortal</div></div>
+          <div className="flex-1 overflow-y-auto px-4 py-2 space-y-1 scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10">
+             <div className={`flex justify-between items-center px-2 mb-2 mt-4 rounded-lg transition-colors ${dragOverId === 'root' ? 'bg-blue-50 dark:bg-blue-900/20 ring-2 ring-blue-500' : ''}`} onDragOver={(e) => isEditing && handleModuleDragOver(e, 'root')} onDrop={(e) => isEditing && handleModuleDrop(e, 'root')}> <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">Menu</div> {isEditing && <button onClick={() => { setParentForNewTab(null); setIsTabCreatorOpen(true); }} className="text-blue-500 hover:bg-blue-50 dark:hover:bg-white/10 rounded p-1 transition-colors" title="Add Dashboard to Root"><Plus size={14}/></button> </div>
+             {modules.map(m => renderSidebarItem(m))}
+             <div className="flex justify-between items-center px-2 mb-2 mt-8"> <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">Site Structure</div> <div className="flex bg-gray-100 dark:bg-white/5 rounded-lg p-0.5"> <button onClick={() => setViewMode('site')} className={`p-1 rounded-md ${viewMode==='site'?'bg-white dark:bg-gray-600 shadow-sm':''}`}><Folder size={12}/></button> <button onClick={() => setViewMode('equipment')} className={`p-1 rounded-md ${viewMode==='equipment'?'bg-white dark:bg-gray-600 shadow-sm':''}`}><Box size={12}/></button> </div> </div>
+             <div className="space-y-0.5 pl-2"> {treeData.map(node => <SiteTreeNode key={node.id} node={node} level={0} onAddNode={(pid, type) => {setNodeParentId(pid); setNodeTypeToAdd(type); setIsAddNodeModalOpen(true);}} onDeleteNode={handleDeleteNode} viewMode={viewMode} />)} </div>
+          </div>
+          
+          <div 
+            className="absolute right-0 top-0 bottom-0 w-1 cursor-col-resize hover:bg-blue-500/50 transition-colors z-50"
+            onMouseDown={() => setIsResizingSidebar(true)}
+          />
+       </aside>
+
+       <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
+          <header className="h-20 flex items-center justify-between px-8 shrink-0 z-10 bg-transparent">
+             <div className="flex items-center gap-4"> <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 hover:bg-white dark:hover:bg-white/10 rounded-lg transition-colors text-gray-500"><Menu size={20}/></button> <div> <h2 className="text-2xl font-extrabold tracking-tight capitalize flex items-center gap-3"> {activeModuleDef?.iconKey && ICON_MAP[activeModuleDef.iconKey] ? React.createElement(ICON_MAP[activeModuleDef.iconKey], {size: 26, className: "text-blue-600"}) : <Layout size={26} className="text-blue-600" />} {t[activeModuleDef?.label || activeTab] || activeModuleDef?.label || activeTab} </h2> </div> </div>
+             <div className="flex items-center gap-4"> 
+               <button
+                  onClick={() => setLanguage(l => l === 'en' ? 'fr' : 'en')}
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/20 transition-all shadow-sm"
+               >
+                  <Languages size={18} className="text-gray-500 dark:text-gray-400" />
+                  <span className="text-sm font-bold uppercase">{language}</span>
+               </button>
+               <button onClick={() => setIsEditing(!isEditing)} className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all shadow-sm ${isEditing ? 'bg-blue-600 text-white shadow-blue-600/20' : 'bg-white dark:bg-white/10 text-gray-600 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/20 border border-gray-100 dark:border-white/5'}`}> {isEditing ? <Check size={16} /> : <Pencil size={16} />} {isEditing ? t.doneEditing : t.editDashboard} </button>
+               <div className="flex bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl p-1 shadow-sm"> <button onClick={() => setDarkMode(false)} className={`p-2 rounded-lg transition-all ${!darkMode ? 'bg-gray-100 dark:bg-gray-700 text-yellow-500 shadow-inner' : 'text-gray-400 hover:text-gray-600'}`}><Sun size={18}/></button> <button onClick={() => setDarkMode(true)} className={`p-2 rounded-lg transition-all ${darkMode ? 'bg-gray-100 dark:bg-gray-700 text-blue-400 shadow-inner' : 'text-gray-400 hover:text-gray-600'}`}><Activity size={18}/></button> </div> <PeriodSelector current={period} onChange={setPeriod} /> <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg shadow-blue-500/20 border-2 border-white dark:border-white/10 cursor-pointer hover:scale-105 transition-transform flex items-center justify-center text-white font-bold text-sm" onClick={() => setIsAuthenticated(false)} title={t.logout}>JD</div> </div>
+          </header>
+
+          <div className="flex-1 overflow-y-auto overflow-x-hidden p-8 scroll-smooth">
+             <div className="max-w-[1800px] mx-auto">
+                {renderContent()}
+             </div>
+          </div>
+          
+          {undoStack.length > 0 && isEditing && (
+              <div className="fixed bottom-8 left-8 z-40 animate-in slide-in-from-bottom-4 fade-in duration-300">
+                  <button 
+                      onClick={handleUndo}
+                      className="flex items-center gap-2 px-5 py-3 bg-gray-900 text-white dark:bg-white dark:text-gray-900 rounded-full shadow-xl hover:scale-105 transition-transform font-bold active:scale-95"
+                  >
+                      <Undo2 size={18} />
+                      <span>Undo Delete ({undoStack.length})</span>
+                  </button>
+              </div>
+          )}
+
+          {isEditing && activeTab !== 'apps' && ( <div className="fixed bottom-8 right-8 z-40 animate-in zoom-in duration-300"> <button onClick={() => setShowWidgetPalette(true)} className="w-16 h-16 bg-black dark:bg-white text-white dark:text-black rounded-full shadow-2xl shadow-blue-900/20 flex items-center justify-center hover:scale-110 transition-transform active:scale-95"> <Plus size={32} /> </button> </div> )}
+       </main>
+
+       {expandedWidget && ( <div className="fixed inset-0 z-[60] bg-white dark:bg-black flex flex-col animate-in fade-in duration-200"> <div className="flex justify-between items-center p-6 border-b border-gray-100 dark:border-white/10"> <h2 className="text-2xl font-bold">{expandedWidget.title}</h2> <button onClick={() => setExpandedWidgetId(null)} className="p-2 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full"><X size={24}/></button> </div> <div className="flex-1 p-8 bg-gray-50 dark:bg-black/50"> <Card title="" noPadding className="h-full shadow-none border-none bg-transparent" tools={{ onRefresh: () => {}, onExport: () => handleExport(expandedWidget) }}> {renderWidget(expandedWidget, true)} </Card> </div> </div> )}
+
+       {isTabCreatorOpen && ( <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"> <div className="bg-white dark:bg-[#1c1c1e] rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-200 dark:border-white/10"> <div className="p-6 border-b border-gray-100 dark:border-white/5 flex justify-between items-center"> <h3 className="text-xl font-bold">{parentForNewTab ? 'Create Child Tab' : t.createDashboard}</h3> <button onClick={() => setIsTabCreatorOpen(false)}><X size={20} className="text-gray-400 hover:text-gray-900" /></button> </div> <div className="p-6 space-y-6"> <div> <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Name</label> <input autoFocus type="text" value={newTabName} onChange={e => setNewTabName(e.target.value)} className="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500 transition-all text-lg dark:text-white" placeholder="e.g. Maintenance Report" /> </div> <div> <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Icon</label> <div className="grid grid-cols-6 gap-2 max-h-48 overflow-y-auto p-1"> {AVAILABLE_ICONS.map(iconKey => { const Icon = ICON_MAP[iconKey]; return ( <button key={iconKey} onClick={() => setNewTabIcon(iconKey)} className={`p-3 rounded-xl flex items-center justify-center transition-all ${newTabIcon === iconKey ? 'bg-blue-500 text-white shadow-lg' : 'bg-gray-50 dark:bg-white/5 hover:bg-gray-100 text-gray-500'}`}> <Icon size={20} /> </button> ) })} </div> </div> <Button onClick={handleAddDashboard} className="w-full py-3 text-lg">Create</Button> </div> </div> </div> )}
+
+       {showWidgetPalette && (
+          <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => { setShowWidgetPalette(false); setSwappingWidgetId(null); }}>
+             <div className="bg-white dark:bg-[#1c1c1e] rounded-3xl shadow-2xl w-full max-w-4xl h-[80vh] flex flex-col border border-gray-200 dark:border-white/10 overflow-hidden animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+                <div className="p-6 border-b border-gray-100 dark:border-white/5 flex justify-between items-center">
+                   <h3 className="text-2xl font-bold dark:text-white">{swappingWidgetId ? 'Swap Widget' : t.widgetLibrary}</h3>
+                   <button onClick={() => { setShowWidgetPalette(false); setSwappingWidgetId(null); }}><X size={24} className="text-gray-400 hover:text-gray-900" /></button>
+                </div>
+                <div className="flex-1 overflow-y-auto p-8 bg-gray-50 dark:bg-black/20">
+                   <p className="text-sm text-gray-500 font-medium mb-6">
+                      {swappingWidgetId 
+                          ? 'Select a new widget type to replace the selected one. Data connections will be preserved.' 
+                          : 'Click to add to your dashboard, or drag to the grid.'}
+                   </p>
+                   <div className="grid grid-cols-3 gap-6">
+                      {[
+                         { id: 'kpi-power', label: 'Total Power', icon: Zap, color: 'orange' },
+                         { id: 'logic', label: 'Logic Editor', icon: Workflow, color: 'purple' },
+                         { id: 'zone', label: 'Zone Control', icon: Snowflake, color: 'blue' },
+                         { id: 'synoptic', label: 'Synoptic View', icon: Monitor, color: 'blue' },
+                         { id: 'hvac', label: 'HVAC Symbol', icon: Fan, color: 'green' },
+                         { id: 'kpi', label: 'KPI Card', icon: Activity, color: 'blue' },
+                         { id: 'dpe', label: 'Energy Label', icon: Scale, color: 'green' },
+                         { id: 'gauge', label: 'Gauge Chart', icon: Gauge, color: 'purple' },
+                         { id: 'slider', label: 'Slider Control', icon: SlidersHorizontal, color: 'blue' },
+                         { id: 'schedule', label: 'Schedule', icon: Calendar, color: 'teal' },
+                         { id: 'databox', label: 'Databox', icon: List, color: 'indigo' },
+                         { id: 'alarm', label: 'Alarm Console', icon: Bell, color: 'red' },
+                         { id: 'weather', label: 'Weather', icon: CloudSun, color: 'blue' },
+                         { id: 'predictive', label: 'Predictive', icon: AlertTriangle, color: 'orange' },
+                         { id: 'chart', type: 'bar', label: 'Bar Graph', icon: BarChart3, color: 'indigo' },
+                         { id: 'chart', type: 'line', label: 'Line Chart', icon: LineIcon, color: 'pink' },
+                         { id: 'chart', type: 'area', label: 'Area Chart', icon: AreaChartIcon, color: 'orange' },
+                         { id: 'chart', type: 'pie', label: 'Pie Chart', icon: Circle, color: 'yellow' },
+                         { id: 'chart', type: 'donut', label: 'Donut Chart', icon: Disc, color: 'cyan' },
+                         { id: 'chart', type: 'radial', label: 'Radial Rings', icon: Target, color: 'red' },
+                         { id: 'chart', type: 'heatmap', label: 'Heatmap', icon: Grid3x3, color: 'red' },
+                         { id: 'floorplan', label: 'Floor Plan', icon: Map, color: 'teal' },
+                         { id: 'thermometer', label: 'Thermometer', icon: Thermometer, color: 'cyan' },
+                         { id: 'flow', label: 'Sankey Flow', icon: Workflow, color: 'teal' },
+                         { id: 'table', label: 'Data Table', icon: TableIcon, color: 'gray' },
+                         { id: 'ai', label: 'AI Assistant', icon: Sparkles, color: 'violet' },
+                      ].map((item: any) => (
+                         <div
+                            key={item.label + item.type}
+                            draggable={!swappingWidgetId} 
+                            onDragStart={(e) => {
+                                if (swappingWidgetId) return;
+                                const dragPayload = JSON.stringify({ type: 'new-widget', widgetType: item.id, chartType: item.type });
+                                if (e.dataTransfer) {
+                                    e.dataTransfer.setData("application/json", dragPayload);
+                                    e.dataTransfer.effectAllowed = "copy";
+                                }
+                            }}
+                            onClick={() => addWidget(item.id, item.type)}
+                            className={`group p-6 rounded-3xl bg-white dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 border border-gray-200 dark:border-white/5 hover:border-blue-500 dark:hover:border-blue-500 shadow-sm hover:shadow-xl transition-all text-left flex flex-col items-start relative overflow-hidden ${swappingWidgetId ? 'cursor-pointer' : 'cursor-grab active:cursor-grabbing'}`}
+                         >
+                            <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity text-blue-500">
+                                {swappingWidgetId ? <ArrowLeftRight size={20}/> : <Plus size={20}/>}
+                            </div>
+                            <div className={`w-14 h-14 rounded-2xl bg-${item.color}-100 dark:bg-${item.color}-900/30 text-${item.color}-600 dark:text-${item.color}-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-sm`}>
+                               <item.icon size={28} />
+                            </div>
+                            <span className="font-bold text-lg dark:text-white">{item.label}</span>
+                            <span className="text-xs text-gray-400 mt-1 font-medium uppercase tracking-wider">{item.type || 'Widget'}</span>
+                         </div>
+                      ))}
+                   </div>
+                </div>
+             </div>
+          </div>
+       )}
+       {isAddNodeModalOpen && ( <div className="fixed inset-0 z-[110] bg-black/50 backdrop-blur-sm flex items-center justify-center"> <div className="bg-white dark:bg-[#2c2c2e] p-6 rounded-2xl shadow-xl w-80 border border-gray-200 dark:border-white/10"> <h3 className="font-bold mb-4 dark:text-white">Add {nodeTypeToAdd}</h3> <input autoFocus value={newNodeLabel} onChange={e => setNewNodeLabel(e.target.value)} className="w-full p-2 bg-gray-100 dark:bg-white/10 rounded-lg outline-none mb-4 dark:text-white" placeholder="Name..." onKeyDown={e => e.key==='Enter' && handleAddNode()} /> <div className="flex justify-end gap-2"> <Button variant="ghost" size="sm" onClick={() => setIsAddNodeModalOpen(false)}>Cancel</Button> <Button onClick={handleAddNode} size="sm">Add</Button> </div> </div> </div> )}
+    </div>
+  );
+};
+
+export default App;
