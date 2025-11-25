@@ -1,4 +1,5 @@
 import { MCPHttpClient, MCPClientConfig } from './MCPClient';
+import { DriverNodeDetails } from './NodeDetails';
 
 export interface BACnetDriverConfig extends MCPClientConfig {
   deviceEndpoint?: string;
@@ -192,6 +193,112 @@ class BACnetDriver {
         console.error('BACnet subscriber failed:', error);
       }
     });
+  }
+
+  async getNodeDetails(nodeId: string): Promise<DriverNodeDetails | null> {
+    const parsed = this.parseNodeId(nodeId);
+    if (!parsed) return null;
+
+    const { deviceId, objectType, objectInstance, isEde } = parsed;
+    let device = this.devices.find((d) => d.deviceId === deviceId);
+
+    if (!device) {
+      await this.refreshDevices();
+      device = this.devices.find((d) => d.deviceId === deviceId);
+      if (!device) return null;
+    }
+
+    if (device.objects.length === 0 || (!isEde && !this.hasObject(device, objectType, objectInstance))) {
+      try {
+        await this.getObjectList(deviceId);
+      } catch (error) {
+        console.warn('Failed to refresh BACnet object list:', error);
+      }
+      device = this.devices.find((d) => d.deviceId === deviceId) ?? device;
+    }
+
+    const obj = this.findObject(device, objectType, objectInstance);
+
+    if (!obj) {
+      return {
+        driver: 'bacnet',
+        id: nodeId,
+        label: `${objectType} ${objectInstance}`,
+        device: { id: device.deviceId, label: device.name },
+        objectType,
+        properties: {
+          'Device ID': device.deviceId,
+          'Device Name': device.name,
+          'Status': 'Objet non disponible (rafraîchissement requis)',
+        },
+      };
+    }
+
+    return {
+      driver: 'bacnet',
+      id: nodeId,
+      label: obj.name || `${objectType} ${objectInstance}`,
+      objectType: obj.type,
+      presentValue: obj.presentValue,
+      units: obj.units,
+      status: Array.isArray(obj.statusFlags) ? obj.statusFlags.join(', ') : undefined,
+      device: { id: device.deviceId, label: device.name },
+      lastUpdated: new Date().toISOString(),
+      properties: {
+        'Device ID': device.deviceId,
+        'Device Name': device.name,
+        'Object Type': obj.type,
+        'Instance': objectInstance,
+        'Description': obj.description,
+        'Units': obj.units,
+        'Present Value': obj.presentValue,
+        'Status Flags': Array.isArray(obj.statusFlags) ? obj.statusFlags.join(', ') : undefined,
+        'Address': device.address,
+        'Vendor': device.vendor,
+        'Last Seen': device.lastSeen,
+      },
+    };
+  }
+
+  private parseNodeId(nodeId: string):
+    | { deviceId: number; objectType: string; objectInstance: number; isEde?: boolean }
+    | null {
+    if (nodeId.startsWith('bacnet_ede_')) {
+      const parts = nodeId.split('_');
+      if (parts.length < 5) return null;
+      return {
+        deviceId: parseInt(parts[2], 10),
+        objectType: parts[3],
+        objectInstance: parseInt(parts[4], 10),
+        isEde: true,
+      };
+    }
+
+    const parts = nodeId.split('_');
+    if (parts.length < 4) return null;
+    const deviceId = parseInt(parts[1], 10);
+    const [objType, objInstance] = [parts[2], parts.slice(3).join('_')];
+    const instance = parseInt(objInstance, 10);
+    if (Number.isNaN(deviceId) || Number.isNaN(instance)) return null;
+    return { deviceId, objectType: objType, objectInstance: instance };
+  }
+
+  private findObject(device: BACnetDevice, objectType: string, instance: number) {
+    const exactId = `${objectType}:${instance}`;
+    const altId = `${objectType}_${instance}`;
+    return (
+      device.objects.find(
+        (obj) =>
+          obj.id === exactId ||
+          obj.id === altId ||
+          (obj.type === objectType && String(obj.id).includes(String(instance)))
+      ) ||
+      device.objects.find((obj) => obj.type === objectType && obj.name?.includes(String(instance)))
+    );
+  }
+
+  private hasObject(device: BACnetDevice, objectType: string, instance: number) {
+    return Boolean(this.findObject(device, objectType, instance));
   }
 }
 

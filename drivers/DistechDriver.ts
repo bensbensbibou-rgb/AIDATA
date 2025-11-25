@@ -4,6 +4,7 @@ import {
   DistechEventNotification,
   DistechObject,
 } from './DistechTypes';
+import { DriverNodeDetails } from './NodeDetails';
 
 export interface DistechDriverConfig extends MCPClientConfig {
   ecyUrl?: string;
@@ -223,6 +224,84 @@ class DistechDriver {
       url: ecyUrl,
       username: ecyUser,
       password: ecyPassword,
+    };
+  }
+
+  async getNodeDetails(nodeId: string): Promise<DriverNodeDetails | null> {
+    const match = nodeId.match(/^distech_(\d+)_(\w+)_(\d+)/);
+    if (!match) {
+      return null;
+    }
+    const [, deviceIdStr, objectType, instanceStr] = match;
+    const deviceId = parseInt(deviceIdStr, 10);
+    const instance = parseInt(instanceStr, 10);
+
+    let device = this.devices.find((d) => d.deviceId === deviceId);
+    if (!device) {
+      await this.refreshDevices();
+      device = this.devices.find((d) => d.deviceId === deviceId);
+      if (!device) return null;
+    }
+
+    let obj = device.objects.find(
+      (o) =>
+        o.type?.toLowerCase() === objectType.toLowerCase() &&
+        Number(o.instance) === instance
+    );
+
+    if (!obj) {
+      try {
+        await this.loadObjects(deviceId, objectType, [instance]);
+        device = this.devices.find((d) => d.deviceId === deviceId) ?? device;
+        obj = device.objects.find(
+          (o) =>
+            o.type?.toLowerCase() === objectType.toLowerCase() &&
+            Number(o.instance) === instance
+        );
+      } catch (error) {
+        console.warn('Failed to load Distech object:', error);
+      }
+    }
+
+    if (!obj) {
+      return {
+        driver: 'distech',
+        id: nodeId,
+        label: `${objectType} ${instance}`,
+        device: { id: device.deviceId, label: device.name },
+        objectType,
+        properties: {
+          'Device ID': device.deviceId,
+          'Device Name': device.name,
+          'Status': 'Objet non disponible',
+        },
+      };
+    }
+
+    return {
+      driver: 'distech',
+      id: nodeId,
+      label: obj.objectName || `${objectType} ${instance}`,
+      objectType: obj.type,
+      presentValue: obj.presentValue,
+      units: obj.units,
+      status: obj.status,
+      lastUpdated: new Date().toISOString(),
+      device: { id: device.deviceId, label: device.name },
+      properties: {
+        'Device ID': device.deviceId,
+        'Device Name': device.name,
+        'Object Type': obj.type,
+        'Instance': obj.instance,
+        'Description': obj.description,
+        'Units': obj.units,
+        'Present Value': obj.presentValue,
+        'Priority': obj.priority,
+        'Status': obj.status,
+        'Is Local': device.isLocal ? 'Oui' : 'Non',
+        'IP': device.ipAddress,
+        'Dernier Heartbeat': device.lastHeartbeat,
+      },
     };
   }
 }

@@ -1,5 +1,6 @@
 import { MCPHttpClient, MCPClientConfig } from './MCPClient';
 import { MQTTBroker, MQTTMessage, MQTTTopic } from './MQTTTypes';
+import { DriverNodeDetails } from './NodeDetails';
 
 export interface MQTTDriverConfig extends MCPClientConfig {
   defaultHost?: string;
@@ -202,6 +203,44 @@ class MQTTDriver {
 
   private pushHistory(entry: MQTTMessage) {
     this.history = [...this.history, entry].slice(-200);
+  }
+
+  async getNodeDetails(nodeId: string): Promise<DriverNodeDetails | null> {
+    if (!nodeId.startsWith('mqtt_')) return null;
+    const parts = nodeId.split('_');
+    if (parts.length < 3) return null;
+    const brokerId = parts[1];
+    const topicSlug = parts.slice(2).join('_');
+
+    let broker = this.brokers.find((b) => b.id === brokerId);
+    if (!broker) {
+      await this.refreshBrokers();
+      broker = this.brokers.find((b) => b.id === brokerId);
+      if (!broker) return null;
+    }
+
+    const topic = broker.topics.find(
+      (t) => t.topic.replace(/\//g, '_') === topicSlug
+    );
+
+    return {
+      driver: 'mqtt',
+      id: nodeId,
+      label: topic?.topic || `Topic ${topicSlug}`,
+      objectType: 'mqttTopic',
+      presentValue: topic?.lastMessage,
+      units: '',
+      device: { id: broker.id, label: broker.name },
+      lastUpdated: topic?.lastUpdated,
+      properties: {
+        'Broker': broker.name,
+        'Adresse': `${broker.host}:${broker.port}`,
+        'Topic': topic?.topic,
+        'Dernier message': topic?.lastMessage,
+        'Dernière mise à jour': topic?.lastUpdated,
+        'Statut': broker.status,
+      },
+    };
   }
 }
 

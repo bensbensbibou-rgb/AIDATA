@@ -1,6 +1,6 @@
 
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   LayoutDashboard, Zap, Droplets, Thermometer, Wind, Activity, Settings, LogOut, Plus, Search,
   Menu, X, ChevronRight, ChevronDown, Folder, Radio, Server, Globe, Bot, Sparkles, Pencil, Check,
@@ -20,6 +20,11 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { Card, KpiCard, ChartToolbar, PeriodSelector, ChatBubble, ChatInput, Button, EditableInput, EnergyLabelWidget, GaugeWidget, FloorPlanWidget, PredictiveAlarmsWidget, SliderWidget, ScheduleWidget, DataboxWidget, AlarmConsoleWidget, WeatherWidget, HVACWidget, SynopticWidget, ZoneWidget, LogicWidget } from './components/Widgets';
 import { HeatmapChart, ThermometerChart, SimpleTable, FlowChart } from './components/Charts';
 import { NetworkManager } from './components/NetworkManager';
+import { ObjectDetailsPanel } from './components/ObjectDetailsPanel';
+import { DriverNodeDetails } from './drivers/NodeDetails';
+import { bacnetDriver } from './drivers/BACnetDriver';
+import { distechDriver } from './drivers/DistechDriver';
+import { mqttDriver } from './drivers/MQTTDriver';
 import {
   TRANSLATIONS, MOCK_CHART_DATA, INITIAL_SITE_TREE, INITIAL_DASHBOARDS, INITIAL_MODULES
 } from './constants';
@@ -67,10 +72,13 @@ const SiteTreeNode: React.FC<{
   onAddNode: (parentId: string, type: NodeType) => void;
   onDeleteNode: (id: string) => void;
   viewMode: 'site' | 'equipment';
-}> = ({ node, level, onAddNode, onDeleteNode, viewMode }) => {
+  selectedNodeId: string | null;
+  onSelectNode: (id: string) => void;
+}> = ({ node, level, onAddNode, onDeleteNode, viewMode, selectedNodeId, onSelectNode }) => {
   const [isOpen, setIsOpen] = useState(level < 2); 
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const isSelected = selectedNodeId === node.id;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -111,9 +119,14 @@ const SiteTreeNode: React.FC<{
   return (
     <div className="select-none relative">
       <div 
-        className={`group flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer ${node.type === 'variable' ? 'cursor-grab active:cursor-grabbing' : ''}`}
+        className={`group flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer ${
+          node.type === 'variable' ? 'cursor-grab active:cursor-grabbing' : ''
+        } ${isSelected ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
         style={{ paddingLeft: `${level * 12 + 8}px` }}
-        onClick={() => canHaveChildren && setIsOpen(!isOpen)}
+        onClick={() => {
+          onSelectNode(node.id);
+          if (canHaveChildren) setIsOpen(!isOpen);
+        }}
         draggable={node.type === 'variable'}
         onDragStart={handleDragStart}
       >
@@ -139,7 +152,18 @@ const SiteTreeNode: React.FC<{
       </div>
       {canHaveChildren && isOpen && node.children && (
         <div className="border-l border-gray-100 dark:border-white/5 ml-3 my-1">
-          {node.children.map(child => <SiteTreeNode key={child.id} node={child} level={level + 1} onAddNode={onAddNode} onDeleteNode={onDeleteNode} viewMode={viewMode} />)}
+          {node.children.map(child => (
+            <SiteTreeNode
+              key={child.id}
+              node={child}
+              level={level + 1}
+              onAddNode={onAddNode}
+              onDeleteNode={onDeleteNode}
+              viewMode={viewMode}
+              selectedNodeId={selectedNodeId}
+              onSelectNode={onSelectNode}
+            />
+          ))}
         </div>
       )}
     </div>
@@ -208,6 +232,49 @@ const App: React.FC = () => {
   const [modules, setModules] = useState<AppModule[]>(INITIAL_MODULES);
   const [dashboards, setDashboards] = useState<Record<string, DashboardWidget[]>>(INITIAL_DASHBOARDS);
   const [treeData, setTreeData] = useState<DataNode[]>(INITIAL_SITE_TREE);
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const selectedNode = useMemo(() => selectedNodeId ? findNodeById(treeData, selectedNodeId) : null, [selectedNodeId, treeData]);
+  const [detailsPanelOpen, setDetailsPanelOpen] = useState(true);
+  const [selectedDetails, setSelectedDetails] = useState<DriverNodeDetails | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    let timer: ReturnType<typeof setInterval> | null = null;
+
+    const fetchDetails = async () => {
+      if (!selectedNodeId) {
+        if (!cancelled) setSelectedDetails(null);
+        return;
+      }
+
+      let details: DriverNodeDetails | null = null;
+      try {
+        if (selectedNodeId.startsWith('bacnet')) {
+          details = await bacnetDriver.getNodeDetails(selectedNodeId);
+        } else if (selectedNodeId.startsWith('distech')) {
+          details = await distechDriver.getNodeDetails(selectedNodeId);
+        } else if (selectedNodeId.startsWith('mqtt')) {
+          details = await mqttDriver.getNodeDetails(selectedNodeId);
+        } else {
+          details = null;
+        }
+      } catch (error) {
+        console.error('Failed to load node details:', error);
+      }
+
+      if (!cancelled) {
+        setSelectedDetails(details);
+      }
+    };
+
+    fetchDetails();
+    timer = setInterval(fetchDetails, 5000);
+
+    return () => {
+      cancelled = true;
+      if (timer) clearInterval(timer);
+    };
+  }, [selectedNodeId]);
   const [viewMode, setViewMode] = useState<'site' | 'equipment'>('site');
   const [isAddNodeModalOpen, setIsAddNodeModalOpen] = useState(false);
   const [nodeParentId, setNodeParentId] = useState<string | null>(null);
@@ -838,7 +905,24 @@ const App: React.FC = () => {
              </div>
              {modules.map(m => renderSidebarItem(m))}
              <div className="flex justify-between items-center px-2 mb-2 mt-8"> <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">Site Structure</div> <div className="flex bg-gray-100 dark:bg-white/5 rounded-lg p-0.5"> <button onClick={() => setViewMode('site')} className={`p-1 rounded-md ${viewMode==='site'?'bg-white dark:bg-gray-600 shadow-sm':''}`}><Folder size={12}/></button> <button onClick={() => setViewMode('equipment')} className={`p-1 rounded-md ${viewMode==='equipment'?'bg-white dark:bg-gray-600 shadow-sm':''}`}><Box size={12}/></button> </div> </div>
-             <div className="space-y-0.5 pl-2"> {treeData.map(node => <SiteTreeNode key={node.id} node={node} level={0} onAddNode={(pid, type) => {setNodeParentId(pid); setNodeTypeToAdd(type); setIsAddNodeModalOpen(true);}} onDeleteNode={handleDeleteNode} viewMode={viewMode} />)} </div>
+             <div className="space-y-0.5 pl-2">
+               {treeData.map(node => (
+                 <SiteTreeNode
+                   key={node.id}
+                   node={node}
+                   level={0}
+                   onAddNode={(pid, type) => {
+                     setNodeParentId(pid);
+                     setNodeTypeToAdd(type);
+                     setIsAddNodeModalOpen(true);
+                   }}
+                   onDeleteNode={handleDeleteNode}
+                   viewMode={viewMode}
+                   selectedNodeId={selectedNodeId}
+                   onSelectNode={setSelectedNodeId}
+                 />
+               ))}
+             </div>
           </div>
           
           <div 
@@ -862,10 +946,18 @@ const App: React.FC = () => {
                <div className="flex bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl p-1 shadow-sm"> <button onClick={() => setDarkMode(false)} className={`p-2 rounded-lg transition-all ${!darkMode ? 'bg-gray-100 dark:bg-gray-700 text-yellow-500 shadow-inner' : 'text-gray-400 hover:text-gray-600'}`}><Sun size={18}/></button> <button onClick={() => setDarkMode(true)} className={`p-2 rounded-lg transition-all ${darkMode ? 'bg-gray-100 dark:bg-gray-700 text-blue-400 shadow-inner' : 'text-gray-400 hover:text-gray-600'}`}><Activity size={18}/></button> </div> <PeriodSelector current={period} onChange={setPeriod} /> <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg shadow-blue-500/20 border-2 border-white dark:border-white/10 cursor-pointer hover:scale-105 transition-transform flex items-center justify-center text-white font-bold text-sm" onClick={() => setIsAuthenticated(false)} title={t.logout}>JD</div> </div>
           </header>
 
-          <div className="flex-1 overflow-y-auto overflow-x-hidden p-8 scroll-smooth">
-             <div className="max-w-[1800px] mx-auto">
-                {renderContent()}
+          <div className="flex-1 flex overflow-hidden">
+             <div className="flex-1 overflow-y-auto overflow-x-hidden p-8 scroll-smooth">
+                <div className="max-w-[1800px] mx-auto">
+                   {renderContent()}
+                </div>
              </div>
+             <ObjectDetailsPanel
+               node={selectedNode}
+               open={detailsPanelOpen}
+               details={selectedDetails}
+               onToggle={() => setDetailsPanelOpen(prev => !prev)}
+             />
           </div>
           
           {undoStack.length > 0 && isEditing && (
@@ -880,7 +972,7 @@ const App: React.FC = () => {
               </div>
           )}
 
-          {isEditing && activeTab !== 'apps' && activeTab !== 'network' && ( <div className="fixed bottom-8 right-8 z-40 animate-in zoom-in duration-300"> <button onClick={() => setShowWidgetPalette(true)} className="w-16 h-16 bg-black dark:bg-white text-white dark:text-black rounded-full shadow-2xl shadow-blue-900/20 flex items-center justify-center hover:scale-110 transition-transform active:scale-95"> <Plus size={32} /> </button> </div> )}
+          {isEditing && activeTab !== 'apps' && activeTab !== 'network' && activeTab !== 'alarm_explorer' && ( <div className="fixed bottom-8 right-8 z-40 animate-in zoom-in duration-300"> <button onClick={() => setShowWidgetPalette(true)} className="w-16 h-16 bg-black dark:bg-white text-white dark:text-black rounded-full shadow-2xl shadow-blue-900/20 flex items-center justify-center hover:scale-110 transition-transform active:scale-95"> <Plus size={32} /> </button> </div> )}
        </main>
 
        {expandedWidget && ( <div className="fixed inset-0 z-[60] bg-white dark:bg-black flex flex-col animate-in fade-in duration-200"> <div className="flex justify-between items-center p-6 border-b border-gray-100 dark:border-white/10"> <h2 className="text-2xl font-bold">{expandedWidget.title}</h2> <button onClick={() => setExpandedWidgetId(null)} className="p-2 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full"><X size={24}/></button> </div> <div className="flex-1 p-8 bg-gray-50 dark:bg-black/50"> <Card title="" noPadding className="h-full shadow-none border-none bg-transparent" tools={{ onRefresh: () => {}, onExport: () => handleExport(expandedWidget) }}> {renderWidget(expandedWidget, true)} </Card> </div> </div> )}
