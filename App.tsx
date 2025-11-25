@@ -19,6 +19,7 @@ import {
 import { GoogleGenAI, Type } from "@google/genai";
 import { Card, KpiCard, ChartToolbar, PeriodSelector, ChatBubble, ChatInput, Button, EditableInput, EnergyLabelWidget, GaugeWidget, FloorPlanWidget, PredictiveAlarmsWidget, SliderWidget, ScheduleWidget, DataboxWidget, AlarmConsoleWidget, WeatherWidget, HVACWidget, SynopticWidget, ZoneWidget, LogicWidget } from './components/Widgets';
 import { HeatmapChart, ThermometerChart, SimpleTable, FlowChart } from './components/Charts';
+import { NetworkManager } from './components/NetworkManager';
 import {
   TRANSLATIONS, MOCK_CHART_DATA, INITIAL_SITE_TREE, INITIAL_DASHBOARDS, INITIAL_MODULES
 } from './constants';
@@ -694,6 +695,12 @@ const App: React.FC = () => {
   };
 
   const renderContent = () => {
+      if (activeTab === 'network') {
+          return (
+              <NetworkManager treeData={treeData} setTreeData={setTreeData} />
+          );
+      }
+
       if (activeTab === 'apps') {
           return (
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
@@ -810,7 +817,25 @@ const App: React.FC = () => {
         >
           <div className="p-6 flex items-center gap-3"><div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-600/20"><Zap size={20} fill="currentColor" /></div><div className="font-bold text-xl tracking-tight">EnergyPortal</div></div>
           <div className="flex-1 overflow-y-auto px-4 py-2 space-y-1 scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10">
-             <div className={`flex justify-between items-center px-2 mb-2 mt-4 rounded-lg transition-colors ${dragOverId === 'root' ? 'bg-blue-50 dark:bg-blue-900/20 ring-2 ring-blue-500' : ''}`} onDragOver={(e) => isEditing && handleModuleDragOver(e, 'root')} onDrop={(e) => isEditing && handleModuleDrop(e, 'root')}> <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">Menu</div> {isEditing && <button onClick={() => { setParentForNewTab(null); setIsTabCreatorOpen(true); }} className="text-blue-500 hover:bg-blue-50 dark:hover:bg-white/10 rounded p-1 transition-colors" title="Add Dashboard to Root"><Plus size={14}/></button> </div>
+             <div
+               className={`flex justify-between items-center px-2 mb-2 mt-4 rounded-lg transition-colors ${dragOverId === 'root' ? 'bg-blue-50 dark:bg-blue-900/20 ring-2 ring-blue-500' : ''}`}
+               onDragOver={(e) => isEditing && handleModuleDragOver(e, 'root')}
+               onDrop={(e) => isEditing && handleModuleDrop(e, 'root')}
+             >
+               <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">Menu</div>
+               {isEditing && (
+                 <button
+                   onClick={() => {
+                     setParentForNewTab(null);
+                     setIsTabCreatorOpen(true);
+                   }}
+                   className="text-blue-500 hover:bg-blue-50 dark:hover:bg-white/10 rounded p-1 transition-colors"
+                   title="Add Dashboard to Root"
+                 >
+                   <Plus size={14} />
+                 </button>
+               )}
+             </div>
              {modules.map(m => renderSidebarItem(m))}
              <div className="flex justify-between items-center px-2 mb-2 mt-8"> <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">Site Structure</div> <div className="flex bg-gray-100 dark:bg-white/5 rounded-lg p-0.5"> <button onClick={() => setViewMode('site')} className={`p-1 rounded-md ${viewMode==='site'?'bg-white dark:bg-gray-600 shadow-sm':''}`}><Folder size={12}/></button> <button onClick={() => setViewMode('equipment')} className={`p-1 rounded-md ${viewMode==='equipment'?'bg-white dark:bg-gray-600 shadow-sm':''}`}><Box size={12}/></button> </div> </div>
              <div className="space-y-0.5 pl-2"> {treeData.map(node => <SiteTreeNode key={node.id} node={node} level={0} onAddNode={(pid, type) => {setNodeParentId(pid); setNodeTypeToAdd(type); setIsAddNodeModalOpen(true);}} onDeleteNode={handleDeleteNode} viewMode={viewMode} />)} </div>
@@ -855,7 +880,7 @@ const App: React.FC = () => {
               </div>
           )}
 
-          {isEditing && activeTab !== 'apps' && ( <div className="fixed bottom-8 right-8 z-40 animate-in zoom-in duration-300"> <button onClick={() => setShowWidgetPalette(true)} className="w-16 h-16 bg-black dark:bg-white text-white dark:text-black rounded-full shadow-2xl shadow-blue-900/20 flex items-center justify-center hover:scale-110 transition-transform active:scale-95"> <Plus size={32} /> </button> </div> )}
+          {isEditing && activeTab !== 'apps' && activeTab !== 'network' && ( <div className="fixed bottom-8 right-8 z-40 animate-in zoom-in duration-300"> <button onClick={() => setShowWidgetPalette(true)} className="w-16 h-16 bg-black dark:bg-white text-white dark:text-black rounded-full shadow-2xl shadow-blue-900/20 flex items-center justify-center hover:scale-110 transition-transform active:scale-95"> <Plus size={32} /> </button> </div> )}
        </main>
 
        {expandedWidget && ( <div className="fixed inset-0 z-[60] bg-white dark:bg-black flex flex-col animate-in fade-in duration-200"> <div className="flex justify-between items-center p-6 border-b border-gray-100 dark:border-white/10"> <h2 className="text-2xl font-bold">{expandedWidget.title}</h2> <button onClick={() => setExpandedWidgetId(null)} className="p-2 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full"><X size={24}/></button> </div> <div className="flex-1 p-8 bg-gray-50 dark:bg-black/50"> <Card title="" noPadding className="h-full shadow-none border-none bg-transparent" tools={{ onRefresh: () => {}, onExport: () => handleExport(expandedWidget) }}> {renderWidget(expandedWidget, true)} </Card> </div> </div> )}

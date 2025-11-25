@@ -1,0 +1,791 @@
+﻿#Engineering-Data-Exchange;;;;;;;;;;;;
+PROJECT_NAME;"BDT";;;;;;;;;;;
+VERSION_OF_REFERENCEFILE;1;;;;;;;;;;;
+TIMESTAMP_OF_LAST_CHANGE;17.11.2025;;;;;;;;;;;
+AUTHOR_OF_LAST_CHANGE;;;;;;;;;;;;
+VERSION_OF_LAYOUT;2;;;;;;;;;;;
+#mandatory;mandatory;mandatory;mandatory;mandatory;optional;optional;optional;optional;optional;optional;optional;optional
+# keyname;device obj.-instance;object-name;object-type;object-instance;description;min-present-value;max-present-value;commandable;hi-limit;low-limit;state-text-reference;unit-code
+"Device(504)";504;"GTBQIDMCRC";8;504;;;;;;;;;;;;
+"Schedule(3004402)";504;"GTBQIDMCRC/Programming.Alarmes.alarme non urgente horaire";17;3004402;;;;N;;;;
+"Schedule(3001508)";504;"GTBQIDMCRC/Programming.poutre.antilegionellose-horaire";17;3001508;;;;N;;;;
+"Schedule(3001314)";504;"GTBQIDMCRC/Programming.Ventil.ventilateur-sanitaire-horaire";17;3001314;;;;N;;;;
+"Schedule(3001035)";504;"GTBQIDMCRC/Programming.Ventil.monobloc-P1-E1-horaire";17;3001035;;;;N;;;;
+"Trendlog(3010621)";504;"GTBQIDMCRC/MSTP1.FEC20.comptage-eau-du-lac mesure.Tendance1";20;3010621;;;;N;;;;
+"Trendlog(3010620)";504;"GTBQIDMCRC/MSTP1.TUC38.AV-37.Tendance1";20;3010620;;;;N;;;;
+"Trendlog(3010619)";504;"GTBQIDMCRC/MSTP1.TUC38.AV-44.Tendance1";20;3010619;;;;N;;;;
+"Trendlog(3010618)";504;"GTBQIDMCRC/MSTP1.TUC38.AI-4.Tendance1";20;3010618;;;;N;;;;
+"Trendlog(3010617)";504;"GTBQIDMCRC/MSTP1.TUC38.AV-3.Tendance1";20;3010617;;;;N;;;;
+"Trendlog(3010616)";504;"GTBQIDMCRC/MSTP1.FX36.AI-4.Tendance1";20;3010616;;;;N;;;;
+"Trendlog(3010615)";504;"GTBQIDMCRC/MSTP1.FX36.AV-37.Tendance1";20;3010615;;;;N;;;;
+"Trendlog(3010614)";504;"GTBQIDMCRC/MSTP1.FX36.AV-44.Tendance1";20;3010614;;;;N;;;;
+"Trendlog(3010613)";504;"GTBQIDMCRC/MSTP1.FX36.AV-3.Tendance1";20;3010613;;;;N;;;;
+"Trendlog(3010612)";504;"GTBQIDMCRC/MSTP1.TUC43.AI-4.Tendance1";20;3010612;;;;N;;;;
+"Trendlog(3010611)";504;"GTBQIDMCRC/MSTP1.TUC43.AV-37.Tendance1";20;3010611;;;;N;;;;
+"Trendlog(3010610)";504;"GTBQIDMCRC/MSTP1.TUC43.AV-44.Tendance1";20;3010610;;;;N;;;;
+"Trendlog(3010609)";504;"GTBQIDMCRC/MSTP1.TUC43.AV-3.Tendance1";20;3010609;;;;N;;;;
+"Trendlog(3010608)";504;"GTBQIDMCRC/MSTP1.TUC63.AI-4.Tendance1";20;3010608;;;;N;;;;
+"Trendlog(3010607)";504;"GTBQIDMCRC/MSTP1.TUC63.AV-37.Tendance1";20;3010607;;;;N;;;;
+"Trendlog(3010606)";504;"GTBQIDMCRC/MSTP1.TUC63.AV-44.Tendance1";20;3010606;;;;N;;;;
+"Trendlog(3010605)";504;"GTBQIDMCRC/MSTP1.TUC63.AV-3.Tendance1";20;3010605;;;;N;;;;
+"Trendlog(3010604)";504;"GTBQIDMCRC/MSTP1.TUC62.AI-4.Tendance1";20;3010604;;;;N;;;;
+"Trendlog(3010603)";504;"GTBQIDMCRC/MSTP1.TUC62.AV-37.Tendance1";20;3010603;;;;N;;;;
+"Trendlog(3010602)";504;"GTBQIDMCRC/MSTP1.TUC62.AV-44.Tendance1";20;3010602;;;;N;;;;
+"Trendlog(3010601)";504;"GTBQIDMCRC/MSTP1.TUC62.AV-3.Tendance1";20;3010601;;;;N;;;;
+"Trendlog(3010600)";504;"GTBQIDMCRC/MSTP1.TUC61.AI-4.Tendance1";20;3010600;;;;N;;;;
+"Trendlog(3010599)";504;"GTBQIDMCRC/MSTP1.TUC61.AV-37.Tendance1";20;3010599;;;;N;;;;
+"Trendlog(3010598)";504;"GTBQIDMCRC/MSTP1.TUC61.AV-44.Tendance1";20;3010598;;;;N;;;;
+"Trendlog(3010597)";504;"GTBQIDMCRC/MSTP1.TUC61.AV-3.Tendance1";20;3010597;;;;N;;;;
+"Trendlog(3010596)";504;"GTBQIDMCRC/MSTP1.TUC60.AI-4.Tendance1";20;3010596;;;;N;;;;
+"Trendlog(3010595)";504;"GTBQIDMCRC/MSTP1.TUC60.AV-37.Tendance1";20;3010595;;;;N;;;;
+"Trendlog(3010594)";504;"GTBQIDMCRC/MSTP1.TUC60.AV-44.Tendance1";20;3010594;;;;N;;;;
+"Trendlog(3010593)";504;"GTBQIDMCRC/MSTP1.TUC60.AV-3.Tendance1";20;3010593;;;;N;;;;
+"Trendlog(3010592)";504;"GTBQIDMCRC/MSTP1.FX59.AV-37.Tendance1";20;3010592;;;;N;;;;
+"Trendlog(3010591)";504;"GTBQIDMCRC/MSTP1.FX59.AV-44.Tendance1";20;3010591;;;;N;;;;
+"Trendlog(3010590)";504;"GTBQIDMCRC/MSTP1.FX59.AV-3.Tendance1";20;3010590;;;;N;;;;
+"Trendlog(3010589)";504;"GTBQIDMCRC/MSTP1.FX58.AV-37.Tendance1";20;3010589;;;;N;;;;
+"Trendlog(3010588)";504;"GTBQIDMCRC/MSTP1.FX58.AV-44.Tendance1";20;3010588;;;;N;;;;
+"Trendlog(3010587)";504;"GTBQIDMCRC/MSTP1.FX58.AV-3.Tendance1";20;3010587;;;;N;;;;
+"Trendlog(3010586)";504;"GTBQIDMCRC/MSTP1.FX57.AV-37.Tendance1";20;3010586;;;;N;;;;
+"Trendlog(3010585)";504;"GTBQIDMCRC/MSTP1.FX57.AV-44.Tendance1";20;3010585;;;;N;;;;
+"Trendlog(3010584)";504;"GTBQIDMCRC/MSTP1.FX57.AV-3.Tendance1";20;3010584;;;;N;;;;
+"Trendlog(3010583)";504;"GTBQIDMCRC/MSTP1.FX56.AV-37.Tendance1";20;3010583;;;;N;;;;
+"Trendlog(3010582)";504;"GTBQIDMCRC/MSTP1.FX56.AV-44.Tendance1";20;3010582;;;;N;;;;
+"Trendlog(3010581)";504;"GTBQIDMCRC/MSTP1.FX56.AV-3.Tendance1";20;3010581;;;;N;;;;
+"Trendlog(3010580)";504;"GTBQIDMCRC/MSTP1.FX55.AV-37.Tendance1";20;3010580;;;;N;;;;
+"Trendlog(3010579)";504;"GTBQIDMCRC/MSTP1.FX55.AV-44.Tendance1";20;3010579;;;;N;;;;
+"Trendlog(3010578)";504;"GTBQIDMCRC/MSTP1.FX55.AV-3.Tendance1";20;3010578;;;;N;;;;
+"Trendlog(3010577)";504;"GTBQIDMCRC/MSTP1.FX54.AV-37.Tendance1";20;3010577;;;;N;;;;
+"Trendlog(3010576)";504;"GTBQIDMCRC/MSTP1.FX54.AV-44.Tendance1";20;3010576;;;;N;;;;
+"Trendlog(3010575)";504;"GTBQIDMCRC/MSTP1.FX54.AV-3.Tendance1";20;3010575;;;;N;;;;
+"Trendlog(3010574)";504;"GTBQIDMCRC/MSTP1.FX52.AV-37.Tendance1";20;3010574;;;;N;;;;
+"Trendlog(3010573)";504;"GTBQIDMCRC/MSTP1.FX52.AV-44.Tendance1";20;3010573;;;;N;;;;
+"Trendlog(3010572)";504;"GTBQIDMCRC/MSTP1.FX52.AV-3.Tendance1";20;3010572;;;;N;;;;
+"Trendlog(3010571)";504;"GTBQIDMCRC/MSTP1.FX51.AV-37.Tendance1";20;3010571;;;;N;;;;
+"Trendlog(3010570)";504;"GTBQIDMCRC/MSTP1.FX51.AV-44.Tendance1";20;3010570;;;;N;;;;
+"Trendlog(3010569)";504;"GTBQIDMCRC/MSTP1.FX51.AV-3.Tendance1";20;3010569;;;;N;;;;
+"Trendlog(3010568)";504;"GTBQIDMCRC/MSTP1.FX50.AV-37.Tendance1";20;3010568;;;;N;;;;
+"Trendlog(3010567)";504;"GTBQIDMCRC/MSTP1.FX50.AV-44.Tendance1";20;3010567;;;;N;;;;
+"Trendlog(3010566)";504;"GTBQIDMCRC/MSTP1.FX50.AV-3.Tendance1";20;3010566;;;;N;;;;
+"Trendlog(3010565)";504;"GTBQIDMCRC/MSTP1.FX49.AV-37.Tendance1";20;3010565;;;;N;;;;
+"Trendlog(3010564)";504;"GTBQIDMCRC/MSTP1.FX49.AV-44.Tendance1";20;3010564;;;;N;;;;
+"Trendlog(3010563)";504;"GTBQIDMCRC/MSTP1.FX49.AV-3.Tendance1";20;3010563;;;;N;;;;
+"Trendlog(3010562)";504;"GTBQIDMCRC/MSTP1.FX47.AV-37.Tendance1";20;3010562;;;;N;;;;
+"Trendlog(3010561)";504;"GTBQIDMCRC/MSTP1.FX47.AV-44.Tendance1";20;3010561;;;;N;;;;
+"Trendlog(3010560)";504;"GTBQIDMCRC/MSTP1.FX47.AV-3.Tendance1";20;3010560;;;;N;;;;
+"Trendlog(3010559)";504;"GTBQIDMCRC/MSTP1.FX46.AV-37.Tendance1";20;3010559;;;;N;;;;
+"Trendlog(3010558)";504;"GTBQIDMCRC/MSTP1.FX46.AV-44.Tendance1";20;3010558;;;;N;;;;
+"Trendlog(3010557)";504;"GTBQIDMCRC/MSTP1.FX46.AV-3.Tendance1";20;3010557;;;;N;;;;
+"Trendlog(3010556)";504;"GTBQIDMCRC/MSTP1.FX45.AV-37.Tendance1";20;3010556;;;;N;;;;
+"Trendlog(3010555)";504;"GTBQIDMCRC/MSTP1.FX45.AV-44.Tendance1";20;3010555;;;;N;;;;
+"Trendlog(3010554)";504;"GTBQIDMCRC/MSTP1.FX45.AV-3.Tendance1";20;3010554;;;;N;;;;
+"Trendlog(3010553)";504;"GTBQIDMCRC/MSTP1.FX44.AV-37.Tendance1";20;3010553;;;;N;;;;
+"Trendlog(3010552)";504;"GTBQIDMCRC/MSTP1.FX44.AV-44.Tendance1";20;3010552;;;;N;;;;
+"Trendlog(3010551)";504;"GTBQIDMCRC/MSTP1.FX44.AV-3.Tendance1";20;3010551;;;;N;;;;
+"Trendlog(3010550)";504;"GTBQIDMCRC/MSTP1.FX42.AV-37.Tendance1";20;3010550;;;;N;;;;
+"Trendlog(3010549)";504;"GTBQIDMCRC/MSTP1.FX42.AV-44.Tendance1";20;3010549;;;;N;;;;
+"Trendlog(3010548)";504;"GTBQIDMCRC/MSTP1.FX42.AV-3.Tendance1";20;3010548;;;;N;;;;
+"Trendlog(3010547)";504;"GTBQIDMCRC/MSTP1.FX41.AV-37.Tendance1";20;3010547;;;;N;;;;
+"Trendlog(3010546)";504;"GTBQIDMCRC/MSTP1.FX41.AV-44.Tendance1";20;3010546;;;;N;;;;
+"Trendlog(3010545)";504;"GTBQIDMCRC/MSTP1.FX41.AV-3.Tendance1";20;3010545;;;;N;;;;
+"Trendlog(3010544)";504;"GTBQIDMCRC/MSTP1.FX40.AV-37.Tendance1";20;3010544;;;;N;;;;
+"Trendlog(3010543)";504;"GTBQIDMCRC/MSTP1.FX40.AV-44.Tendance1";20;3010543;;;;N;;;;
+"Trendlog(3010542)";504;"GTBQIDMCRC/MSTP1.FX40.AV-3.Tendance1";20;3010542;;;;N;;;;
+"Trendlog(3010541)";504;"GTBQIDMCRC/MSTP1.FX39.AV-37.Tendance1";20;3010541;;;;N;;;;
+"Trendlog(3010540)";504;"GTBQIDMCRC/MSTP1.FX39.AV-44.Tendance1";20;3010540;;;;N;;;;
+"Trendlog(3010539)";504;"GTBQIDMCRC/MSTP1.FX39.AV-3.Tendance1";20;3010539;;;;N;;;;
+"Trendlog(3010538)";504;"GTBQIDMCRC/MSTP1.FX35.AV-37.Tendance1";20;3010538;;;;N;;;;
+"Trendlog(3010537)";504;"GTBQIDMCRC/MSTP1.FX35.AV-44.Tendance1";20;3010537;;;;N;;;;
+"Trendlog(3010536)";504;"GTBQIDMCRC/MSTP1.FX35.AV-3.Tendance1";20;3010536;;;;N;;;;
+"Trendlog(3010535)";504;"GTBQIDMCRC/MSTP1.FX34.AV-37.Tendance1";20;3010535;;;;N;;;;
+"Trendlog(3010534)";504;"GTBQIDMCRC/MSTP1.FX34.AV-44.Tendance1";20;3010534;;;;N;;;;
+"Trendlog(3010533)";504;"GTBQIDMCRC/MSTP1.FX34.AV-3.Tendance1";20;3010533;;;;N;;;;
+"Trendlog(3010532)";504;"GTBQIDMCRC/MSTP1.FX33.AV-37.Tendance1";20;3010532;;;;N;;;;
+"Trendlog(3010531)";504;"GTBQIDMCRC/MSTP1.FX33.AV-44.Tendance1";20;3010531;;;;N;;;;
+"Trendlog(3010530)";504;"GTBQIDMCRC/MSTP1.FX33.AV-3.Tendance1";20;3010530;;;;N;;;;
+"Trendlog(3010529)";504;"GTBQIDMCRC/MSTP1.FX32.AV-37.Tendance1";20;3010529;;;;N;;;;
+"Trendlog(3010528)";504;"GTBQIDMCRC/MSTP1.FX32.AV-44.Tendance1";20;3010528;;;;N;;;;
+"Trendlog(3010527)";504;"GTBQIDMCRC/MSTP1.FX32.AV-3.Tendance1";20;3010527;;;;N;;;;
+"Trendlog(3010526)";504;"GTBQIDMCRC/MSTP1.FX31.AV-37.Tendance1";20;3010526;;;;N;;;;
+"Trendlog(3010525)";504;"GTBQIDMCRC/MSTP1.FX31.AV-44.Tendance1";20;3010525;;;;N;;;;
+"Trendlog(3010524)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-retour-chaud-poutres ouve.Tendance1";20;3010524;;;;N;;;;
+"Trendlog(3010523)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-aller-chaud-poutres ouver.Tendance1";20;3010523;;;;N;;;;
+"Trendlog(3010522)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-aller-froid-poutres ouver.Tendance1";20;3010522;;;;N;;;;
+"Trendlog(3010521)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-retour-froid-poutres ouve.Tendance1";20;3010521;;;;N;;;;
+"Trendlog(3010520)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-poutres pourcentage-ouver.Tendance1";20;3010520;;;;N;;;;
+"Trendlog(3010519)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe-poutres commande.Tendance1";20;3010519;;;;N;;;;
+"Trendlog(3010518)";504;"GTBQIDMCRC/MSTP1.FEC20.temperature-depart-poutres mesu.Tendance1";20;3010518;;;;N;;;;
+"Trendlog(3010517)";504;"GTBQIDMCRC/MSTP1.FEC20.regulation-energie-poutres cons.Tendance1";20;3010517;;;;N;;;;
+"Trendlog(3010516)";504;"GTBQIDMCRC/MSTP1.FEC20.demande-ete-hiver commande.Tendance1";20;3010516;;;;N;;;;
+"Trendlog(3010515)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-retour-chaud-collecteur o.Tendance1";20;3010515;;;;N;;;;
+"Trendlog(3010514)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-aller-chaud-collecteur ou.Tendance1";20;3010514;;;;N;;;;
+"Trendlog(3010513)";504;"GTBQIDMCRC/MSTP1.FEC20.temperature-sortie-collecteur m.Tendance1";20;3010513;;;;N;;;;
+"Trendlog(3010512)";504;"GTBQIDMCRC/MSTP1.FEC20.temperature-entree-collecteur m.Tendance1";20;3010512;;;;N;;;;
+"Trendlog(3010511)";504;"GTBQIDMCRC/MSTP1.FEC20.energie-chaud-demandee commande.Tendance1";20;3010511;;;;N;;;;
+"Trendlog(3010510)";504;"GTBQIDMCRC/MSTP1.FEC20.temperature-retour-collecteur-f.Tendance1";20;3010510;;;;N;;;;
+"Trendlog(3010509)";504;"GTBQIDMCRC/MSTP1.FEC20.temperature-alarme-froid consig.Tendance1";20;3010509;;;;N;;;;
+"Trendlog(3010508)";504;"GTBQIDMCRC/MSTP1.FEC20.regulation-energie-froid consig.Tendance1";20;3010508;;;;N;;;;
+"Trendlog(3010507)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe-collecteur-froid commande.Tendance1";20;3010507;;;;N;;;;
+"Trendlog(3010506)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisee1 mesure.Tendance1";20;3010506;;;;N;;;;
+"Trendlog(3010505)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisen1 mesure.Tendance1";20;3010505;;;;N;;;;
+"Trendlog(3010504)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-repriseo0 mesure.Tendance1";20;3010504;;;;N;;;;
+"Trendlog(3010503)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprises0 mesure.Tendance1";20;3010503;;;;N;;;;
+"Trendlog(3010502)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisee0 mesure.Tendance1";20;3010502;;;;N;;;;
+"Trendlog(3010501)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisen0 mesure.Tendance1";20;3010501;;;;N;;;;
+"Trendlog(3010500)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-repriseo4 mesure.Tendance1";20;3010500;;;;N;;;;
+"Trendlog(3010499)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprises4 mesure.Tendance1";20;3010499;;;;N;;;;
+"Trendlog(3010498)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisee4 mesure.Tendance1";20;3010498;;;;N;;;;
+"Trendlog(3010497)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisen4 mesure.Tendance1";20;3010497;;;;N;;;;
+"Trendlog(3010496)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-repriseo3 mesure.Tendance1";20;3010496;;;;N;;;;
+"Trendlog(3010495)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprises3 mesure.Tendance1";20;3010495;;;;N;;;;
+"Trendlog(3010494)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisee3 mesure.Tendance1";20;3010494;;;;N;;;;
+"Trendlog(3010493)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisen3 mesure.Tendance1";20;3010493;;;;N;;;;
+"Trendlog(3010492)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-repriseo2 mesure.Tendance1";20;3010492;;;;N;;;;
+"Trendlog(3010491)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprises2 mesure.Tendance1";20;3010491;;;;N;;;;
+"Trendlog(3010490)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisee2 mesure.Tendance1";20;3010490;;;;N;;;;
+"Trendlog(3010489)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisen2 mesure.Tendance1";20;3010489;;;;N;;;;
+"Trendlog(3010488)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-repriseo1 mesure.Tendance1";20;3010488;;;;N;;;;
+"Trendlog(3010487)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprises1 mesure.Tendance1";20;3010487;;;;N;;;;
+"Trendlog(3010486)";504;"GTBQIDMCRC/MSTP1.FEC10.temperature-reprise mesure.Tendance1";20;3010486;;;;N;;;;
+"Trendlog(3010485)";504;"GTBQIDMCRC/MSTP1.FEC10.temperature-air-frais mesure.Tendance1";20;3010485;;;;N;;;;
+"Trendlog(3010484)";504;"GTBQIDMCRC/MSTP1.FEC10.temperature-air-evacue mesure.Tendance1";20;3010484;;;;N;;;;
+"Trendlog(3010483)";504;"GTBQIDMCRC/MSTP1.FEC10.temperature-air-apres-chaud mes.Tendance1";20;3010483;;;;N;;;;
+"Trendlog(3010482)";504;"GTBQIDMCRC/MSTP1.FEC10.pression-pulsion mesure.Tendance1";20;3010482;;;;N;;;;
+"Trendlog(3010481)";504;"GTBQIDMCRC/MSTP1.FEC10.pression-extraction mesure.Tendance1";20;3010481;;;;N;;;;
+"Trendlog(3010480)";504;"GTBQIDMCRC/MSTP1.FEC10.demande-ete-hiver commande.Tendance1";20;3010480;;;;N;;;;
+"Trendlog(3010479)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-extraction marche.Tendance2";20;3010479;;;;N;;;;
+"Trendlog(3010478)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-pulsion marche.Tendance1";20;3010478;;;;N;;;;
+"Trendlog(3010477)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-pulsion 0-10v.Tendance1";20;3010477;;;;N;;;;
+"Trendlog(3010476)";504;"GTBQIDMCRC/MSTP1.FEC10.regulation-pulsion consigne-pre.Tendance1";20;3010476;;;;N;;;;
+"Trendlog(3010474)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-extraction commande.Tendance1";20;3010474;;;;N;;;;
+"Trendlog(3010473)";504;"GTBQIDMCRC/MSTP1.FEC10.regulation-extraction consigne-.Tendance1";20;3010473;;;;N;;;;
+"Trendlog(3010472)";504;"GTBQIDMCRC/MSTP1.FEC10.vanne-chaud pourcentage-ouvertu.Tendance2";20;3010472;;;;N;;;;
+"Trendlog(3010471)";504;"GTBQIDMCRC/MSTP1.FEC10.temperature-aller-recup mesure.Tendance2";20;3010471;;;;N;;;;
+"Trendlog(3010470)";504;"GTBQIDMCRC/MSTP1.FEC10.circulateur-recuperation 0-10v.Tendance2";20;3010470;;;;N;;;;
+"Trendlog(3010469)";504;"GTBQIDMCRC/MSTP1.FEC10.regulation-energie consigne-tem.Tendance2";20;3010469;;;;N;;;;
+"Trendlog(3010462)";504;"GTBQIDMCRC/MSTP1.FX31.AV-3.Tendance1";20;3010462;;;;N;;;;
+"Trendlog(3010265)";504;"GTBQIDMCRC/MSTP1.FX54.BI1.Tendance1";20;3010265;;;;N;;;;
+"Trendlog(3010264)";504;"GTBQIDMCRC/MSTP1.FX54.BI-1.Tendance1";20;3010264;;;;N;;;;
+"Trendlog(3010263)";504;"GTBQIDMCRC/MSTP1.FX55.BI-1.Tendance1";20;3010263;;;;N;;;;
+"Trendlog(3010262)";504;"GTBQIDMCRC/MSTP1.FX56.BI-1.Tendance1";20;3010262;;;;N;;;;
+"Trendlog(3010261)";504;"GTBQIDMCRC/MSTP1.FX59.BI-1.Tendance1";20;3010261;;;;N;;;;
+"Trendlog(3010260)";504;"GTBQIDMCRC/MSTP1.FX57.BI-1.Tendance1";20;3010260;;;;N;;;;
+"Trendlog(3010259)";504;"GTBQIDMCRC/MSTP1.FX58.BI-1.Tendance1";20;3010259;;;;N;;;;
+"Trendlog(3009912)";504;"GTBQIDMCRC/Tronc N2.XTM-203.debit froid batD mesure.Tendance1";20;3009912;;;;N;;;;
+"Trendlog(3009911)";504;"GTBQIDMCRC/Tronc N2.XTM-203.debit poutres mesure.Tendance1";20;3009911;;;;N;;;;
+"Trendlog(3009910)";504;"GTBQIDMCRC/Tronc N2.XTM-200.puissance froid batD mesure.Tendance1";20;3009910;;;;N;;;;
+"Trendlog(3009909)";504;"GTBQIDMCRC/Tronc N2.XTM-200.puissance poutres mesure.Tendance1";20;3009909;;;;N;;;;
+"Trendlog(3009410)";504;"GTBQIDMCRC/Event Rate Trend Log";20;3009410;;;;N;;;;
+"Trendlog(3007807)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-primaire-froid pourcentag.Tendance1";20;3007807;;;;N;;;;
+"Trendlog(3007806)";504;"GTBQIDMCRC/MSTP1.FEC20.temperature-depart-collecteur-f.Tendance1";20;3007806;;;;N;;;;
+"Trendlog(3007751)";504;"GTBQIDMCRC/MSTP1.FEC10.vanne-froid pourcentage-ouvertu.Tendance1";20;3007751;;;;N;;;;
+"Trendlog(3007750)";504;"GTBQIDMCRC/MSTP1.FEC10.temperature-pulsion mesure.Tendance1";20;3007750;;;;N;;;;
+"Trendlog(3004949)";504;"GTBQIDMCRC/MSTP1.FX59.AI-4.Tendance1";20;3004949;;;;N;;;;
+"Trendlog(3004948)";504;"GTBQIDMCRC/MSTP1.FX58.AI-4.Tendance1";20;3004948;;;;N;;;;
+"Trendlog(3004947)";504;"GTBQIDMCRC/MSTP1.FX57.AI-4.Tendance1";20;3004947;;;;N;;;;
+"Trendlog(3004946)";504;"GTBQIDMCRC/MSTP1.FX56.AI-4.Tendance1";20;3004946;;;;N;;;;
+"Trendlog(3004945)";504;"GTBQIDMCRC/MSTP1.FX55.AI-4.Tendance1";20;3004945;;;;N;;;;
+"Trendlog(3004944)";504;"GTBQIDMCRC/MSTP1.FX54.AI-4.Tendance1";20;3004944;;;;N;;;;
+"Trendlog(3004943)";504;"GTBQIDMCRC/MSTP1.FX52.AI-4.Tendance1";20;3004943;;;;N;;;;
+"Trendlog(3004942)";504;"GTBQIDMCRC/MSTP1.FX51.AI-4.Tendance1";20;3004942;;;;N;;;;
+"Trendlog(3004941)";504;"GTBQIDMCRC/MSTP1.FX50.AI-4.Tendance1";20;3004941;;;;N;;;;
+"Trendlog(3004940)";504;"GTBQIDMCRC/MSTP1.FX49.AI-4.Tendance1";20;3004940;;;;N;;;;
+"Trendlog(3004939)";504;"GTBQIDMCRC/MSTP1.FX47.AI-4.Tendance1";20;3004939;;;;N;;;;
+"Trendlog(3004938)";504;"GTBQIDMCRC/MSTP1.FX46.AI-4.Tendance1";20;3004938;;;;N;;;;
+"Trendlog(3004937)";504;"GTBQIDMCRC/MSTP1.FX45.AI-4.Tendance1";20;3004937;;;;N;;;;
+"Trendlog(3004936)";504;"GTBQIDMCRC/MSTP1.FX44.AI-4.Tendance1";20;3004936;;;;N;;;;
+"Trendlog(3004935)";504;"GTBQIDMCRC/MSTP1.FX42.AI-4.Tendance1";20;3004935;;;;N;;;;
+"Trendlog(3004934)";504;"GTBQIDMCRC/MSTP1.FX41.AI-4.Tendance1";20;3004934;;;;N;;;;
+"Trendlog(3004933)";504;"GTBQIDMCRC/MSTP1.FX40.AI-4.Tendance1";20;3004933;;;;N;;;;
+"Trendlog(3004932)";504;"GTBQIDMCRC/MSTP1.FX39.AI-4.Tendance1";20;3004932;;;;N;;;;
+"Trendlog(3004931)";504;"GTBQIDMCRC/MSTP1.FX35.AI-4.Tendance1";20;3004931;;;;N;;;;
+"Trendlog(3004930)";504;"GTBQIDMCRC/MSTP1.FX34.AI-4.Tendance1";20;3004930;;;;N;;;;
+"Trendlog(3004929)";504;"GTBQIDMCRC/MSTP1.FX33.AI-4.Tendance1";20;3004929;;;;N;;;;
+"Trendlog(3004928)";504;"GTBQIDMCRC/MSTP1.FX32.AI-4.Tendance1";20;3004928;;;;N;;;;
+"Trendlog(3004927)";504;"GTBQIDMCRC/MSTP1.FX31.AI-4.Tendance1";20;3004927;;;;N;;;;
+"Trendlog(3000006)";504;"GTBQIDMCRC/Memory Usage Trend Log";20;3000006;;;;N;;;;
+"MultistateValue(3008358)";504;"GTBQIDMCRC/MSTP1.FEC20.forcage-mode-poutres commande";19;3008358;"0=Auto , 1=Chaud , 2=Froid";;;Y;;;1;
+"MultistateValue(3008152)";504;"GTBQIDMCRC/MSTP1.FEC20.forcage-mode-poutres demande";19;3008152;"0=Auto , 1=Chaud , 2=Froid";;;N;;;1;
+"MultistateValue(3007820)";504;"GTBQIDMCRC/MSTP1.FEC20.temporisation-commutation etat";19;3007820;;;;N;;;2;
+"MultistateValue(3007767)";504;"GTBQIDMCRC/MSTP1.FEC20.demande-chaud-batiment-d etat";19;3007767;;;;N;;;2;
+"MultistateValue(3007766)";504;"GTBQIDMCRC/MSTP1.FEC20.demande-ete-hiver commande";19;3007766;"demande-ete-hiver.commande";;;Y;;;3;
+"MultistateValue(3007765)";504;"GTBQIDMCRC/MSTP1.FEC10.demande-ete-hiver commande";19;3007765;"demande-ete-hiver.commande";;;Y;;;3;
+"MultistateValue(3007564)";504;"GTBQIDMCRC/MSTP1.FEC20.temperature-haute-froid defaut-";19;3007564;;;;N;;;4;
+"MultistateValue(3007545)";504;"GTBQIDMCRC/MSTP1.FEC20.niveau-bas-temperature-poutres-";19;3007545;;;;N;;;4;
+"MultistateValue(3004468)";504;"GTBQIDMCRC/Programming.Ventil.monobloc-marche";19;3004468;;;;Y;;;5;
+"MultistateValue(3004401)";504;"GTBQIDMCRC/Programming.Alarmes.alarme non urgente etat";19;3004401;;;;Y;;;2;
+"MultistateValue(3001560)";504;"GTBQIDMCRC/MSTP1.FEC20.chauffage-electrique-sanit defa";19;3001560;;;;N;;;4;
+"MultistateValue(3001145)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-retour-chaud-poutres defa";19;3001145;;;;N;;;6;
+"MultistateValue(3001144)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-aller-chaud-poutres defau";19;3001144;;;;N;;;6;
+"MultistateValue(3001143)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-aller-froid-poutres defau";19;3001143;;;;N;;;6;
+"MultistateValue(3001142)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-retour-chaud-collecteur d";19;3001142;;;;N;;;6;
+"MultistateValue(3001141)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-aller-chaud-collecteur de";19;3001141;;;;N;;;6;
+"MultistateValue(3001140)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-retour-froid-poutres defa";19;3001140;;;;N;;;6;
+"MultistateValue(3001139)";504;"GTBQIDMCRC/MSTP1.FEC20.demande-pcc-chauffage commande";19;3001139;;;;Y;;;7;
+"MultistateValue(3001138)";504;"GTBQIDMCRC/MSTP1.FEC20.demande-horaire-chauffage comma";19;3001138;;;;Y;;;7;
+"MultistateValue(3001137)";504;"GTBQIDMCRC/MSTP1.FEC20.energie-chaud-demandee commande";19;3001137;;;;Y;;;8;
+"MultistateValue(3001136)";504;"GTBQIDMCRC/MSTP1.FEC20.antilegionellose-horaire comman";19;3001136;;;;Y;;;9;
+"MultistateValue(3001132)";504;"GTBQIDMCRC/MSTP1.FEC20.demande-horaire-pompe-sanitaire";19;3001132;;;;Y;;;9;
+"MultistateValue(3001131)";504;"GTBQIDMCRC/MSTP1.FEC20.pression-statique-maintenu defa";19;3001131;;;;N;;;4;
+"MultistateValue(3000256)";504;"GTBQIDMCRC/MSTP1.FEC20.quittance commande";19;3000256;;;;Y;;;9;
+"MultistateValue(3000254)";504;"GTBQIDMCRC/MSTP1.FEC20.demande-horaire-froid commande";19;3000254;;;;Y;;;7;
+"MultistateValue(3000252)";504;"GTBQIDMCRC/MSTP1.FEC20.demande-pcc-froid commande";19;3000252;;;;Y;;;7;
+"MultistateValue(3000251)";504;"GTBQIDMCRC/MSTP1.FEC20.energie-froid-demandee commande";19;3000251;;;;Y;;;9;
+"MultistateValue(3000148)";504;"GTBQIDMCRC/MSTP1.FEC10.quittance commande";19;3000148;;;;Y;;;9;
+"MultistateValue(3000147)";504;"GTBQIDMCRC/MSTP1.FEC10.debit-pulsion defaut-general";19;3000147;;;;N;;;6;
+"MultistateValue(3000146)";504;"GTBQIDMCRC/MSTP1.FEC10.debit-extraction defaut-general";19;3000146;;;;N;;;6;
+"MultistateValue(3000145)";504;"GTBQIDMCRC/MSTP1.FEC10.demande-horaire commande";19;3000145;;;;Y;;;7;
+"MultistateValue(3000144)";504;"GTBQIDMCRC/MSTP1.FEC10.pression-extraction defaut-gene";19;3000144;;;;N;;;6;
+"MultistateValue(3000143)";504;"GTBQIDMCRC/MSTP1.FEC10.demande-pcc commande";19;3000143;;;;Y;;;7;
+"MultistateValue(3000142)";504;"GTBQIDMCRC/MSTP1.FEC10.clapet-air-neuf defaut-general";19;3000142;;;;N;;;6;
+"MultistateValue(3000139)";504;"GTBQIDMCRC/MSTP1.FEC10.danger-gel defaut-general";19;3000139;;;;N;;;6;
+"MultistateValue(3000138)";504;"GTBQIDMCRC/MSTP1.FEC10.feu";19;3000138;;;;Y;;;6;
+"MultistateValue(3000137)";504;"GTBQIDMCRC/MSTP1.FEC10.pression-pulsion defaut-general";19;3000137;;;;N;;;6;
+"MultistateValue(3000136)";504;"GTBQIDMCRC/MSTP1.FEC10.clapet-air-repris defaut-genera";19;3000136;;;;N;;;6;
+"MultistateValue(3000135)";504;"GTBQIDMCRC/MSTP1.FEC10.clapets-feu etat";19;3000135;"etat clapets feu";;;Y;;;10;
+"Averaging(3007091)";504;"GTBQIDMCRC/MSTP1.FEC10.temperature-air-frais mesure.Moyennage1";18;3007091;;;;N;;;;
+"Program(3009922)";504;"GTBQIDMCRC/Programming.irc.TUC38";16;3009922;;;;N;;;;
+"Program(3009662)";504;"GTBQIDMCRC/Programming.irc.TUC43";16;3009662;;;;N;;;;
+"Program(3009551)";504;"GTBQIDMCRC/Programming.irc.TUC63";16;3009551;;;;N;;;;
+"Program(3009550)";504;"GTBQIDMCRC/Programming.irc.TUC62";16;3009550;;;;N;;;;
+"Program(3009549)";504;"GTBQIDMCRC/Programming.irc.TUC61";16;3009549;;;;N;;;;
+"Program(3009548)";504;"GTBQIDMCRC/Programming.irc.TUC60";16;3009548;;;;N;;;;
+"Program(3005482)";504;"GTBQIDMCRC/Programming.systeme.automates";16;3005482;;;;N;;;;
+"Program(3005458)";504;"GTBQIDMCRC/Programming.systeme.nae";16;3005458;;;;N;;;;
+"Program(3004575)";504;"GTBQIDMCRC/Programming.irc.FX59";16;3004575;;;;N;;;;
+"Program(3004469)";504;"GTBQIDMCRC/Programming.Ventil.monobloc marche";16;3004469;;;;N;;;;
+"Program(3004019)";504;"GTBQIDMCRC/Programming.irc.FX58";16;3004019;;;;N;;;;
+"Program(3003988)";504;"GTBQIDMCRC/Programming.irc.FX57";16;3003988;;;;N;;;;
+"Program(3003957)";504;"GTBQIDMCRC/Programming.irc.FX56";16;3003957;;;;N;;;;
+"Program(3003926)";504;"GTBQIDMCRC/Programming.irc.FX55";16;3003926;;;;N;;;;
+"Program(3003895)";504;"GTBQIDMCRC/Programming.irc.FX54";16;3003895;;;;N;;;;
+"Program(3003864)";504;"GTBQIDMCRC/Programming.irc.FX52";16;3003864;;;;N;;;;
+"Program(3003833)";504;"GTBQIDMCRC/Programming.irc.FX51";16;3003833;;;;N;;;;
+"Program(3003802)";504;"GTBQIDMCRC/Programming.irc.FX50";16;3003802;;;;N;;;;
+"Program(3003771)";504;"GTBQIDMCRC/Programming.irc.FX49";16;3003771;;;;N;;;;
+"Program(3003740)";504;"GTBQIDMCRC/Programming.irc.FX47";16;3003740;;;;N;;;;
+"Program(3003709)";504;"GTBQIDMCRC/Programming.irc.FX46";16;3003709;;;;N;;;;
+"Program(3003678)";504;"GTBQIDMCRC/Programming.irc.FX45";16;3003678;;;;N;;;;
+"Program(3003647)";504;"GTBQIDMCRC/Programming.irc.FX44";16;3003647;;;;N;;;;
+"Program(3003616)";504;"GTBQIDMCRC/Programming.irc.FX42";16;3003616;;;;N;;;;
+"Program(3003585)";504;"GTBQIDMCRC/Programming.irc.FX41";16;3003585;;;;N;;;;
+"Program(3003554)";504;"GTBQIDMCRC/Programming.irc.FX40";16;3003554;;;;N;;;;
+"Program(3003523)";504;"GTBQIDMCRC/Programming.irc.FX39";16;3003523;;;;N;;;;
+"Program(3003492)";504;"GTBQIDMCRC/Programming.irc.FX35";16;3003492;;;;N;;;;
+"Program(3003461)";504;"GTBQIDMCRC/Programming.irc.FX34";16;3003461;;;;N;;;;
+"Program(3003430)";504;"GTBQIDMCRC/Programming.irc.FX33";16;3003430;;;;N;;;;
+"Program(3002770)";504;"GTBQIDMCRC/Programming.irc.FX32";16;3002770;;;;N;;;;
+"Program(3002755)";504;"GTBQIDMCRC/Programming.irc.FX31";16;3002755;;;;N;;;;
+"Program(3002724)";504;"GTBQIDMCRC/Programming.irc.FX30";16;3002724;;;;N;;;;
+"Program(3002709)";504;"GTBQIDMCRC/Programming.irc.Commutation";16;3002709;;;;N;;;;
+"Program(3001067)";504;"GTBQIDMCRC/Programming.poutre.Quitt";16;3001067;;;;N;;;;
+"Program(3001041)";504;"GTBQIDMCRC/Programming.poutre.changeover";16;3001041;;;;N;;;;
+"Program(3000644)";504;"GTBQIDMCRC/Programming.Alarmes.Alarmes non urgentes";16;3000644;;;;N;;;;
+"Program(3000603)";504;"GTBQIDMCRC/Programming.Alarmes.Alarmes urgentes";16;3000603;;;;N;;;;
+"Program(3000465)";504;"GTBQIDMCRC/Programming.Ventil.etat ccf";16;3000465;;;;N;;;;
+"Program(3000464)";504;"GTBQIDMCRC/Programming.Ventil.renvoi feu";16;3000464;;;;N;;;;
+"Program(3000182)";504;"GTBQIDMCRC/Programming.Ventil.Quitt";16;3000182;;;;N;;;;
+"NotificationClass(1)";504;"GTBQIDMCRC/Notification1";15;1;;;;N;;;;
+"MultistateOutput(3004194)";504;"GTBQIDMCRC/LON.ccf-reprisee1 2_2.ccf-reprisee1 2_2-commande";14;3004194;;;;Y;;;11;
+"MultistateOutput(3000414)";504;"GTBQIDMCRC/LON.ccf-reprisee1 4_4.ccf-reprisee1 4_4-commande";14;3000414;;;;Y;;;11;
+"MultistateOutput(3000412)";504;"GTBQIDMCRC/LON.ccf-reprisee1 4_3.ccf-reprisee1 4_3-commande";14;3000412;;;;Y;;;11;
+"MultistateOutput(3000410)";504;"GTBQIDMCRC/LON.ccf-reprisee1 4_2.ccf-reprisee1 4_2-commande";14;3000410;;;;Y;;;11;
+"MultistateOutput(3000408)";504;"GTBQIDMCRC/LON.ccf-reprisee1 4_1.ccf-reprisee1 4_1-commande";14;3000408;;;;Y;;;11;
+"MultistateOutput(3000406)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 4_3.ccf-pulsionp1 4_3-commande";14;3000406;;;;Y;;;11;
+"MultistateOutput(3000404)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 4_2.ccf-pulsionp1 4_2-commande";14;3000404;;;;Y;;;11;
+"MultistateOutput(3000402)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 4_1.ccf-pulsionp1 4_1-commande";14;3000402;;;;Y;;;11;
+"MultistateOutput(3000400)";504;"GTBQIDMCRC/LON.ccf-reprisee1 3_4.ccf-reprisee1 3_4-commande";14;3000400;;;;Y;;;11;
+"MultistateOutput(3000398)";504;"GTBQIDMCRC/LON.ccf-reprisee1 3_3.ccf-reprisee1 3_3-commande";14;3000398;;;;Y;;;11;
+"MultistateOutput(3000396)";504;"GTBQIDMCRC/LON.ccf-reprisee1 3_2.ccf-reprisee1 3_2-commande";14;3000396;;;;Y;;;11;
+"MultistateOutput(3000394)";504;"GTBQIDMCRC/LON.ccf-reprisee1 3_1.ccf-reprisee1 3_1-commande";14;3000394;;;;Y;;;11;
+"MultistateOutput(3000392)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 3_3.ccf-pulsionp1 3_3-commande";14;3000392;;;;Y;;;11;
+"MultistateOutput(3000390)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 3_2.ccf-pulsionp1 3_2-commande";14;3000390;;;;Y;;;11;
+"MultistateOutput(3000388)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 3_1.ccf-pulsionp1 3_1-commande";14;3000388;;;;Y;;;11;
+"MultistateOutput(3000386)";504;"GTBQIDMCRC/LON.ccf-reprisee1 2_4.ccf-reprisee1 2_4-commande";14;3000386;;;;Y;;;11;
+"MultistateOutput(3000384)";504;"GTBQIDMCRC/LON.ccf-reprisee1 2_3.ccf-reprisee1 2_3-commande";14;3000384;;;;Y;;;11;
+"MultistateOutput(3000380)";504;"GTBQIDMCRC/LON.ccf-reprisee1 2_1.ccf-reprisee1 2_1-commande";14;3000380;;;;Y;;;11;
+"MultistateOutput(3000378)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 2_3.ccf-pulsionp1 2_3-commande";14;3000378;;;;Y;;;11;
+"MultistateOutput(3000376)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 2_2.ccf-pulsionp1 2_2-commande";14;3000376;;;;Y;;;11;
+"MultistateOutput(3000374)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 2_1.ccf-pulsionp1 2_1-commande";14;3000374;;;;Y;;;11;
+"MultistateOutput(3000372)";504;"GTBQIDMCRC/LON.ccf-reprisee1 1_4.ccf-reprisee1 1_4-commande";14;3000372;;;;Y;;;11;
+"MultistateOutput(3000370)";504;"GTBQIDMCRC/LON.ccf-reprisee1 1_3.ccf-reprisee1 1_3-commande";14;3000370;;;;Y;;;11;
+"MultistateOutput(3000368)";504;"GTBQIDMCRC/LON.ccf-reprisee1 1_2.ccf-reprisee1 1_2-commande";14;3000368;;;;Y;;;11;
+"MultistateOutput(3000366)";504;"GTBQIDMCRC/LON.ccf-reprisee1 1_1.ccf-reprisee1 1_1-commande";14;3000366;;;;Y;;;11;
+"MultistateOutput(3000364)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 1_3.ccf-pulsionp1 1_3-commande";14;3000364;;;;Y;;;11;
+"MultistateOutput(3000362)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 1_2.ccf-pulsionp1 1_2-commande";14;3000362;;;;Y;;;11;
+"MultistateOutput(3000358)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 1_1.ccf-pulsionp1 1_1-commande";14;3000358;;;;Y;;;11;
+"MultistateOutput(3000356)";504;"GTBQIDMCRC/LON.ccf-reprisee1 0_4.ccf-reprisee1 0_4-commande";14;3000356;;;;Y;;;11;
+"MultistateOutput(3000354)";504;"GTBQIDMCRC/LON.ccf-reprisee1 0_3.ccf-reprisee1 0_3-commande";14;3000354;;;;Y;;;11;
+"MultistateOutput(3000352)";504;"GTBQIDMCRC/LON.ccf-reprisee1 0_2.ccf-reprisee1 0_2-commande";14;3000352;;;;Y;;;11;
+"MultistateOutput(3000350)";504;"GTBQIDMCRC/LON.ccf-reprisee1 0_1.ccf-reprisee1 0_1-commande";14;3000350;;;;Y;;;11;
+"MultistateOutput(3000346)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 0_3.ccf-pulsionp1 0_3-commande";14;3000346;;;;Y;;;11;
+"MultistateOutput(3000342)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 0_2.ccf-pulsionp1 0_2-commande";14;3000342;;;;Y;;;11;
+"MultistateOutput(3000338)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 0_1.ccf-pulsionp1 0_1-commande";14;3000338;;;;Y;;;11;
+"MultistateOutput(3000336)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_14.ccf-reprisee1 9_14-commande";14;3000336;;;;Y;;;11;
+"MultistateOutput(3000334)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_13.ccf-reprisee1 9_13-commande";14;3000334;;;;Y;;;11;
+"MultistateOutput(3000332)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_12.ccf-reprisee1 9_12-commande";14;3000332;;;;Y;;;11;
+"MultistateOutput(3000330)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_11.ccf-reprisee1 9_11-commande";14;3000330;;;;Y;;;11;
+"MultistateOutput(3000328)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_10.ccf-reprisee1 9_10-commande";14;3000328;;;;Y;;;11;
+"MultistateOutput(3000326)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_9.ccf-reprisee1 9_9-commande";14;3000326;;;;Y;;;11;
+"MultistateOutput(3000324)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_8.ccf-reprisee1 9_8-commande";14;3000324;;;;Y;;;11;
+"MultistateOutput(3000322)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_7.ccf-reprisee1 9_7-commande";14;3000322;;;;Y;;;11;
+"MultistateOutput(3000320)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_6.ccf-reprisee1 9_6-commande";14;3000320;;;;Y;;;11;
+"MultistateOutput(3000318)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_5.ccf-reprisee1 9_5-commande";14;3000318;;;;Y;;;11;
+"MultistateOutput(3000316)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_4.ccf-reprisee1 9_4-commande";14;3000316;;;;Y;;;11;
+"MultistateOutput(3000314)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_3.ccf-reprisee1 9_3-commande";14;3000314;;;;Y;;;11;
+"MultistateOutput(3000312)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_2.ccf-reprisee1 9_2-commande";14;3000312;;;;Y;;;11;
+"MultistateOutput(3000310)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_1.ccf-reprisee1 9_1-commande";14;3000310;;;;Y;;;11;
+"MultistateOutput(3000306)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 9_8.ccf-pulsionp1 9_8-commande";14;3000306;;;;Y;;;11;
+"MultistateOutput(3000302)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 9_7.ccf-pulsionp1 9_7-commande";14;3000302;;;;Y;;;11;
+"MultistateOutput(3000298)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 9_6.ccf-pulsionp1 9_6-commande";14;3000298;;;;Y;;;11;
+"MultistateOutput(3000294)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 9_5.ccf-pulsionp1 9_5-commande";14;3000294;;;;Y;;;11;
+"MultistateOutput(3000290)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 9_4.ccf-pulsionp1 9_4-commande";14;3000290;;;;Y;;;11;
+"MultistateOutput(3000286)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 9_3.ccf-pulsionp1 9_3-commande";14;3000286;;;;Y;;;11;
+"MultistateOutput(3000282)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 9_2.ccf-pulsionp1 9_2-commande";14;3000282;;;;Y;;;11;
+"MultistateOutput(3000278)";504;"GTBQIDMCRC/LON.ccf-pulsion-p1 9_1.ccf-pulsionp1 9_1-commande";14;3000278;;;;Y;;;11;
+"MultistateInput(3004195)";504;"GTBQIDMCRC/LON.ccf-reprisee1 2_2.ccf-reprisee1 2_2-etat";13;3004195;;;;N;;;11;
+"MultistateInput(3000460)";504;"GTBQIDMCRC/LON.ccf-reprisee1 4_4.ccf-reprisee1 4_4-etat";13;3000460;;;;N;;;11;
+"MultistateInput(3000459)";504;"GTBQIDMCRC/LON.ccf-reprisee1 4_3.ccf-reprisee1 4_3-etat";13;3000459;;;;N;;;11;
+"MultistateInput(3000458)";504;"GTBQIDMCRC/LON.ccf-reprisee1 4_2.ccf-reprisee1 4_2-etat";13;3000458;;;;N;;;11;
+"MultistateInput(3000457)";504;"GTBQIDMCRC/LON.ccf-reprisee1 4_1.ccf-reprisee1 4_1-etat";13;3000457;;;;N;;;11;
+"MultistateInput(3000456)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 4_3.ccf-pulsionp1 4_3-etat";13;3000456;;;;N;;;11;
+"MultistateInput(3000455)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 4_2.ccf-pulsionp1 4_2-etat";13;3000455;;;;N;;;11;
+"MultistateInput(3000454)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 4_1.ccf-pulsionp1 4_1-etat";13;3000454;;;;N;;;11;
+"MultistateInput(3000453)";504;"GTBQIDMCRC/LON.ccf-reprisee1 3_4.ccf-reprisee1 3_4-etat";13;3000453;;;;N;;;11;
+"MultistateInput(3000452)";504;"GTBQIDMCRC/LON.ccf-reprisee1 3_3.ccf-reprisee1 3_3-etat";13;3000452;;;;N;;;11;
+"MultistateInput(3000451)";504;"GTBQIDMCRC/LON.ccf-reprisee1 3_2.ccf-reprisee1 3_2-etat";13;3000451;;;;N;;;11;
+"MultistateInput(3000450)";504;"GTBQIDMCRC/LON.ccf-reprisee1 3_1.ccf-reprisee1 3_1-etat";13;3000450;;;;N;;;11;
+"MultistateInput(3000449)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 3_3.ccf-pulsionp1 3_3-etat";13;3000449;;;;N;;;11;
+"MultistateInput(3000448)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 3_2.ccf-pulsionp1 3_2-etat";13;3000448;;;;N;;;11;
+"MultistateInput(3000447)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 3_1.ccf-pulsionp1 3_1-etat";13;3000447;;;;N;;;11;
+"MultistateInput(3000446)";504;"GTBQIDMCRC/LON.ccf-reprisee1 2_4.ccf-reprisee1 2_4-etat";13;3000446;;;;N;;;11;
+"MultistateInput(3000445)";504;"GTBQIDMCRC/LON.ccf-reprisee1 2_3.ccf-reprisee1 2_3-etat";13;3000445;;;;N;;;11;
+"MultistateInput(3000443)";504;"GTBQIDMCRC/LON.ccf-reprisee1 2_1.ccf-reprisee1 2_1-etat";13;3000443;;;;N;;;11;
+"MultistateInput(3000442)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 2_3.ccf-pulsionp1 2_3-etat";13;3000442;;;;N;;;11;
+"MultistateInput(3000441)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 2_2.ccf-pulsionp1 2_2-etat";13;3000441;;;;N;;;11;
+"MultistateInput(3000440)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 2_1.ccf-pulsionp1 2_1-etat";13;3000440;;;;N;;;11;
+"MultistateInput(3000439)";504;"GTBQIDMCRC/LON.ccf-reprisee1 1_4.ccf-reprisee1 1_4-etat";13;3000439;;;;N;;;11;
+"MultistateInput(3000438)";504;"GTBQIDMCRC/LON.ccf-reprisee1 1_3.ccf-reprisee1 1_3-etat";13;3000438;;;;N;;;11;
+"MultistateInput(3000437)";504;"GTBQIDMCRC/LON.ccf-reprisee1 1_2.ccf-reprisee1 1_2-etat";13;3000437;;;;N;;;11;
+"MultistateInput(3000436)";504;"GTBQIDMCRC/LON.ccf-reprisee1 1_1.ccf-reprisee1 1_1-etat";13;3000436;;;;N;;;11;
+"MultistateInput(3000435)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 1_3.ccf-pulsionp1 1_3-etat";13;3000435;;;;N;;;11;
+"MultistateInput(3000434)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 1_2.ccf-pulsionp1 1_2-etat";13;3000434;;;;N;;;11;
+"MultistateInput(3000433)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 1_1.ccf-pulsionp1 1_1-etat";13;3000433;;;;N;;;11;
+"MultistateInput(3000432)";504;"GTBQIDMCRC/LON.ccf-reprisee1 0_4.ccf-reprisee1 0_4-etat";13;3000432;;;;N;;;11;
+"MultistateInput(3000431)";504;"GTBQIDMCRC/LON.ccf-reprisee1 0_3.ccf-reprisee1 0_3-etat";13;3000431;;;;N;;;11;
+"MultistateInput(3000430)";504;"GTBQIDMCRC/LON.ccf-reprisee1 0_2.ccf-reprisee1 0_2-etat";13;3000430;;;;N;;;11;
+"MultistateInput(3000429)";504;"GTBQIDMCRC/LON.ccf-reprisee1 0_1.ccf-reprisee1 0_1-etat";13;3000429;;;;N;;;11;
+"MultistateInput(3000428)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_14.ccf-reprisee1 9_14-etat";13;3000428;;;;N;;;11;
+"MultistateInput(3000427)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_13.ccf-reprisee1 9_13-etat";13;3000427;;;;N;;;11;
+"MultistateInput(3000426)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_12.ccf-reprisee1 9_12-etat";13;3000426;;;;N;;;11;
+"MultistateInput(3000425)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_11.ccf-reprisee1 9_11-etat";13;3000425;;;;N;;;11;
+"MultistateInput(3000424)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_10.ccf-reprisee1 9_10-etat";13;3000424;;;;N;;;11;
+"MultistateInput(3000423)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_9.ccf-reprisee1 9_9-etat";13;3000423;;;;N;;;11;
+"MultistateInput(3000422)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_8.ccf-reprisee1 9_8-etat";13;3000422;;;;N;;;11;
+"MultistateInput(3000421)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_7.ccf-reprisee1 9_7-etat";13;3000421;;;;N;;;11;
+"MultistateInput(3000420)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_6.ccf-reprisee1 9_6-etat";13;3000420;;;;N;;;11;
+"MultistateInput(3000419)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_5.ccf-reprisee1 9_5-etat";13;3000419;;;;N;;;11;
+"MultistateInput(3000418)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_4.ccf-reprisee1 9_4-etat";13;3000418;;;;N;;;11;
+"MultistateInput(3000417)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_3.ccf-reprisee1 9_3-etat";13;3000417;;;;N;;;11;
+"MultistateInput(3000416)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_2.ccf-reprisee1 9_2-etat";13;3000416;;;;N;;;11;
+"MultistateInput(3000415)";504;"GTBQIDMCRC/LON.ccf-reprisee1 9_1.ccf-reprisee1 9_1-etat";13;3000415;;;;N;;;11;
+"MultistateInput(3000347)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 0_3.ccf-pulsionp1 0_3-etat";13;3000347;;;;N;;;11;
+"MultistateInput(3000343)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 0_2.ccf-pulsionp1 0_2-etat";13;3000343;;;;N;;;11;
+"MultistateInput(3000339)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 0_1.ccf-pulsionp1 0_1-etat";13;3000339;;;;N;;;11;
+"MultistateInput(3000307)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 9_8.ccf-pulsionp1 9_8-etat";13;3000307;;;;N;;;11;
+"MultistateInput(3000303)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 9_7.ccf-pulsionp1 9_7-etat";13;3000303;;;;N;;;11;
+"MultistateInput(3000299)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 9_6.ccf-pulsionp1 9_6-etat";13;3000299;;;;N;;;11;
+"MultistateInput(3000295)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 9_5.ccf-pulsionp1 9_5-etat";13;3000295;;;;N;;;11;
+"MultistateInput(3000291)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 9_4.ccf-pulsionp1 9_4-etat";13;3000291;;;;N;;;11;
+"MultistateInput(3000287)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 9_3.ccf-pulsionp1 9_3-etat";13;3000287;;;;N;;;11;
+"MultistateInput(3000283)";504;"GTBQIDMCRC/LON.ccf-pulsionp1 9_2.ccf-pulsionp1 9_2-etat";13;3000283;;;;N;;;11;
+"MultistateInput(3000279)";504;"GTBQIDMCRC/LON.ccf-pulsion-p1 9_1.ccf-pulsionp1 9_1-etat";13;3000279;;;;N;;;11;
+"Calendar(3010664)";504;"GTBQIDMCRC/Programming.Ventil.Calendrier Arret QID-P1";6;3010664;;;;N;;;;
+"BinaryValue(3010193)";504;"GTBQIDMCRC/Programming.systeme.TUC38 defaut-general";5;3010193;;;;Y;;;12;
+"BinaryValue(3009596)";504;"GTBQIDMCRC/Programming.systeme.TUC43 defaut-general";5;3009596;;;;Y;;;12;
+"BinaryValue(3009595)";504;"GTBQIDMCRC/Programming.systeme.TUC63 defaut-general";5;3009595;;;;Y;;;12;
+"BinaryValue(3009594)";504;"GTBQIDMCRC/Programming.systeme.TUC62 defaut-general";5;3009594;;;;Y;;;12;
+"BinaryValue(3009593)";504;"GTBQIDMCRC/Programming.systeme.TUC61 defaut-general";5;3009593;;;;Y;;;12;
+"BinaryValue(3009592)";504;"GTBQIDMCRC/Programming.systeme.TUC60 defaut-general";5;3009592;;;;Y;;;12;
+"BinaryValue(3005535)";504;"GTBQIDMCRC/Programming.systeme.FX59 defaut-general";5;3005535;;;;Y;;;12;
+"BinaryValue(3005533)";504;"GTBQIDMCRC/Programming.systeme.FX58 defaut-general";5;3005533;;;;Y;;;12;
+"BinaryValue(3005531)";504;"GTBQIDMCRC/Programming.systeme.FX57 defaut-general";5;3005531;;;;Y;;;12;
+"BinaryValue(3005529)";504;"GTBQIDMCRC/Programming.systeme.FX56 defaut-general";5;3005529;;;;Y;;;12;
+"BinaryValue(3005527)";504;"GTBQIDMCRC/Programming.systeme.FX55 defaut-general";5;3005527;;;;Y;;;12;
+"BinaryValue(3005525)";504;"GTBQIDMCRC/Programming.systeme.FX54 defaut-general";5;3005525;;;;Y;;;12;
+"BinaryValue(3005523)";504;"GTBQIDMCRC/Programming.systeme.FX52 defaut-general";5;3005523;;;;Y;;;12;
+"BinaryValue(3005521)";504;"GTBQIDMCRC/Programming.systeme.FX51 defaut-general";5;3005521;;;;Y;;;12;
+"BinaryValue(3005519)";504;"GTBQIDMCRC/Programming.systeme.FX50 defaut-general";5;3005519;;;;Y;;;12;
+"BinaryValue(3005517)";504;"GTBQIDMCRC/Programming.systeme.FX49 defaut-general";5;3005517;;;;Y;;;12;
+"BinaryValue(3005515)";504;"GTBQIDMCRC/Programming.systeme.FX47 defaut-general";5;3005515;;;;Y;;;12;
+"BinaryValue(3005513)";504;"GTBQIDMCRC/Programming.systeme.FX46 defaut-general";5;3005513;;;;Y;;;12;
+"BinaryValue(3005511)";504;"GTBQIDMCRC/Programming.systeme.FX45 defaut-general";5;3005511;;;;Y;;;12;
+"BinaryValue(3005509)";504;"GTBQIDMCRC/Programming.systeme.FX44 defaut-general";5;3005509;;;;Y;;;12;
+"BinaryValue(3005507)";504;"GTBQIDMCRC/Programming.systeme.FX42 defaut-general";5;3005507;;;;Y;;;12;
+"BinaryValue(3005505)";504;"GTBQIDMCRC/Programming.systeme.FX41 defaut-general";5;3005505;;;;Y;;;12;
+"BinaryValue(3005503)";504;"GTBQIDMCRC/Programming.systeme.FX40 defaut-general";5;3005503;;;;Y;;;12;
+"BinaryValue(3005501)";504;"GTBQIDMCRC/Programming.systeme.FX39 defaut-general";5;3005501;;;;Y;;;12;
+"BinaryValue(3005499)";504;"GTBQIDMCRC/Programming.systeme.FX35 defaut-general";5;3005499;;;;Y;;;12;
+"BinaryValue(3005497)";504;"GTBQIDMCRC/Programming.systeme.FX34 defaut-general";5;3005497;;;;Y;;;12;
+"BinaryValue(3005495)";504;"GTBQIDMCRC/Programming.systeme.FX33 defaut-general";5;3005495;;;;Y;;;12;
+"BinaryValue(3005493)";504;"GTBQIDMCRC/Programming.systeme.FX32 defaut-general";5;3005493;;;;Y;;;12;
+"BinaryValue(3005491)";504;"GTBQIDMCRC/Programming.systeme.FX31 defaut-general";5;3005491;;;;Y;;;12;
+"BinaryValue(3005489)";504;"GTBQIDMCRC/Programming.systeme.FX30 defaut-general";5;3005489;;;;Y;;;12;
+"BinaryValue(3005487)";504;"GTBQIDMCRC/Programming.systeme.FEC20 defaut-general";5;3005487;;;;Y;;;12;
+"BinaryValue(3005485)";504;"GTBQIDMCRC/Programming.systeme.FEC16 defaut-general";5;3005485;;;;Y;;;12;
+"BinaryValue(3005456)";504;"GTBQIDMCRC/Programming.systeme.FEC10 defaut-general";5;3005456;;;;Y;;;12;
+"BinaryValue(3005454)";504;"GTBQIDMCRC/Programming.systeme.nae etat watchdog";5;3005454;;;;Y;;;13;
+"BinaryValue(3004863)";504;"GTBQIDMCRC/Programming.poutre.quittance";5;3004863;;;;Y;;;13;
+"BinaryValue(3004862)";504;"GTBQIDMCRC/Programming.Ventil.quittance";5;3004862;;;;Y;;;13;
+"BinaryValue(3002708)";504;"GTBQIDMCRC/Programming.irc.commutation-poutres-etat";5;3002708;;;;Y;;;14;
+"BinaryValue(3000090)";504;"GTBQIDMCRC/VB1";5;3000090;;;;Y;;;12;
+"BinaryOutput(3010626)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe 2-collecteur-froid comman";4;3010626;"pompe.2-collecteur-froid.commande";;;Y;;;15;
+"BinaryOutput(3001822)";504;"GTBQIDMCRC/MSTP1.FEC10.alarme-non-urgente commande";4;3001822;"alarme-non-urgente.commande";;;Y;;;12;
+"BinaryOutput(3001821)";504;"GTBQIDMCRC/MSTP1.FEC10.alarme-urgente commande";4;3001821;"alarme-urgente.commande";;;Y;;;12;
+"BinaryOutput(3001511)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe-charge-sanitaire commande";4;3001511;"pompe-charge-sanitaire.commande";;;Y;;;15;
+"BinaryOutput(3001147)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-isolement-retour-chaud-co";4;3001147;"vanne-isol.retour-chaud-collecteur.cde";;;Y;;;16;
+"BinaryOutput(3001146)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-isolement-aller-chaud-col";4;3001146;"vanne-isol.aller-chaud-collecteur.cde";;;Y;;;16;
+"BinaryOutput(3001126)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe-circulation-sanitaire com";4;3001126;"pompe-circulation-sanitaire.commande";;;Y;;;15;
+"BinaryOutput(3000248)";504;"GTBQIDMCRC/MSTP1.FEC20.chauffage-electrique-sanitaire";4;3000248;"chauffage-electrique-sanitaire.commande";;;Y;;;15;
+"BinaryOutput(3000236)";504;"GTBQIDMCRC/MSTP1.FEC20.vannes-isolement-froid-poutres";4;3000236;"vannes-isolement-froid-poutres.commande";;;Y;;;16;
+"BinaryOutput(3000235)";504;"GTBQIDMCRC/MSTP1.FEC20.vannes-isolement-chaud-poutres";4;3000235;"vannes-isolement-chaud-poutres.commande";;;Y;;;16;
+"BinaryOutput(3000234)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe-poutres commande";4;3000234;"pompe-poutres.commande";;;Y;;;15;
+"BinaryOutput(3000233)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe-collecteur-froid commande";4;3000233;"pompe-collecteur-froid.commande";;;Y;;;15;
+"BinaryOutput(3000161)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-extraction commande";4;3000161;"9.15 ventilateur-extraction";;;Y;;;15;
+"BinaryOutput(3000160)";504;"GTBQIDMCRC/MSTP1.FEC10.circulateur-recuperation comman";4;3000160;"9.12 circulateur-recuperation";;;Y;;;15;
+"BinaryOutput(3000159)";504;"GTBQIDMCRC/MSTP1.FEC10.circulateur-chaud commande";4;3000159;"9.13 circulateur-chaud";;;Y;;;15;
+"BinaryOutput(3000158)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-pulsion commande";4;3000158;"9.12 ventilateur-pulsion";;;Y;;;15;
+"BinaryOutput(3000157)";504;"GTBQIDMCRC/MSTP1.FEC10.clapet-air-repris commande";4;3000157;"9.11 clapet-extraction";;;Y;;;16;
+"BinaryOutput(3000156)";504;"GTBQIDMCRC/MSTP1.FEC10.clapet-air-neuf commande";4;3000156;"9.10 clapet-pulsion";;;Y;;;16;
+"BinaryOutput(3000101)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-sanitaire-gv comman";4;3000101;"ventilateur-sanitaire-gv";;;Y;;;15;
+"BinaryOutput(3000100)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-sanitaire-pv comman";4;3000100;"9.18 ventilateur-sanitaire-pv";;;Y;;;15;
+"BinaryInput(3010625)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe 2-collecteur-froid interr";3;3010625;"pompe.2-collecteur-froid.inter-revision";;;N;;;17;
+"BinaryInput(3010624)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe 2-collecteur-froid defaut";3;3010624;"pompe.2-collecteur-froid.defaut-general";;;N;;;18;
+"BinaryInput(3010623)";504;"GTBQIDMCRC/MSTP1.FEC20.alarme-armoire-tyco";3;3010623;"alarme-armoire-tyco";;;N;;;18;
+"BinaryInput(3009918)";504;"GTBQIDMCRC/MSTP1.TUC38.BI-1";3;3009918;"DI2_CoolValveOff";;;N;;;19;
+"BinaryInput(3009895)";504;"GTBQIDMCRC/MSTP1.FX36.BI-1";3;3009895;;;;N;;;19;
+"BinaryInput(3009673)";504;"GTBQIDMCRC/MSTP1.FEC10.temperature-haute-machine-froid";3;3009673;"temperature-haute-machine-froid.defaut-g";;;N;;;18;
+"BinaryInput(3009672)";504;"GTBQIDMCRC/MSTP1.FEC16.panne-machine-froid-1 defaut-ge";3;3009672;"panne-machine-froid-1.defaut-general";;;N;;;18;
+"BinaryInput(3009671)";504;"GTBQIDMCRC/MSTP1.FEC16.panne-machine-froid-2 defaut-ge";3;3009671;"panne-machine-froid-2.defaut-general";;;N;;;18;
+"BinaryInput(3009586)";504;"GTBQIDMCRC/MSTP1.TUC43.BI-1";3;3009586;"DI2_CoolValveOff";;;N;;;19;
+"BinaryInput(3009584)";504;"GTBQIDMCRC/MSTP1.TUC60.BI-0";3;3009584;"manque tension 24VAC bat. D 4eme etage";;;N;;;19;
+"BinaryInput(3009542)";504;"GTBQIDMCRC/MSTP1.TUC63.BI-1";3;3009542;"DI2_CoolValveOff";;;N;;;19;
+"BinaryInput(3009535)";504;"GTBQIDMCRC/MSTP1.TUC62.BI-1";3;3009535;"DI2_CoolValveOff";;;N;;;19;
+"BinaryInput(3009529)";504;"GTBQIDMCRC/MSTP1.TUC61.BI-1";3;3009529;"DI2_CoolValveOff";;;N;;;19;
+"BinaryInput(3009523)";504;"GTBQIDMCRC/MSTP1.TUC60.BI-1";3;3009523;"DI2_CoolValveOff";;;N;;;19;
+"BinaryInput(3007874)";504;"GTBQIDMCRC/MSTP1.FX54.BI1";3;3007874;;;;N;;;19;
+"BinaryInput(3007872)";504;"GTBQIDMCRC/MSTP1.FX49.BI1";3;3007872;;;;N;;;19;
+"BinaryInput(3007870)";504;"GTBQIDMCRC/MSTP1.FX44.BI1";3;3007870;;;;N;;;19;
+"BinaryInput(3007868)";504;"GTBQIDMCRC/MSTP1.FX39.BI1";3;3007868;;;;N;;;19;
+"BinaryInput(3004586)";504;"GTBQIDMCRC/MSTP1.FX59.BI-1";3;3004586;;;;N;;;19;
+"BinaryInput(3004465)";504;"GTBQIDMCRC/MSTP1.FX58.BI-1";3;3004465;"DI2_CoolValveOff";;;N;;;19;
+"BinaryInput(3004464)";504;"GTBQIDMCRC/MSTP1.FX57.BI-1";3;3004464;;;;N;;;19;
+"BinaryInput(3004463)";504;"GTBQIDMCRC/MSTP1.FX56.BI-1";3;3004463;;;;N;;;19;
+"BinaryInput(3004462)";504;"GTBQIDMCRC/MSTP1.FX55.BI-1";3;3004462;;;;N;;;19;
+"BinaryInput(3004461)";504;"GTBQIDMCRC/MSTP1.FX54.BI-1";3;3004461;;;;N;;;19;
+"BinaryInput(3004460)";504;"GTBQIDMCRC/MSTP1.FX52.BI-1";3;3004460;;;;N;;;19;
+"BinaryInput(3004459)";504;"GTBQIDMCRC/MSTP1.FX51.BI-1";3;3004459;;;;N;;;19;
+"BinaryInput(3004458)";504;"GTBQIDMCRC/MSTP1.FX50.BI-1";3;3004458;"DI2_CoolValveOff";;;N;;;19;
+"BinaryInput(3004457)";504;"GTBQIDMCRC/MSTP1.FX49.BI-1";3;3004457;;;;N;;;19;
+"BinaryInput(3004456)";504;"GTBQIDMCRC/MSTP1.FX47.BI-1";3;3004456;;;;N;;;19;
+"BinaryInput(3004455)";504;"GTBQIDMCRC/MSTP1.FX46.BI-1";3;3004455;;;;N;;;19;
+"BinaryInput(3004454)";504;"GTBQIDMCRC/MSTP1.FX45.BI-1";3;3004454;;;;N;;;19;
+"BinaryInput(3004453)";504;"GTBQIDMCRC/MSTP1.FX44.BI-1";3;3004453;;;;N;;;19;
+"BinaryInput(3004452)";504;"GTBQIDMCRC/MSTP1.FX42.BI-1";3;3004452;;;;N;;;19;
+"BinaryInput(3004451)";504;"GTBQIDMCRC/MSTP1.FX41.BI-1";3;3004451;;;;N;;;19;
+"BinaryInput(3004450)";504;"GTBQIDMCRC/MSTP1.FX40.BI-1";3;3004450;"DI2_CoolValveOff";;;N;;;19;
+"BinaryInput(3004449)";504;"GTBQIDMCRC/MSTP1.FX39.BI-1";3;3004449;;;;N;;;19;
+"BinaryInput(3004448)";504;"GTBQIDMCRC/MSTP1.FX35.BI-1";3;3004448;;;;N;;;19;
+"BinaryInput(3004447)";504;"GTBQIDMCRC/MSTP1.FX34.BI-1";3;3004447;;;;N;;;19;
+"BinaryInput(3004446)";504;"GTBQIDMCRC/MSTP1.FX33.BI-1";3;3004446;;;;N;;;19;
+"BinaryInput(3004445)";504;"GTBQIDMCRC/MSTP1.FX32.BI-1";3;3004445;;;;N;;;19;
+"BinaryInput(3004444)";504;"GTBQIDMCRC/MSTP1.FX31.BI-1";3;3004444;;;;N;;;19;
+"BinaryInput(3001510)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe-charge-sanitaire marche";3;3001510;"pompe-charge-sanitaire.marche";;;N;;;15;
+"BinaryInput(3001509)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe-charge-sanitaire defaut-g";3;3001509;"pompe-charge-sanitaire.defaut-general";;;N;;;12;
+"BinaryInput(3001152)";504;"GTBQIDMCRC/MSTP1.FEC20.commutateur-pcc-chaud mode-pcc";3;3001152;"commutateur-pcc-chauffage.mode-pcc";;;N;;;15;
+"BinaryInput(3001151)";504;"GTBQIDMCRC/MSTP1.FEC20.commutateur-pcc-chaud mode-loca";3;3001151;"commutateur-pcc-chauffage.mode-local";;;N;;;15;
+"BinaryInput(3001150)";504;"GTBQIDMCRC/MSTP1.FEC20.chauffage-electrique-sanit marc";3;3001150;"chauffage-electrique-sanitaire.marche";;;N;;;15;
+"BinaryInput(3001129)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe-circulation-sanitaire int";3;3001129;"9.32 pompe-circulation-sanitaire.inter";;;N;;;18;
+"BinaryInput(3001128)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe-circulation-sanitaire def";3;3001128;"9.32 pompe-circulation-sanitaire.panne";;;N;;;18;
+"BinaryInput(3001127)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe-circulation-sanitaire mar";3;3001127;"9.32 ppe-circulation-sanitaire.marche";;;N;;;15;
+"BinaryInput(3001125)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-aller-chaud-collecteur ou";3;3001125;"9.26 vanne-isol.aller-chaud-coll.ouverte";;;N;;;20;
+"BinaryInput(3001124)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-aller-chaud-collecteur fe";3;3001124;"9.26 vanne-isol.aller-chaud-coll.fermee";;;N;;;20;
+"BinaryInput(3001123)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-retour-chaud-collecteur o";3;3001123;"9.27 vanne-isol.retour-chaud-collect.ouv";;;N;;;20;
+"BinaryInput(3001122)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-retour-chaud-collecteur f";3;3001122;"9.27 vanne-isol.retour-chaud-collect.fer";;;N;;;20;
+"BinaryInput(3001119)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe-collecteur-froid defaut-g";3;3001119;"9.20 pompe-collecteur-froid.defaut-gene";;;N;;;18;
+"BinaryInput(3001118)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe-collecteur-froid interrup";3;3001118;"9.29 pompe-collecteur-froid.inter";;;N;;;18;
+"BinaryInput(3001117)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-retour-froid-poutres ferm";3;3001117;"vanne-isol.retour-froid-poutres.fermee";;;N;;;20;
+"BinaryInput(3001116)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-retour-froid-poutres ouve";3;3001116;"vanne-isol.retour-froid-poutres.ouverte";;;N;;;20;
+"BinaryInput(3001115)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-aller-froid-poutres ferme";3;3001115;"vanne-isol.aller-froid-poutres.fermee";;;N;;;20;
+"BinaryInput(3001114)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-aller-froid-poutres ouver";3;3001114;"vanne-isol.aller-froid-poutres.ouverte";;;N;;;20;
+"BinaryInput(3001113)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-retour-chaud-poutres ferm";3;3001113;"vanne-isol.retour-chaud-poutres.fermee";;;N;;;20;
+"BinaryInput(3001112)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-retour-chaud-poutres ouve";3;3001112;"vanne-isol.retour-chaud-poutres.ouverte";;;N;;;20;
+"BinaryInput(3001111)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-aller-chaud-poutres ferme";3;3001111;"vanne-isol.aller-chaud-poutres.fermee";;;N;;;20;
+"BinaryInput(3001110)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-aller-chaud-poutres ouver";3;3001110;"vanne-isol.aller-chaud-poutres.ouverte";;;N;;;20;
+"BinaryInput(3000264)";504;"GTBQIDMCRC/MSTP1.FEC20.manque-tension-24v defaut-gener";3;3000264;"manque-tension-24v.defaut-general";;;N;;;18;
+"BinaryInput(3000263)";504;"GTBQIDMCRC/MSTP1.FEC20.disjoncteur-tableau-solaire def";3;3000263;"4.6 disjoncteur-tableau-solaire.panne";;;N;;;18;
+"BinaryInput(3000262)";504;"GTBQIDMCRC/MSTP1.FEC20.disjoncteur-pompe-relevage defa";3;3000262;"6.2 disjoncteur-pompe-relevage.panne";;;N;;;18;
+"BinaryInput(3000250)";504;"GTBQIDMCRC/MSTP1.FEC20.boiler-sanitaire surchauffe";3;3000250;"boiler-sanitaire.surchauffe";;;N;;;18;
+"BinaryInput(3000247)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe-relevage defaut-general";3;3000247;"k-1/s1 pompe-relevage.defaut-general";;;N;;;18;
+"BinaryInput(3000246)";504;"GTBQIDMCRC/MSTP1.FEC20.pression-statique defaut-genera";3;3000246;"9.162.7 pression-statique.defaut-general";;;N;;;18;
+"BinaryInput(3000245)";504;"GTBQIDMCRC/MSTP1.FEC20.compteur-eau-du-lac defaut-gene";3;3000245;"9.28 compteur-eau-du-lac.defaut-general";;;N;;;18;
+"BinaryInput(3000228)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe-poutres defaut-general";3;3000228;"9.21 pompe-poutres.defaut-general";;;N;;;18;
+"BinaryInput(3000227)";504;"GTBQIDMCRC/MSTP1.FEC20.pompe-poutres interrupteur-secu";3;3000227;"9.21 pompe-poutres.interrupteur-securite";;;N;;;18;
+"BinaryInput(3000215)";504;"GTBQIDMCRC/MSTP1.FEC20.commutateur-pcc-froid mode-pcc";3;3000215;"commutateur-pcc-froid.mode-pcc";;;N;;;15;
+"BinaryInput(3000214)";504;"GTBQIDMCRC/MSTP1.FEC20.commutateur-pcc-froid mode-loca";3;3000214;"commutateur-pcc-froid.mode-local";;;N;;;15;
+"BinaryInput(3000207)";504;"GTBQIDMCRC/MSTP1.FEC16.reenclenchement-incendie";3;3000207;"reenclenchement incendie";;;N;;;18;
+"BinaryInput(3000206)";504;"GTBQIDMCRC/MSTP1.FEC16.rappel-pompier";3;3000206;"rappel pompier";;;N;;;18;
+"BinaryInput(3000205)";504;"GTBQIDMCRC/MSTP1.FEC16.alarme-batiment";3;3000205;"alarme batiment";;;N;;;18;
+"BinaryInput(3000204)";504;"GTBQIDMCRC/MSTP1.FEC16.detection-incendie incendie-cen";3;3000204;"alarme feu";;;N;;;18;
+"BinaryInput(3000155)";504;"GTBQIDMCRC/MSTP1.FEC10.commutateur-pcc mode-local";3;3000155;"commutateur-pcc";;;N;;;15;
+"BinaryInput(3000154)";504;"GTBQIDMCRC/MSTP1.FEC10.commutateur-pcc mode-pcc";3;3000154;"commutateur-pcc";;;N;;;15;
+"BinaryInput(3000133)";504;"GTBQIDMCRC/MSTP1.FEC10.surppression-pulsion defaut-gen";3;3000133;"9.125.7 pression-pulsion.defaut-general";;;N;;;18;
+"BinaryInput(3000132)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilation-sanitaire-gv defaut";3;3000132;"9.18 sanitaire-gv.defaut-general";;;N;;;18;
+"BinaryInput(3000131)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilation-sanitaire-pv marche";3;3000131;"9.18 ventilation-sanitaire-pv";;;N;;;15;
+"BinaryInput(3000130)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilation-sanitaire-gv marche";3;3000130;"9.18 ventilation-sanitaire-gv.marche";;;N;;;15;
+"BinaryInput(3000129)";504;"GTBQIDMCRC/MSTP1.FEC10.surppression-extraction defaut-";3;3000129;"9.125.8 surppression-extraction.defaut";;;N;;;18;
+"BinaryInput(3000128)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilation-sanitaire-pv defaut";3;3000128;"9.18 sanitaire-pv.defaut-general";;;N;;;18;
+"BinaryInput(3000127)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-sanitaire interrupt";3;3000127;"9.18 sanitaire.interrupteur-securite";;;N;;;18;
+"BinaryInput(3000126)";504;"GTBQIDMCRC/MSTP1.FEC10.disjonction-divers defaut-gener";3;3000126;"qf33 qf41 qf43 disjonction-divers";;;N;;;18;
+"BinaryInput(3000125)";504;"GTBQIDMCRC/MSTP1.FEC10.circulateur-chaud defaut-genera";3;3000125;"9.13 circulateur-chaud.defaut-general";;;N;;;18;
+"BinaryInput(3000124)";504;"GTBQIDMCRC/MSTP1.FEC10.circulateur-chaud marche";3;3000124;"9.13 circulateur-chaud.marche";;;N;;;15;
+"BinaryInput(3000123)";504;"GTBQIDMCRC/MSTP1.FEC10.circulateur-recuperation defaut";3;3000123;"9.12 circul-recup.defaut";;;N;;;18;
+"BinaryInput(3000122)";504;"GTBQIDMCRC/MSTP1.FEC10.circulateur-recuperation interr";3;3000122;"9.12 circul-recup.inter";;;N;;;18;
+"BinaryInput(3000121)";504;"GTBQIDMCRC/MSTP1.FEC10.circulateur-chaud interrupteur-";3;3000121;"9.13 circulateur-chaud.interrupteur";;;N;;;18;
+"BinaryInput(3000120)";504;"GTBQIDMCRC/MSTP1.FEC10.manque-tension24 defaut general";3;3000120;"manque-t1011 tension24.fec20";;;N;;;18;
+"BinaryInput(3000119)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-extraction defaut-r";3;3000119;"9.15 extraction.defaut-regulateur";;;N;;;18;
+"BinaryInput(3000118)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-extraction marche";3;3000118;"9.15 ventilateur-extraction.marche";;;N;;;15;
+"BinaryInput(3000117)";504;"GTBQIDMCRC/MSTP1.FEC10.danger-gel";3;3000117;"9.119.8 danger-gel";;;N;;;18;
+"BinaryInput(3000116)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-pulsion marche";3;3000116;"9.10 ventilateur-pulsion";;;N;;;15;
+"BinaryInput(3000115)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-pulsion defaut-regu";3;3000115;"9.10 pulsion.defaut-regulateur-vitesse";;;N;;;18;
+"BinaryInput(3000114)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-pulsion interrupteu";3;3000114;"9.10 pulsion.interrupteur-securite";;;N;;;18;
+"BinaryInput(3000113)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-extraction interrup";3;3000113;"9.15 extraction.interrupteur-securite";;;N;;;18;
+"BinaryInput(3000112)";504;"GTBQIDMCRC/MSTP1.FEC10.clapet-air-repris ferme";3;3000112;"9.14 clapet air repris ferme";;;N;;;13;
+"BinaryInput(3000111)";504;"GTBQIDMCRC/MSTP1.FEC10.clapet-air-neuf ferme";3;3000111;"9.10";;;N;;;13;
+"BinaryInput(3000109)";504;"GTBQIDMCRC/MSTP1.FEC10.debit-pulsion etat";3;3000109;"9.116.7 debit-pulsion";;;N;;;20;
+"BinaryInput(3000108)";504;"GTBQIDMCRC/MSTP1.FEC10.debit-extraction etat";3;3000108;"9.116.8 debit-extraction";;;N;;;20;
+"BinaryInput(3000107)";504;"GTBQIDMCRC/MSTP1.FEC10.clapet-air-repris ouvert";3;3000107;"9.14 clapet-extraction";;;N;;;20;
+"BinaryInput(3000104)";504;"GTBQIDMCRC/MSTP1.FEC10.clapet-air-neuf ouvert";3;3000104;"9.10 clapet-pulsion";;;N;;;20;
+"BinaryInput(3000099)";504;"GTBQIDMCRC/MSTP1.FEC10.filtre-air-neuf encrasse";3;3000099;"9.113.7 filtre-air-neuf";;;N;;;18;
+"BinaryInput(3000098)";504;"GTBQIDMCRC/MSTP1.FEC10.filtre-extraction encrasse";3;3000098;"9.113.8 filtre-extraction";;;N;;;18;
+"AnalogValue(3009921)";504;"GTBQIDMCRC/MSTP1.TUC38.AV-37";2;3009921;"CoolIndication";;;Y;;;;98
+"AnalogValue(3009920)";504;"GTBQIDMCRC/MSTP1.TUC38.AV-44";2;3009920;"HeatIndication";;;Y;;;;98
+"AnalogValue(3009919)";504;"GTBQIDMCRC/MSTP1.TUC38.AV-0";2;3009919;"2=chaud / 3=froid";;;Y;;;;95
+"AnalogValue(3009916)";504;"GTBQIDMCRC/MSTP1.TUC38.AV-3";2;3009916;"SetPointDial";;;Y;;;;62
+"AnalogValue(3009899)";504;"GTBQIDMCRC/MSTP1.FX36.AV-37";2;3009899;;;;Y;;;;98
+"AnalogValue(3009898)";504;"GTBQIDMCRC/MSTP1.FX36.AV-44";2;3009898;;;;Y;;;;98
+"AnalogValue(3009896)";504;"GTBQIDMCRC/MSTP1.FX36.AV-3";2;3009896;;;;Y;;;;62
+"AnalogValue(3009884)";504;"GTBQIDMCRC/MSTP1.FX58.AV-0";2;3009884;"2=chaud / 3=froid";;;Y;;;;95
+"AnalogValue(3009875)";504;"GTBQIDMCRC/MSTP1.FX50.AV-0";2;3009875;"2=chaud / 3=froid";;;Y;;;;95
+"AnalogValue(3009737)";504;"GTBQIDMCRC/MSTP1.FX40.AV-0";2;3009737;"2=chaud / 3=froid";;;Y;;;;95
+"AnalogValue(3009590)";504;"GTBQIDMCRC/MSTP1.TUC43.AV-37";2;3009590;"CoolIndication";;;Y;;;;98
+"AnalogValue(3009589)";504;"GTBQIDMCRC/MSTP1.TUC43.AV-44";2;3009589;"HeatIndication";;;Y;;;;98
+"AnalogValue(3009588)";504;"GTBQIDMCRC/MSTP1.TUC43.AV-0";2;3009588;"2=chaud / 3=froid";;;Y;;;;95
+"AnalogValue(3009587)";504;"GTBQIDMCRC/MSTP1.TUC43.AV-3";2;3009587;"SetPointDial";;;Y;;;;62
+"AnalogValue(3009546)";504;"GTBQIDMCRC/MSTP1.TUC63.AV-37";2;3009546;"CoolIndication";;;Y;;;;98
+"AnalogValue(3009545)";504;"GTBQIDMCRC/MSTP1.TUC63.AV-44";2;3009545;"HeatIndication";;;Y;;;;98
+"AnalogValue(3009544)";504;"GTBQIDMCRC/MSTP1.TUC63.AV-0";2;3009544;"2=chaud / 3=froid";;;Y;;;;95
+"AnalogValue(3009543)";504;"GTBQIDMCRC/MSTP1.TUC63.AV-3";2;3009543;"SetPointDial";;;Y;;;;62
+"AnalogValue(3009541)";504;"GTBQIDMCRC/MSTP1.TUC61.AV-0";2;3009541;"2=chaud / 3=froid";;;Y;;;;95
+"AnalogValue(3009539)";504;"GTBQIDMCRC/MSTP1.TUC62.AV-37";2;3009539;"CoolIndication";;;Y;;;;98
+"AnalogValue(3009538)";504;"GTBQIDMCRC/MSTP1.TUC62.AV-44";2;3009538;"HeatIndication";;;Y;;;;98
+"AnalogValue(3009537)";504;"GTBQIDMCRC/MSTP1.TUC62.AV-0";2;3009537;"2=chaud / 3=froid";;;Y;;;;95
+"AnalogValue(3009536)";504;"GTBQIDMCRC/MSTP1.TUC62.AV-3";2;3009536;"SetPointDial";;;Y;;;;62
+"AnalogValue(3009533)";504;"GTBQIDMCRC/MSTP1.TUC61.AV-37";2;3009533;"CoolIndication";;;Y;;;;98
+"AnalogValue(3009532)";504;"GTBQIDMCRC/MSTP1.TUC61.AV-44";2;3009532;"HeatIndication";;;Y;;;;98
+"AnalogValue(3009530)";504;"GTBQIDMCRC/MSTP1.TUC61.AV-3";2;3009530;"SetPointDial";;;Y;;;;62
+"AnalogValue(3009527)";504;"GTBQIDMCRC/MSTP1.TUC60.AV-37";2;3009527;"CoolIndication";;;Y;;;;98
+"AnalogValue(3009526)";504;"GTBQIDMCRC/MSTP1.TUC60.AV-44";2;3009526;"HeatIndication";;;Y;;;;98
+"AnalogValue(3009525)";504;"GTBQIDMCRC/MSTP1.TUC60.AV-0";2;3009525;"2=chaud / 3=froid";;;Y;;;;95
+"AnalogValue(3009524)";504;"GTBQIDMCRC/MSTP1.TUC60.AV-3";2;3009524;"SetPointDial";;;Y;;;;62
+"AnalogValue(3007821)";504;"GTBQIDMCRC/MSTP1.FEC20.temporisation-commutation consi";2;3007821;;;;Y;;;;72
+"AnalogValue(3007563)";504;"GTBQIDMCRC/MSTP1.FEC20.temperature-alarme-froid consig";2;3007563;"consigne temperature alarme froid";;;Y;;;;62
+"AnalogValue(3007546)";504;"GTBQIDMCRC/MSTP1.FEC20.limite-temperature-poutres cons";2;3007546;;;;Y;;;;62
+"AnalogValue(3007090)";504;"GTBQIDMCRC/Programming.Ventil.temperature-pulsion-bas consigne";2;3007090;;;;Y;;;;95
+"AnalogValue(3007089)";504;"GTBQIDMCRC/Programming.Ventil.temperature-pulsionhaut consigne";2;3007089;;;;Y;;;;95
+"AnalogValue(3007088)";504;"GTBQIDMCRC/Programming.Ventil.temperature-ext-haut consigne";2;3007088;;;;Y;;;;95
+"AnalogValue(3007087)";504;"GTBQIDMCRC/Programming.Ventil.temperature-ext-bas consigne";2;3007087;;;;Y;;;;62
+"AnalogValue(3006150)";504;"GTBQIDMCRC/Programming.poutre.temperature-froid consigne";2;3006150;;;;Y;;;;62
+"AnalogValue(3006149)";504;"GTBQIDMCRC/Programming.poutre.temperature-chaud consigne";2;3006149;;;;Y;;;;62
+"AnalogValue(3005237)";504;"GTBQIDMCRC/Programming.poutre.temperature-changeover consigne";2;3005237;;;;Y;;;;62
+"AnalogValue(3004572)";504;"GTBQIDMCRC/MSTP1.FX59.AV-37";2;3004572;;;;Y;;;;98
+"AnalogValue(3004571)";504;"GTBQIDMCRC/MSTP1.FX59.AV-44";2;3004571;;;;Y;;;;98
+"AnalogValue(3004570)";504;"GTBQIDMCRC/MSTP1.FX59.AV-3";2;3004570;;;;Y;;;;62
+"AnalogValue(3003427)";504;"GTBQIDMCRC/MSTP1.FX58.AV-37";2;3003427;"CoolIndication";;;Y;;;;98
+"AnalogValue(3003426)";504;"GTBQIDMCRC/MSTP1.FX58.AV-44";2;3003426;"HeatIndication";;;Y;;;;98
+"AnalogValue(3003425)";504;"GTBQIDMCRC/MSTP1.FX58.AV-3";2;3003425;"SetPointDial";;;Y;;;;62
+"AnalogValue(3003420)";504;"GTBQIDMCRC/MSTP1.FX57.AV-37";2;3003420;;;;Y;;;;98
+"AnalogValue(3003419)";504;"GTBQIDMCRC/MSTP1.FX57.AV-44";2;3003419;;;;Y;;;;98
+"AnalogValue(3003418)";504;"GTBQIDMCRC/MSTP1.FX57.AV-3";2;3003418;;;;Y;;;;62
+"AnalogValue(3003413)";504;"GTBQIDMCRC/MSTP1.FX56.AV-37";2;3003413;;;;Y;;;;98
+"AnalogValue(3003412)";504;"GTBQIDMCRC/MSTP1.FX56.AV-44";2;3003412;;;;Y;;;;98
+"AnalogValue(3003411)";504;"GTBQIDMCRC/MSTP1.FX56.AV-3";2;3003411;;;;Y;;;;62
+"AnalogValue(3003406)";504;"GTBQIDMCRC/MSTP1.FX55.AV-37";2;3003406;;;;Y;;;;98
+"AnalogValue(3003405)";504;"GTBQIDMCRC/MSTP1.FX55.AV-44";2;3003405;;;;Y;;;;98
+"AnalogValue(3003404)";504;"GTBQIDMCRC/MSTP1.FX55.AV-3";2;3003404;;;;Y;;;;62
+"AnalogValue(3003399)";504;"GTBQIDMCRC/MSTP1.FX54.AV-37";2;3003399;;;;Y;;;;98
+"AnalogValue(3003398)";504;"GTBQIDMCRC/MSTP1.FX54.AV-44";2;3003398;;;;Y;;;;98
+"AnalogValue(3003397)";504;"GTBQIDMCRC/MSTP1.FX54.AV-3";2;3003397;;;;Y;;;;62
+"AnalogValue(3003392)";504;"GTBQIDMCRC/MSTP1.FX52.AV-37";2;3003392;;;;Y;;;;98
+"AnalogValue(3003391)";504;"GTBQIDMCRC/MSTP1.FX52.AV-44";2;3003391;;;;Y;;;;98
+"AnalogValue(3003390)";504;"GTBQIDMCRC/MSTP1.FX52.AV-3";2;3003390;;;;Y;;;;62
+"AnalogValue(3003385)";504;"GTBQIDMCRC/MSTP1.FX51.AV-37";2;3003385;;;;Y;;;;98
+"AnalogValue(3003384)";504;"GTBQIDMCRC/MSTP1.FX51.AV-44";2;3003384;;;;Y;;;;98
+"AnalogValue(3003383)";504;"GTBQIDMCRC/MSTP1.FX51.AV-3";2;3003383;;;;Y;;;;62
+"AnalogValue(3003378)";504;"GTBQIDMCRC/MSTP1.FX50.AV-37";2;3003378;"CoolIndication";;;Y;;;;98
+"AnalogValue(3003377)";504;"GTBQIDMCRC/MSTP1.FX50.AV-44";2;3003377;"HeatIndication";;;Y;;;;98
+"AnalogValue(3003376)";504;"GTBQIDMCRC/MSTP1.FX50.AV-3";2;3003376;"SetPointDial";;;Y;;;;62
+"AnalogValue(3003371)";504;"GTBQIDMCRC/MSTP1.FX49.AV-37";2;3003371;;;;Y;;;;98
+"AnalogValue(3003370)";504;"GTBQIDMCRC/MSTP1.FX49.AV-44";2;3003370;;;;Y;;;;98
+"AnalogValue(3003369)";504;"GTBQIDMCRC/MSTP1.FX49.AV-3";2;3003369;;;;Y;;;;62
+"AnalogValue(3003364)";504;"GTBQIDMCRC/MSTP1.FX47.AV-37";2;3003364;;;;Y;;;;98
+"AnalogValue(3003363)";504;"GTBQIDMCRC/MSTP1.FX47.AV-44";2;3003363;;;;Y;;;;98
+"AnalogValue(3003362)";504;"GTBQIDMCRC/MSTP1.FX47.AV-3";2;3003362;;;;Y;;;;62
+"AnalogValue(3003357)";504;"GTBQIDMCRC/MSTP1.FX46.AV-37";2;3003357;;;;Y;;;;98
+"AnalogValue(3003356)";504;"GTBQIDMCRC/MSTP1.FX46.AV-44";2;3003356;;;;Y;;;;98
+"AnalogValue(3003355)";504;"GTBQIDMCRC/MSTP1.FX46.AV-3";2;3003355;;;;Y;;;;62
+"AnalogValue(3003350)";504;"GTBQIDMCRC/MSTP1.FX45.AV-37";2;3003350;;;;Y;;;;98
+"AnalogValue(3003349)";504;"GTBQIDMCRC/MSTP1.FX45.AV-44";2;3003349;;;;Y;;;;98
+"AnalogValue(3003348)";504;"GTBQIDMCRC/MSTP1.FX45.AV-3";2;3003348;;;;Y;;;;62
+"AnalogValue(3003343)";504;"GTBQIDMCRC/MSTP1.FX44.AV-37";2;3003343;;;;Y;;;;98
+"AnalogValue(3003342)";504;"GTBQIDMCRC/MSTP1.FX44.AV-44";2;3003342;;;;Y;;;;98
+"AnalogValue(3003341)";504;"GTBQIDMCRC/MSTP1.FX44.AV-3";2;3003341;;;;Y;;;;62
+"AnalogValue(3003336)";504;"GTBQIDMCRC/MSTP1.FX42.AV-37";2;3003336;;;;Y;;;;98
+"AnalogValue(3003335)";504;"GTBQIDMCRC/MSTP1.FX42.AV-44";2;3003335;;;;Y;;;;98
+"AnalogValue(3003334)";504;"GTBQIDMCRC/MSTP1.FX42.AV-3";2;3003334;;;;Y;;;;62
+"AnalogValue(3003329)";504;"GTBQIDMCRC/MSTP1.FX41.AV-37";2;3003329;;;;Y;;;;98
+"AnalogValue(3003328)";504;"GTBQIDMCRC/MSTP1.FX41.AV-44";2;3003328;;;;Y;;;;98
+"AnalogValue(3003327)";504;"GTBQIDMCRC/MSTP1.FX41.AV-3";2;3003327;;;;Y;;;;62
+"AnalogValue(3003322)";504;"GTBQIDMCRC/MSTP1.FX40.AV-37";2;3003322;"CoolIndication";;;Y;;;;98
+"AnalogValue(3003321)";504;"GTBQIDMCRC/MSTP1.FX40.AV-44";2;3003321;"HeatIndication";;;Y;;;;98
+"AnalogValue(3003320)";504;"GTBQIDMCRC/MSTP1.FX40.AV-3";2;3003320;"SetPointDial";;;Y;;;;62
+"AnalogValue(3003315)";504;"GTBQIDMCRC/MSTP1.FX39.AV-37";2;3003315;;;;Y;;;;98
+"AnalogValue(3003314)";504;"GTBQIDMCRC/MSTP1.FX39.AV-44";2;3003314;;;;Y;;;;98
+"AnalogValue(3003313)";504;"GTBQIDMCRC/MSTP1.FX39.AV-3";2;3003313;;;;Y;;;;62
+"AnalogValue(3003308)";504;"GTBQIDMCRC/MSTP1.FX35.AV-37";2;3003308;;;;Y;;;;98
+"AnalogValue(3003307)";504;"GTBQIDMCRC/MSTP1.FX35.AV-44";2;3003307;;;;Y;;;;98
+"AnalogValue(3003306)";504;"GTBQIDMCRC/MSTP1.FX35.AV-3";2;3003306;;;;Y;;;;62
+"AnalogValue(3003301)";504;"GTBQIDMCRC/MSTP1.FX34.AV-37";2;3003301;;;;Y;;;;98
+"AnalogValue(3003300)";504;"GTBQIDMCRC/MSTP1.FX34.AV-44";2;3003300;;;;Y;;;;98
+"AnalogValue(3003299)";504;"GTBQIDMCRC/MSTP1.FX34.AV-3";2;3003299;;;;Y;;;;62
+"AnalogValue(3003294)";504;"GTBQIDMCRC/MSTP1.FX33.AV-37";2;3003294;;;;Y;;;;98
+"AnalogValue(3003293)";504;"GTBQIDMCRC/MSTP1.FX33.AV-44";2;3003293;;;;Y;;;;98
+"AnalogValue(3003292)";504;"GTBQIDMCRC/MSTP1.FX33.AV-3";2;3003292;;;;Y;;;;62
+"AnalogValue(3002767)";504;"GTBQIDMCRC/MSTP1.FX32.AV-37";2;3002767;;;;Y;;;;98
+"AnalogValue(3002766)";504;"GTBQIDMCRC/MSTP1.FX32.AV-44";2;3002766;;;;Y;;;;98
+"AnalogValue(3002765)";504;"GTBQIDMCRC/MSTP1.FX32.AV-3";2;3002765;;;;Y;;;;62
+"AnalogValue(3002760)";504;"GTBQIDMCRC/MSTP1.FX31.AV-37";2;3002760;;;;Y;;;;98
+"AnalogValue(3002759)";504;"GTBQIDMCRC/MSTP1.FX31.AV-44";2;3002759;;;;Y;;;;98
+"AnalogValue(3002758)";504;"GTBQIDMCRC/MSTP1.FX31.AV-3";2;3002758;;;;Y;;;;62
+"AnalogValue(3001135)";504;"GTBQIDMCRC/MSTP1.FEC20.regulation-temp-sanitaire legio";2;3001135;;;;Y;;;;62
+"AnalogValue(3001134)";504;"GTBQIDMCRC/MSTP1.FEC20.regulation-temp-sanitaire en-co";2;3001134;;;;Y;;;;62
+"AnalogValue(3001133)";504;"GTBQIDMCRC/MSTP1.FEC20.regulation-temp-sanitaire hors-";2;3001133;;;;Y;;;;62
+"AnalogValue(3001040)";504;"GTBQIDMCRC/Programming.poutre.regul-poutres-cons-ext-chaud";2;3001040;;;;Y;;;;62
+"AnalogValue(3001039)";504;"GTBQIDMCRC/Programming.poutre.regul-poutres-cons-ext-froid";2;3001039;;;;Y;;;;62
+"AnalogValue(3001038)";504;"GTBQIDMCRC/Programming.poutre.regul-poutres-cons-temp-chaud";2;3001038;;;;Y;;;;95
+"AnalogValue(3001037)";504;"GTBQIDMCRC/Programming.poutre.regul-poutres-cons-temp-froid";2;3001037;;;;Y;;;;95
+"AnalogValue(3000255)";504;"GTBQIDMCRC/MSTP1.FEC20.regulation-energie-poutres cons";2;3000255;;;;Y;;;;62
+"AnalogValue(3000253)";504;"GTBQIDMCRC/MSTP1.FEC20.regulation-energie-froid consig";2;3000253;;;;Y;;;;62
+"AnalogValue(3000141)";504;"GTBQIDMCRC/MSTP1.FEC10.regulation-energie consigne-tem";2;3000141;;;;Y;;;;62
+"AnalogValue(3000140)";504;"GTBQIDMCRC/MSTP1.FEC10.regulation-extraction consigne-";2;3000140;;;;Y;;;;53
+"AnalogValue(3000134)";504;"GTBQIDMCRC/MSTP1.FEC10.regulation-pulsion consigne-pre";2;3000134;;;;Y;;;;53
+"AnalogOutput(3001149)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-poutres pourcentage-ouver";1;3001149;"vanne-poutres.pourcentage-ouverture";0.00;100.00;Y;;;;98
+"AnalogOutput(3001148)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-primaire-froid pourcentag";1;3001148;"9.152.2 vanne-primaire-froid";0.00;100.00;Y;;;;98
+"AnalogOutput(3000230)";504;"GTBQIDMCRC/MSTP1.FEC20.vanne-charge-sanitaire 0-10v";1;3000230;"vanne-charge-sanitaire.0-10v";0.00;100.00;Y;;;;98
+"AnalogOutput(3000163)";504;"GTBQIDMCRC/MSTP1.FEC10.vanne-froid pourcentage-ouvertu";1;3000163;"9.112.4 vanne-froid";0.00;100.00;Y;;;;98
+"AnalogOutput(3000162)";504;"GTBQIDMCRC/MSTP1.FEC10.vanne-chaud pourcentage-ouvertu";1;3000162;"9.112.2 vanne-chaud";0.00;100.00;Y;;;;98
+"AnalogOutput(3000110)";504;"GTBQIDMCRC/MSTP1.FEC10.circulateur-recuperation 0-10v";1;3000110;"circulateur-recuperation.0-10v";0.00;100.00;Y;;;;98
+"AnalogOutput(3000103)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-extraction 0-10v";1;3000103;"ventilateur-extraction.0-10v";0.00;100.00;Y;;;;98
+"AnalogOutput(3000102)";504;"GTBQIDMCRC/MSTP1.FEC10.ventilateur-pulsion 0-10v";1;3000102;"ventilateur-pulsion.0-10v";0.00;100.00;Y;;;;98
+"AnalogInput(3010269)";504;"GTBQIDMCRC/MSTP1.FX36.AI-1";0;3010269;;0.00;0.00;N;;;;62
+"AnalogInput(3009917)";504;"GTBQIDMCRC/MSTP1.TUC38.AI-4";0;3009917;"S_RoomModule";0.00;0.00;N;;;;62
+"AnalogInput(3009900)";504;"GTBQIDMCRC/MSTP1.FX36.AI-4";0;3009900;;0.00;0.00;N;;;;62
+"AnalogInput(3009591)";504;"GTBQIDMCRC/MSTP1.TUC43.AI-4";0;3009591;"S_RoomModule";0.00;0.00;N;;;;62
+"AnalogInput(3009547)";504;"GTBQIDMCRC/MSTP1.TUC63.AI-4";0;3009547;"S_RoomModule";0.00;0.00;N;;;;62
+"AnalogInput(3009540)";504;"GTBQIDMCRC/MSTP1.TUC62.AI-4";0;3009540;"S_RoomModule";0.00;0.00;N;;;;62
+"AnalogInput(3009534)";504;"GTBQIDMCRC/MSTP1.TUC61.AI-4";0;3009534;"S_RoomModule";0.00;0.00;N;;;;62
+"AnalogInput(3009528)";504;"GTBQIDMCRC/MSTP1.TUC60.AI-4";0;3009528;"S_RoomModule";0.00;0.00;N;;;;62
+"AnalogInput(3009515)";504;"GTBQIDMCRC/Tronc N2.XTM-203.debit froid batD mesure";0;3009515;;-46.00;100000000000000000000000000000000000000.00;N;;;;80
+"AnalogInput(3009514)";504;"GTBQIDMCRC/Tronc N2.XTM-203.debit poutres mesure";0;3009514;;-46.00;100000000000000000000000000000000000000.00;N;;;;80
+"AnalogInput(3009513)";504;"GTBQIDMCRC/Tronc N2.XTM-200.puissance froid batD mesure";0;3009513;;-46.00;100000000000000000000000000000000000000.00;N;;;;19
+"AnalogInput(3009512)";504;"GTBQIDMCRC/Tronc N2.XTM-200.puissance poutres mesure";0;3009512;;-46.00;100000000000000000000000000000000000000.00;N;;;;19
+"AnalogInput(3004574)";504;"GTBQIDMCRC/MSTP1.FX59.AI-1";0;3004574;;0.00;0.00;N;;;;62
+"AnalogInput(3004573)";504;"GTBQIDMCRC/MSTP1.FX59.AI-4";0;3004573;;0.00;0.00;N;;;;62
+"AnalogInput(3003428)";504;"GTBQIDMCRC/MSTP1.FX58.AI-4";0;3003428;"S_RoomModule";0.00;0.00;N;;;;62
+"AnalogInput(3003422)";504;"GTBQIDMCRC/MSTP1.FX57.AI-1";0;3003422;;0.00;0.00;N;;;;62
+"AnalogInput(3003421)";504;"GTBQIDMCRC/MSTP1.FX57.AI-4";0;3003421;;0.00;0.00;N;;;;62
+"AnalogInput(3003415)";504;"GTBQIDMCRC/MSTP1.FX56.AI-1";0;3003415;;0.00;0.00;N;;;;62
+"AnalogInput(3003414)";504;"GTBQIDMCRC/MSTP1.FX56.AI-4";0;3003414;;0.00;0.00;N;;;;62
+"AnalogInput(3003408)";504;"GTBQIDMCRC/MSTP1.FX55.AI-1";0;3003408;;0.00;0.00;N;;;;62
+"AnalogInput(3003407)";504;"GTBQIDMCRC/MSTP1.FX55.AI-4";0;3003407;;0.00;0.00;N;;;;62
+"AnalogInput(3003401)";504;"GTBQIDMCRC/MSTP1.FX54.AI-1";0;3003401;;0.00;0.00;N;;;;62
+"AnalogInput(3003400)";504;"GTBQIDMCRC/MSTP1.FX54.AI-4";0;3003400;;0.00;0.00;N;;;;62
+"AnalogInput(3003394)";504;"GTBQIDMCRC/MSTP1.FX52.AI-1";0;3003394;;0.00;0.00;N;;;;62
+"AnalogInput(3003393)";504;"GTBQIDMCRC/MSTP1.FX52.AI-4";0;3003393;;0.00;0.00;N;;;;62
+"AnalogInput(3003387)";504;"GTBQIDMCRC/MSTP1.FX51.AI-1";0;3003387;;0.00;0.00;N;;;;62
+"AnalogInput(3003386)";504;"GTBQIDMCRC/MSTP1.FX51.AI-4";0;3003386;;0.00;0.00;N;;;;62
+"AnalogInput(3003379)";504;"GTBQIDMCRC/MSTP1.FX50.AI-4";0;3003379;"S_RoomModule";0.00;0.00;N;;;;62
+"AnalogInput(3003373)";504;"GTBQIDMCRC/MSTP1.FX49.AI-1";0;3003373;;0.00;0.00;N;;;;62
+"AnalogInput(3003372)";504;"GTBQIDMCRC/MSTP1.FX49.AI-4";0;3003372;;0.00;0.00;N;;;;62
+"AnalogInput(3003366)";504;"GTBQIDMCRC/MSTP1.FX47.AI-1";0;3003366;;0.00;0.00;N;;;;62
+"AnalogInput(3003365)";504;"GTBQIDMCRC/MSTP1.FX47.AI-4";0;3003365;;0.00;0.00;N;;;;62
+"AnalogInput(3003359)";504;"GTBQIDMCRC/MSTP1.FX46.AI-1";0;3003359;;0.00;0.00;N;;;;62
+"AnalogInput(3003358)";504;"GTBQIDMCRC/MSTP1.FX46.AI-4";0;3003358;;0.00;0.00;N;;;;62
+"AnalogInput(3003352)";504;"GTBQIDMCRC/MSTP1.FX45.AI-1";0;3003352;;0.00;0.00;N;;;;62
+"AnalogInput(3003351)";504;"GTBQIDMCRC/MSTP1.FX45.AI-4";0;3003351;;0.00;0.00;N;;;;62
+"AnalogInput(3003345)";504;"GTBQIDMCRC/MSTP1.FX44.AI-1";0;3003345;;0.00;0.00;N;;;;62
+"AnalogInput(3003344)";504;"GTBQIDMCRC/MSTP1.FX44.AI-4";0;3003344;;0.00;0.00;N;;;;62
+"AnalogInput(3003338)";504;"GTBQIDMCRC/MSTP1.FX42.AI-1";0;3003338;;0.00;0.00;N;;;;62
+"AnalogInput(3003337)";504;"GTBQIDMCRC/MSTP1.FX42.AI-4";0;3003337;;0.00;0.00;N;;;;62
+"AnalogInput(3003331)";504;"GTBQIDMCRC/MSTP1.FX41.AI-1";0;3003331;;0.00;0.00;N;;;;62
+"AnalogInput(3003330)";504;"GTBQIDMCRC/MSTP1.FX41.AI-4";0;3003330;;0.00;0.00;N;;;;62
+"AnalogInput(3003323)";504;"GTBQIDMCRC/MSTP1.FX40.AI-4";0;3003323;"S_RoomModule";0.00;0.00;N;;;;62
+"AnalogInput(3003317)";504;"GTBQIDMCRC/MSTP1.FX39.AI-1";0;3003317;;0.00;0.00;N;;;;62
+"AnalogInput(3003316)";504;"GTBQIDMCRC/MSTP1.FX39.AI-4";0;3003316;;0.00;0.00;N;;;;62
+"AnalogInput(3003310)";504;"GTBQIDMCRC/MSTP1.FX35.AI-1";0;3003310;;0.00;0.00;N;;;;62
+"AnalogInput(3003309)";504;"GTBQIDMCRC/MSTP1.FX35.AI-4";0;3003309;;0.00;0.00;N;;;;62
+"AnalogInput(3003303)";504;"GTBQIDMCRC/MSTP1.FX34.AI-1";0;3003303;;0.00;0.00;N;;;;62
+"AnalogInput(3003302)";504;"GTBQIDMCRC/MSTP1.FX34.AI-4";0;3003302;;0.00;0.00;N;;;;62
+"AnalogInput(3003296)";504;"GTBQIDMCRC/MSTP1.FX33.AI-1";0;3003296;;0.00;0.00;N;;;;62
+"AnalogInput(3003295)";504;"GTBQIDMCRC/MSTP1.FX33.AI-4";0;3003295;;0.00;0.00;N;;;;62
+"AnalogInput(3002769)";504;"GTBQIDMCRC/MSTP1.FX32.AI-1";0;3002769;;0.00;0.00;N;;;;62
+"AnalogInput(3002768)";504;"GTBQIDMCRC/MSTP1.FX32.AI-4";0;3002768;;0.00;0.00;N;;;;62
+"AnalogInput(3002762)";504;"GTBQIDMCRC/MSTP1.FX31.AI-1";0;3002762;;0.00;0.00;N;;;;62
+"AnalogInput(3002761)";504;"GTBQIDMCRC/MSTP1.FX31.AI-4";0;3002761;;0.00;0.00;N;;;;62
+"AnalogInput(3000257)";504;"GTBQIDMCRC/MSTP1.FEC20.temperature-depart-poutres mesu";0;3000257;"9.150.3 temperature-depart-poutres";-46.00;121.00;N;;;;62
+"AnalogInput(3000249)";504;"GTBQIDMCRC/MSTP1.FEC20.temperature-haute-boiler-sanita";0;3000249;"9.162.2 temp.haute-boiler-sanitaire";-46.00;121.00;N;;;;62
+"AnalogInput(3000244)";504;"GTBQIDMCRC/MSTP1.FEC20.comptage-eau-du-lac mesure";0;3000244;"9.28 comptage-eau-du-lac";-50.00;6200.00;N;;;;136
+"AnalogInput(3000243)";504;"GTBQIDMCRC/MSTP1.FEC20.temperature-sortie-collecteur m";0;3000243;"9.150.5 temperature-sortie-collecteur";-46.00;121.00;N;;;;62
+"AnalogInput(3000242)";504;"GTBQIDMCRC/MSTP1.FEC20.temperature-entree-collecteur m";0;3000242;"9.150.4 temperature-entree-collecteur";-46.00;121.00;N;;;;62
+"AnalogInput(3000241)";504;"GTBQIDMCRC/MSTP1.FEC20.temperature-retour-collecteur-f";0;3000241;"9.150.2 temp.retour-collecteur-froid";-46.00;121.00;N;;;;62
+"AnalogInput(3000240)";504;"GTBQIDMCRC/MSTP1.FEC20.temperature-depart-collecteur-f";0;3000240;"9.150.1 temp.depart-collecteur-froid";-46.00;121.00;N;;;;62
+"AnalogInput(3000232)";504;"GTBQIDMCRC/MSTP1.FEC20.temperature-basse-boiler-sanita";0;3000232;"9.162.3 temp.basse-boiler-sanitaire";-46.00;121.00;N;;;;62
+"AnalogInput(3000231)";504;"GTBQIDMCRC/MSTP1.FEC20.temperature-depart-boiler-sanit";0;3000231;"9.162.1 temp.depart-boiler-sanitaire";-46.00;121.00;N;;;;62
+"AnalogInput(3000213)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisee1 mesure";0;3000213;"temperature-reprise est niv1";-46.00;121.00;N;;;;62
+"AnalogInput(3000212)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisen1 mesure";0;3000212;"temperature-reprise nord niv1";-46.00;121.00;N;;;;62
+"AnalogInput(3000211)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-repriseo0 mesure";0;3000211;"temperature-reprise ouest niv0";-46.00;121.00;N;;;;62
+"AnalogInput(3000210)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprises0 mesure";0;3000210;"temperature-reprise sud niv0";-46.00;121.00;N;;;;62
+"AnalogInput(3000209)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisee0 mesure";0;3000209;"0.130.2 temperature-reprise est niv0";-46.00;121.00;N;;;;62
+"AnalogInput(3000208)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisen0 mesure";0;3000208;"0.130.1temperature-reprise nord niv0";-46.00;121.00;N;;;;62
+"AnalogInput(3000203)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-repriseo4 mesure";0;3000203;"temperature-reprise ouest niv4";-46.00;121.00;N;;;;62
+"AnalogInput(3000202)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprises4 mesure";0;3000202;"temperature-reprise sud niv4";-46.00;121.00;N;;;;62
+"AnalogInput(3000201)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisee4 mesure";0;3000201;"temperature-reprise est niv4";-46.00;121.00;N;;;;62
+"AnalogInput(3000200)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisen4 mesure";0;3000200;"temperature-reprise nord niv4";-46.00;121.00;N;;;;62
+"AnalogInput(3000199)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-repriseo3 mesure";0;3000199;"temperature-reprise ouest niv3";-46.00;121.00;N;;;;62
+"AnalogInput(3000198)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprises3 mesure";0;3000198;"temperature-reprise sud niv3";-46.00;121.00;N;;;;62
+"AnalogInput(3000197)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisee3 mesure";0;3000197;"temperature-reprise est niv3";-46.00;121.00;N;;;;62
+"AnalogInput(3000196)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisen3 mesure";0;3000196;"temperature-reprise nord niv3";-46.00;121.00;N;;;;62
+"AnalogInput(3000195)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-repriseo2 mesure";0;3000195;"temperature-reprise ouest niv2";-46.00;121.00;N;;;;62
+"AnalogInput(3000194)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprises2 mesure";0;3000194;"temperature-reprise sud niv2";-46.00;121.00;N;;;;62
+"AnalogInput(3000193)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisee2 mesure";0;3000193;"temperature-reprise est niv2";-46.00;121.00;N;;;;62
+"AnalogInput(3000192)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprisen2 mesure";0;3000192;"temperature-reprise nord niv2";-46.00;121.00;N;;;;62
+"AnalogInput(3000191)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-repriseo1 mesure";0;3000191;"temperature-reprise ouest niv1";-46.00;121.00;N;;;;62
+"AnalogInput(3000190)";504;"GTBQIDMCRC/MSTP1.FEC16.temperature-reprises1 mesure";0;3000190;"temperature-reprise sud niv1";-46.00;121.00;N;;;;62
+"AnalogInput(3000153)";504;"GTBQIDMCRC/MSTP1.FEC10.pression-pulsion mesure";0;3000153;"pression-pulsion";0.00;1000.00;N;;;;53
+"AnalogInput(3000152)";504;"GTBQIDMCRC/MSTP1.FEC10.temperature-air-evacue mesure";0;3000152;"temperature-air-evacue";-46.00;121.00;N;;;;62
+"AnalogInput(3000151)";504;"GTBQIDMCRC/MSTP1.FEC10.temperature-reprise mesure";0;3000151;"temperature-reprise";-46.00;121.00;N;;;;62
+"AnalogInput(3000150)";504;"GTBQIDMCRC/MSTP1.FEC10.temperature-pulsion mesure";0;3000150;"temperature-pulsion";-46.00;121.00;N;;;;62
+"AnalogInput(3000149)";504;"GTBQIDMCRC/MSTP1.FEC10.temperature-air-frais mesure";0;3000149;"temperature-air-frais";-46.00;121.00;N;;;;62
+"AnalogInput(3000106)";504;"GTBQIDMCRC/MSTP1.FEC10.temperature-aller-recup mesure";0;3000106;"temperature-aller-eau-recuperation";-46.00;131.00;N;;;;62
+"AnalogInput(3000105)";504;"GTBQIDMCRC/MSTP1.FEC10.temperature-air-apres-chaud mes";0;3000105;"temperature-air-apres-chaud";-46.00;121.00;N;;;;62
+"AnalogInput(3000097)";504;"GTBQIDMCRC/MSTP1.FEC10.pression-extraction mesure";0;3000097;"pression-extraction";0.00;1000.00;N;;;;53

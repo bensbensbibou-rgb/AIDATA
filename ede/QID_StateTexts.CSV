@@ -1,0 +1,22 @@
+﻿#State Text Reference;;;;;;
+#Reference Number;Text 1/Inactive-Text;Text 2/Active-Text;Text 3;Text 4;Text 5;Text 6
+1;"Etat 0";"Etat 1";"Etat 2";;;
+2;"Non";"Oui";;;;
+3;"Et�";"Hiver";;;;
+4;"Normal";"Alarme";;;;
+5;"Arr�t";"Marche";;;;
+6;"Normal";"Alarm";;;;
+7;"No";"Yes";;;;
+8;"Cold";"Hot";;;;
+9;"Off";"On";;;;
+10;"Close";"Open";;;;
+11;"Normal";"Pressuriser";"D�pressuriser";"Purger";"Arr�t";"Incendie"
+12;"Normal";"Alarme";;;;
+13;"Non";"Oui";;;;
+14;"Chaud";"Froid";;;;
+15;"Off";"On";;;;
+16;"Close";"Open";;;;
+17;"Normal";"D�faut";;;;
+18;"Normal";"Alarm";;;;
+19;;;;;;
+20;"No";"Yes";;;;
