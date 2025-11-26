@@ -31,3 +31,21 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+.venv/
+*.egg-info/
+pip-wheel-metadata/
+.pytest_cache/
+
+# IDE / OS files already covered but add common ones
+.vscode/
+.idea/
