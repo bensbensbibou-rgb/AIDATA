@@ -87,6 +87,7 @@ export interface FloorPlanLayer {
   minValue?: number;
   maxValue?: number;
   units?: string;
+  gradientColors?: string[]; // Custom gradient stops (hex)
 }
 
 export interface FloorPlanObject {

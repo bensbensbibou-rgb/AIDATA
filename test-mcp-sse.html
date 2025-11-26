@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP SSE Test</title>
+</head>
+<body>
+    <h1>MCP SSE Connection Test</h1>
+    <div id="status">Disconnected</div>
+    <button onclick="connect()">Connect</button>
+    <button onclick="testRequest()">Test Request</button>
+    <button onclick="disconnect()">Disconnect</button>
+    <pre id="log"></pre>
+
+    <script>
+        let eventSource = null;
+        let requestId = 0;
+        const pendingRequests = new Map();
+
+        function log(message) {
+            const logEl = document.getElementById('log');
+            logEl.textContent += new Date().toISOString() + ': ' + message + '\n';
+            console.log(message);
+        }
+
+        function updateStatus(status) {
+            document.getElementById('status').textContent = status;
+        }
+
+        function connect() {
+            const url = '/proxy/distech/mcp'; // Via Vite proxy
+            log('Connecting to: ' + url);
+            
+            eventSource = new EventSource(url);
+
+            eventSource.onopen = () => {
+                log('✓ Connected to MCP server');
+                updateStatus('Connected');
+            };
+
+            eventSource.onerror = (error) => {
+                log('✗ Connection error: ' + JSON.stringify(error));
+                updateStatus('Error');
+            };
+
+            eventSource.onmessage = (event) => {
+                log('← Received: ' + event.data);
+                try {
+                    const response = JSON.parse(event.data);
+                    handleResponse(response);
+                } catch (err) {
+                    log('✗ Parse error: ' + err.message);
+                }
+            };
+        }
+
+        function handleResponse(response) {
+            if (response.id && pendingRequests.has(response.id)) {
+                const { resolve, reject, timeout } = pendingRequests.get(response.id);
+                clearTimeout(timeout);
+                pendingRequests.delete(response.id);
+
+                if (response.error) {
+                    log('✗ Error response: ' + response.error.message);
+                    reject(response.error);
+                } else {
+                    log('✓ Success response: ' + JSON.stringify(response.result));
+                    resolve(response.result);
+                }
+            }
+        }
+
+        async function testRequest() {
+            if (!eventSource || eventSource.readyState !== EventSource.OPEN) {
+                log('✗ Not connected');
+                return;
+            }
+
+            const id = ++requestId;
+            const request = {
+                jsonrpc: '2.0',
+                id: id,
+                method: 'tools/list', // MCP standard method
+                params: {}
+            };
+
+            log('→ Sending request: ' + JSON.stringify(request));
+
+            try {
+                const response = await fetch('/proxy/distech/mcp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(request)
+                });
+
+                if (!response.ok) {
+                    log('✗ HTTP error: ' + response.status + ' ' + response.statusText);
+                    const text = await response.text();
+                    log('Response body: ' + text);
+                }
+            } catch (err) {
+                log('✗ Request error: ' + err.message);
+            }
+        }
+
+        function disconnect() {
+            if (eventSource) {
+                eventSource.close();
+                eventSource = null;
+                log('Disconnected');
+                updateStatus('Disconnected');
+            }
+        }
+    </script>
+</body>
+</html>

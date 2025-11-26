@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_model": "bacnet_mcp",
+  "name_for_human": "BACnet MCP Server",
+  "description_for_model": "Interagit avec des dispositifs BACnet via FastMCP. Permet de découvrir des appareils, lire et écrire des propriétés, libérer des priorités, et lire des alarmes.",
+  "description_for_human": "Contrôlez des équipements BACnet sur le réseau (lecture, écriture, découverte, alarmes) avec FastMCP.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "http://localhost:8000/openapi.yaml"
+  },
+  "logo_url": "http://localhost:8000/logo.png",
+  "contact_email": "support@example.com",
+  "legal_info_url": "http://localhost:8000/legal"
+}

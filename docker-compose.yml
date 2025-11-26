@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # Frontend React Application
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dashboard_frontend
+    ports:
+      - "3007:80"
+    restart: unless-stopped
+    networks:
+      - dashboard-network
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Backend MCP Server (Distech)
+  backend:
+    build:
+      context: ./distech_mcp_server_full
+      dockerfile: Dockerfile
+    container_name: dashboard_backend
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    networks:
+      - dashboard-network
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+networks:
+  dashboard-network:
+    driver: bridge

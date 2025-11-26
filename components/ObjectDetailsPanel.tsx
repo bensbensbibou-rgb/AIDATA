@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Shield, Clock, Settings2, ChevronLeft, ChevronRight } from 'lucide-react';
-import { DataNode } from '../types';
+import { DataNode, Language } from '../types';
 import { DriverNodeDetails } from '../drivers/NodeDetails';
 import { getObjectProperties } from '../data/bacnetProperties';
 
@@ -9,6 +9,7 @@ interface ObjectDetailsPanelProps {
   open: boolean;
   onToggle: () => void;
   details: DriverNodeDetails | null;
+  language?: Language;
 }
 
 interface PropertyField {
@@ -22,7 +23,9 @@ export const ObjectDetailsPanel: React.FC<ObjectDetailsPanelProps> = ({
   open,
   onToggle,
   details,
+  language,
 }) => {
+  void language;
   const [showAdvanced, setShowAdvanced] = useState(true);
   const advancedAvailable = useMemo(() => {
     if (!details) return false;
@@ -105,8 +108,8 @@ export const ObjectDetailsPanel: React.FC<ObjectDetailsPanelProps> = ({
   }, [node, showAdvanced, details]);
 
   const definitionRows = useMemo(() => {
-    if (!showAdvanced || details?.driver !== 'bacnet' || !details.objectType) return [];
-    const props = getObjectProperties(details.objectType);
+    if (!showAdvanced || details?.driver !== 'bacnet' || !details?.objectType) return [];
+    const props = getObjectProperties(details!.objectType);
     return Object.entries(props).map(([name, def]) => ({
       name,
       ...def,

@@ -764,7 +764,7 @@ const App: React.FC = () => {
   const renderContent = () => {
       if (activeTab === 'network') {
           return (
-              <NetworkManager treeData={treeData} setTreeData={setTreeData} />
+              <NetworkManager language={language} treeData={treeData} setTreeData={setTreeData} />
           );
       }
 

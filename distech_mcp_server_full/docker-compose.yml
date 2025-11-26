@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  distech-mcp:
+    build: .
+    container_name: distech_mcp
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    # Uncomment and edit if you later read config from env in your script
+    # environment:
+    #   BASE_URL: "https://192.168.1.7/api/rest/v1"
+    #   USERNAME: "admin"
+    #   PASSWORD: "change-me"
+    #   VERIFY_SSL: "false"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
