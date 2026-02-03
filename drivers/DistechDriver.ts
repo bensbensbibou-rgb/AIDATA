@@ -18,7 +18,7 @@ export interface DistechDriverConfig extends MCPClientConfig {
 type DeviceSubscriber = (devices: DistechDevice[]) => void;
 
 const DEFAULT_DISTECH_CONFIG: DistechDriverConfig = {
-  url: (import.meta as any).env?.VITE_MCP_DISTECH_URL || 'http://localhost:8001',
+  url: ((import.meta as any).env?.VITE_MCP_DISTECH_URL || 'http://localhost:8001').trim(),
   apiKey: (import.meta as any).env?.VITE_MCP_DISTECH_KEY || '',
   timeoutMs: 15000,
   ecyUrl: (import.meta as any).env?.VITE_DISTECH_ECY_URL || '',

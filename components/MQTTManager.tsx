@@ -3,6 +3,8 @@ import { RefreshCw, Server, Wifi, Activity, Send, Inbox, Plus, Trash2 } from 'lu
 import { mqttDriver } from '../drivers/MQTTDriver';
 import { MQTTBroker, MQTTMessage } from '../drivers/MQTTTypes';
 import { DataNode } from '../types';
+import { MQTTConnectionGuide } from './MQTTConnectionGuide';
+import { MQTT_CONNECTION_INFO } from '../constants';
 
 interface MQTTManagerProps {
     treeData: DataNode[];
@@ -105,8 +107,8 @@ export const MQTTManager: React.FC<MQTTManagerProps> = ({ treeData, setTreeData 
     };
 
     return (
-        <div className="p-6 h-full overflow-y-auto bg-gray-50 dark:bg-[#1c1c1e]">
-            <div className="flex items-center justify-between mb-8">
+    <div className="p-6 h-full overflow-y-auto bg-gray-50 dark:bg-[#1c1c1e] space-y-6">
+        <div className="flex items-center justify-between mb-8">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
                         <Wifi className="text-orange-500" />
@@ -133,10 +135,12 @@ export const MQTTManager: React.FC<MQTTManagerProps> = ({ treeData, setTreeData 
                         <Plus size={18} />
                         Add Broker
                     </button>
-                </div>
             </div>
+        </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <MQTTConnectionGuide info={MQTT_CONNECTION_INFO} />
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Broker List */}
                 <div className="lg:col-span-1 space-y-4">
                     <h2 className="text-lg font-semibold dark:text-gray-200">MQTT Brokers</h2>
@@ -255,7 +259,7 @@ export const MQTTManager: React.FC<MQTTManagerProps> = ({ treeData, setTreeData 
                                     </button>
                                     {receivedMessage && (
                                         <div className="mt-4 p-4 bg-gray-50 dark:bg-white/5 rounded-lg border border-gray-200 dark:border-white/10">
-                                            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Received:</p>
+                                            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Received message</p>
                                             <pre className="text-sm font-mono text-gray-900 dark:text-white whitespace-pre-wrap">{receivedMessage}</pre>
                                         </div>
                                     )}

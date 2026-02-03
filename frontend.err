@@ -1,0 +1,10 @@
+[2m19:58:46[22m [33m[1m[vite][22m[39m [33mwarning: [33mDuplicate member "parseTargetHost" in class body[33m
+343|    }
+344|  
+345|    private parseTargetHost(deviceId: number): string | undefined {
+   |            ^
+346|      const device = this.devices.find((d) => d.deviceId === deviceId);
+347|      if (!device?.address) return undefined;
+[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Users/Mbensale/GIT/-Dashboard-AI_beta/drivers/BACnetDriver.ts[39m

@@ -1,0 +1,62 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # Prometheus lui-même
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Serveur BACnet MCP
+  - job_name: 'bacnet-mcp-server'
+    static_configs:
+      - targets: ['localhost:8050']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # n8n
+  - job_name: 'n8n'
+    static_configs:
+      - targets: ['localhost:5678']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # Nginx
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['localhost:80']
+    metrics_path: '/nginx_status'
+    scrape_interval: 30s
+
+  # Découverte automatique des appareils BACnet
+  - job_name: 'bacnet-devices'
+    static_configs:
+      - targets: 
+        - '192.168.1.100:47808'
+        - '192.168.1.101:47808'
+        - '192.168.1.102:47808'
+    scrape_interval: 60s
+    metrics_path: '/bacnet-metrics'
+
+  # Monitoring système
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['localhost:9100']
+    scrape_interval: 15s
+
+  # Monitoring Docker
+  - job_name: 'docker'
+    static_configs:
+      - targets: ['localhost:9323']
+    scrape_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093

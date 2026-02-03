@@ -1,0 +1,102 @@
+// Voice recognition and text-to-speech utilities for AI Assistant
+// Web Speech API wrapper
+
+export interface VoiceRecognitionOptions {
+    lang?: string;
+    continuous?: boolean;
+    interimResults?: boolean;
+    onStart?: () => void;
+    onResult?: (transcript: string) => void;
+    onError?: (error: string) => void;
+    onEnd?: () => void;
+}
+
+export class VoiceRecognition {
+    private recognition: any = null;
+
+    constructor(private options: VoiceRecognitionOptions) {
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            console.warn('Speech recognition not supported');
+            return;
+        }
+
+        const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+        this.recognition = new SpeechRecognition();
+
+        this.recognition.lang = options.lang || 'fr-FR';
+        this.recognition.continuous = options.continuous || false;
+        this.recognition.interimResults = options.interimResults || false;
+
+        this.recognition.onstart = () => options.onStart?.();
+        this.recognition.onresult = (event: any) => {
+            const transcript = event.results[0][0].transcript;
+            options.onResult?.(transcript);
+        };
+        this.recognition.onerror = (event: any) => {
+            options.onError?.(event.error);
+        };
+        this.recognition.onend = () => options.onEnd?.();
+    }
+
+    start() {
+        if (this.recognition) {
+            this.recognition.start();
+        } else {
+            this.options.onError?.('Speech recognition not available');
+        }
+    }
+
+    stop() {
+        if (this.recognition) {
+            this.recognition.stop();
+        }
+    }
+
+    static isSupported(): boolean {
+        return 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+    }
+}
+
+export class TextToSpeech {
+    private utterance: SpeechSynthesisUtterance | null = null;
+
+    constructor() {
+        if (!('speechSynthesis' in window)) {
+            console.warn('Text-to-speech not supported');
+        }
+    }
+
+    speak(text: string, options?: { lang?: string; rate?: number; onStart?: () => void; onEnd?: () => void; onError?: () => void }) {
+        if (!('speechSynthesis' in window)) {
+            console.warn('Text-to-speech not supported');
+            options?.onError?.();
+            return;
+        }
+
+        // Cancel any ongoing speech
+        window.speechSynthesis.cancel();
+
+        this.utterance = new SpeechSynthesisUtterance(text);
+        this.utterance.lang = options?.lang || 'fr-FR';
+        this.utterance.rate = options?.rate || 1.0;
+
+        if (options?.onStart) {
+            this.utterance.onstart = options.onStart;
+        }
+        if (options?.onEnd) {
+            this.utterance.onend = options.onEnd;
+        }
+
+        window.speechSynthesis.speak(this.utterance);
+    }
+
+    stop() {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
+    }
+
+    static isSupported(): boolean {
+        return 'speechSynthesis' in window;
+    }
+}

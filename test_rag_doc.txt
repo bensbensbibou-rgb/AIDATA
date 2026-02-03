@@ -1,0 +1,5 @@
+This is a test document for the RAG system.
+It contains some information about the HVAC system.
+The chiller setpoint is 7 degrees Celsius.
+The boiler efficiency is 95%.
+Maintenance is scheduled for every Monday.

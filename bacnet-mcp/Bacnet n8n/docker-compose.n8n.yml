@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  n8n-separate:
+    image: n8nio/n8n:latest
+    container_name: n8n-separate
+    restart: unless-stopped
+    ports:
+      - "5679:5678"  # Port différent pour éviter les conflits
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=Admin123
+      - N8N_HOST=0.0.0.0
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - N8N_USER_MANAGEMENT_DISABLED=false
+      - N8N_DISABLE_WEBHOOK_ACCESS=false
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=false
+      # Configuration MCP pour BACnet
+      - N8N_MCP_SERVER_URL=http://host.docker.internal:8000
+      - N8N_MCP_SERVER_NAME=BACnet MCP Server
+      - N8N_MCP_SERVER_VERSION=1.4.2
+    volumes:
+      - n8n_data_separate:/home/node/.n8n
+    networks:
+      - n8n_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"  # Permet d'accéder à localhost du host
+
+volumes:
+  n8n_data_separate:
+    driver: local
+
+networks:
+  n8n_network:
+    driver: bridge

@@ -1,0 +1,550 @@
+﻿<!doctype html>
+<html lang='fr'>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>Agent BACnet – Interface Web</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    
+    h1 {
+      color: #4a5568;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: #718096;
+      font-size: 1.1rem;
+    }
+    
+    .status-bar {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+    
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #48bb78;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card h2 {
+      color: #2d3748;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 10px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #4a5568;
+    }
+    
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s ease;
+      background: white;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .result-area {
+      background: #f7fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 20px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #667eea;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 10px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .error {
+      background: #fed7d7;
+      border: 1px solid #feb2b2;
+      color: #c53030;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+    
+    .success {
+      background: #c6f6d5;
+      border: 1px solid #9ae6b4;
+      color: #22543d;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+    
+    @media (max-width: 768px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .container {
+        padding: 10px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🔧 Agent BACnet</h1>
+      <p class="subtitle">Interface de contrôle et surveillance BACnet</p>
+    </header>
+    
+    <div class="status-bar">
+      <div class="status-indicator">
+        <div class="status-dot"></div>
+        <span>Serveur BACnet connecté</span>
+      </div>
+      <div>
+        <button class="btn" onclick="checkHealth()" style="width: auto; padding: 8px 16px;">Vérifier santé</button>
+      </div>
+    </div>
+    
+    <div class="main-content">
+      <!-- Lecture de propriétés -->
+      <div class="card">
+        <h2>📖 Lecture de propriétés</h2>
+        <form id="readForm">
+          <div class="form-group">
+            <label for="readHost">Hôte:</label>
+            <input type="text" id="readHost" value="192.168.1.7" required>
+          </div>
+          <div class="form-group">
+            <label for="readPort">Port:</label>
+            <input type="number" id="readPort" value="47808" required>
+          </div>
+          <div class="form-group">
+            <label for="readObjType">Type d'objet:</label>
+            <select id="readObjType">
+              <option value="analogValue">Analog Value</option>
+              <option value="analogInput">Analog Input</option>
+              <option value="analogOutput">Analog Output</option>
+              <option value="binaryValue">Binary Value</option>
+              <option value="binaryInput">Binary Input</option>
+              <option value="binaryOutput">Binary Output</option>
+              <option value="device">Device</option>
+              <option value="schedule">Schedule</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="readInstance">Instance:</label>
+            <input type="number" id="readInstance" value="1" required>
+          </div>
+          <button type="submit" class="btn">Lire propriétés</button>
+        </form>
+        <div id="readResult" class="result-area" style="display: none;"></div>
+      </div>
+      
+      <!-- Écriture de propriétés -->
+      <div class="card">
+        <h2>✏️ Écriture de propriétés</h2>
+        <form id="writeForm">
+          <div class="form-group">
+            <label for="writeHost">Hôte:</label>
+            <input type="text" id="writeHost" value="192.168.1.7" required>
+          </div>
+          <div class="form-group">
+            <label for="writePort">Port:</label>
+            <input type="number" id="writePort" value="47808" required>
+          </div>
+          <div class="form-group">
+            <label for="writeObjType">Type d'objet:</label>
+            <select id="writeObjType">
+              <option value="analogValue">Analog Value</option>
+              <option value="analogOutput">Analog Output</option>
+              <option value="binaryValue">Binary Value</option>
+              <option value="binaryOutput">Binary Output</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="writeInstance">Instance:</label>
+            <input type="number" id="writeInstance" value="1" required>
+          </div>
+          <div class="form-group">
+            <label for="writeValue">Valeur:</label>
+            <input type="text" id="writeValue" placeholder="ex: 24.5, true, false, null" required>
+          </div>
+          <div class="form-group">
+            <label for="writePriority">Priorité (optionnel):</label>
+            <input type="number" id="writePriority" min="1" max="16" placeholder="1-16">
+          </div>
+          <button type="submit" class="btn">Écrire valeur</button>
+        </form>
+        <div id="writeResult" class="result-area" style="display: none;"></div>
+      </div>
+      
+      <!-- Recherche d'objets -->
+      <div class="card">
+        <h2>🔍 Recherche d'objets</h2>
+        <form id="searchForm">
+          <div class="form-group">
+            <label for="searchName">Nom de l'objet:</label>
+            <input type="text" id="searchName" placeholder="ex: Température_Salon" required>
+          </div>
+          <div class="form-group">
+            <label for="searchTimeout">Timeout (secondes):</label>
+            <input type="number" id="searchTimeout" value="5" min="1" max="30">
+          </div>
+          <button type="submit" class="btn">Rechercher</button>
+        </form>
+        <div id="searchResult" class="result-area" style="display: none;"></div>
+      </div>
+      
+      <!-- Gestion des alarmes -->
+      <div class="card">
+        <h2>🚨 Gestion des alarmes</h2>
+        <form id="alarmForm">
+          <div class="form-group">
+            <label for="alarmHost">Hôte:</label>
+            <input type="text" id="alarmHost" value="192.168.1.7" required>
+          </div>
+          <div class="form-group">
+            <label for="alarmPort">Port:</label>
+            <input type="number" id="alarmPort" value="47808" required>
+          </div>
+          <div class="form-group">
+            <label for="alarmObject">Objet d'alarme:</label>
+            <input type="text" id="alarmObject" value="binaryValue,2" required>
+          </div>
+          <div class="form-group">
+            <label for="alarmState">État à acquitter:</label>
+            <select id="alarmState">
+              <option value="offnormal">Off Normal</option>
+              <option value="fault">Fault</option>
+              <option value="normal">Normal</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="alarmMessage">Message d'acquittement:</label>
+            <input type="text" id="alarmMessage" value="Acquitté par interface web" required>
+          </div>
+          <button type="submit" class="btn">Acquitter alarme</button>
+        </form>
+        <div id="alarmResult" class="result-area" style="display: none;"></div>
+      </div>
+    </div>
+    
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Traitement en cours...</p>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = '/mcp';
+    
+    // Fonctions utilitaires
+    function showLoading() {
+      document.getElementById('loading').style.display = 'block';
+    }
+    
+    function hideLoading() {
+      document.getElementById('loading').style.display = 'none';
+    }
+    
+    function showResult(elementId, data, isError = false) {
+      const element = document.getElementById(elementId);
+      element.style.display = 'block';
+      element.className = isError ? 'result-area error' : 'result-area success';
+      element.textContent = typeof data === 'object' ? JSON.stringify(data, null, 2) : data;
+    }
+    
+    function hideResult(elementId) {
+      document.getElementById(elementId).style.display = 'none';
+    }
+    
+    async function makeRequest(toolName, params = {}) {
+      try {
+        const response = await fetch(`${API_BASE}/tools/${toolName}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ arguments: params })
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const result = await response.json();
+        return result;
+      } catch (error) {
+        throw new Error(`Erreur de communication: ${error.message}`);
+      }
+    }
+    
+    // Vérification de santé du serveur
+    async function checkHealth() {
+      try {
+        showLoading();
+        const response = await fetch('/health');
+        const data = await response.json();
+        
+        const statusDot = document.querySelector('.status-dot');
+        const statusText = document.querySelector('.status-indicator span');
+        
+        if (response.ok) {
+          statusDot.style.background = '#48bb78';
+          statusText.textContent = 'Serveur opérationnel';
+          alert('✅ Serveur en bonne santé!\n' + JSON.stringify(data, null, 2));
+        } else {
+          statusDot.style.background = '#f56565';
+          statusText.textContent = 'Erreur serveur';
+          alert('❌ Erreur serveur: ' + JSON.stringify(data, null, 2));
+        }
+      } catch (error) {
+        const statusDot = document.querySelector('.status-dot');
+        const statusText = document.querySelector('.status-indicator span');
+        statusDot.style.background = '#f56565';
+        statusText.textContent = 'Connexion échouée';
+        alert('❌ Impossible de contacter le serveur: ' + error.message);
+      } finally {
+        hideLoading();
+      }
+    }
+    
+    // Lecture de propriétés
+    document.getElementById('readForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideResult('readResult');
+      showLoading();
+      
+      try {
+        const params = {
+          host: document.getElementById('readHost').value,
+          port: parseInt(document.getElementById('readPort').value),
+          obj_type: document.getElementById('readObjType').value,
+          obj_instance: parseInt(document.getElementById('readInstance').value)
+        };
+        
+        const result = await makeRequest('read_property', params);
+        showResult('readResult', result);
+      } catch (error) {
+        showResult('readResult', error.message, true);
+      } finally {
+        hideLoading();
+      }
+    });
+    
+    // Écriture de propriétés
+    document.getElementById('writeForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideResult('writeResult');
+      showLoading();
+      
+      try {
+        const params = {
+          host: document.getElementById('writeHost').value,
+          port: parseInt(document.getElementById('writePort').value),
+          obj_type: document.getElementById('writeObjType').value,
+          obj_instance: parseInt(document.getElementById('writeInstance').value),
+          value: document.getElementById('writeValue').value
+        };
+        
+        const priority = document.getElementById('writePriority').value;
+        if (priority) {
+          params.priority = parseInt(priority);
+        }
+        
+        const result = await makeRequest('write_present_value', params);
+        showResult('writeResult', result);
+      } catch (error) {
+        showResult('writeResult', error.message, true);
+      } finally {
+        hideLoading();
+      }
+    });
+    
+    // Recherche d'objets
+    document.getElementById('searchForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideResult('searchResult');
+      showLoading();
+      
+      try {
+        const params = {
+          object_name: document.getElementById('searchName').value,
+          timeout: parseInt(document.getElementById('searchTimeout').value)
+        };
+        
+        const result = await makeRequest('who_has', params);
+        showResult('searchResult', result);
+      } catch (error) {
+        showResult('searchResult', error.message, true);
+      } finally {
+        hideLoading();
+      }
+    });
+    
+    // Gestion des alarmes
+    document.getElementById('alarmForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideResult('alarmResult');
+      showLoading();
+      
+      try {
+        const params = {
+          host: document.getElementById('alarmHost').value,
+          port: parseInt(document.getElementById('alarmPort').value),
+          event_object_identifier: document.getElementById('alarmObject').value,
+          state_to_ack: document.getElementById('alarmState').value,
+          ack_message: document.getElementById('alarmMessage').value,
+          timestamp_kind: 'dateTime',
+          timestamp_value: new Date().toISOString().replace('T', ' ').substring(0, 23)
+        };
+        
+        const result = await makeRequest('acknowledge_alarm', params);
+        showResult('alarmResult', result);
+      } catch (error) {
+        showResult('alarmResult', error.message, true);
+      } finally {
+        hideLoading();
+      }
+    });
+    
+    // Vérification initiale
+    window.addEventListener('load', () => {
+      setTimeout(checkHealth, 1000);
+    });
+  </script>
+</body>
+</html>

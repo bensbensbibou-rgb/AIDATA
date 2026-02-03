@@ -1,0 +1,36 @@
+User settings loaded from: C:\Users\Mbensale\.n8n\config
+Initializing n8n process
+Error: Nonexistent flag: --port
+See more help with --help
+    at validateArgs (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\parser\validate.js:10:19)
+    at validate (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\parser\validate.js:190:5)
+    at Object.parse (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\parser\index.js:19:35)
+    at Start.parse (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\command.js:244:25)
+    at Start.init (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\n8n\src\commands\start.ts:177:21)
+    at Start._run (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\command.js:301:13)
+    at Config.runCommand (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\config\config.js:424:25)
+    at run (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\main.js:94:16)
+    at C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\n8n\bin\n8n:72:2
+Exiting due to an error.
+Error: Exiting due to an error.
+    at Start.exitWithCrash (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\n8n\src\commands\base-command.ts:150:23)
+    at Start.catch (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\n8n\src\commands\start.ts:368:14)
+    at Start._run (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\command.js:306:29)
+    at Config.runCommand (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\config\config.js:424:25)
+    at run (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\main.js:94:16)
+    at C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\n8n\bin\n8n:72:2
+
+Nonexistent flag: --port
+See more help with --help
+Error: Nonexistent flag: --port
+See more help with --help
+    at validateArgs (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\parser\validate.js:10:19)
+    at validate (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\parser\validate.js:190:5)
+    at Object.parse (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\parser\index.js:19:35)
+    at Start.parse (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\command.js:244:25)
+    at Start.init (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\n8n\src\commands\start.ts:177:21)
+    at Start._run (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\command.js:301:13)
+    at Config.runCommand (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\config\config.js:424:25)
+    at run (C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\@oclif\core\lib\main.js:94:16)
+    at C:\Users\Mbensale\GIT\-Dashboard-AI_beta\n8n-local\node_modules\n8n\bin\n8n:72:2
+

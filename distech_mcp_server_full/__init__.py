@@ -2,7 +2,7 @@
 
 import asyncio
 
-from .server import mcp
+from .distech_mcp_server_full import mcp
 
 
 def main() -> None:

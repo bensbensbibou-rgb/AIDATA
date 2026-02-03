@@ -1,0 +1,25 @@
+{
+  "database": {
+    "type": "sqlite",
+    "database": "database.sqlite"
+  },
+  "userManagement": {
+    "disabled": false
+  },
+  "security": {
+    "basicAuth": {
+      "active": true,
+      "user": "admin",
+      "password": "admin123"
+    }
+  },
+  "encryption": {
+    "key": "your-secret-key-here"
+  },
+  "executions": {
+    "mode": "regular"
+  },
+  "generic": {
+    "timezone": "UTC"
+  }
+}

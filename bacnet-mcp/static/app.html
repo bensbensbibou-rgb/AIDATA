@@ -1,0 +1,341 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CHAT AI 24/7 - Agent technique</title>
+  <style>
+    :root{--bg:#0b0d10;--panel:#11151a;--panel-2:#171c22;--border:#2a323c;--text:#e8edf2;--muted:#8b98a5;--accent:#3aa8ff;--ok:#15c47e;}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font:14px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial;height:100vh;overflow:hidden}
+    .app{display:grid;grid-template-rows:auto 1fr auto;height:100%}
+    header{padding:12px 16px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;flex-wrap:wrap;position:relative; overflow:hidden;}
+    header .brand{font-weight:700;margin-right:auto;}
+    header .status{font-size:12px;color:var(--muted)}
+    main{padding:14px;display:flex;flex-direction:column;gap:10px;overflow-y:auto}
+    .row{display:flex;gap:10px;align-items:flex-start}
+    .who{width:80px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em; display: flex; align-items: center; justify-content: flex-start; gap: 6px;}
+    .who-icon { width: 24px; height: 24px; fill: currentColor; } /* Style pour la nouvelle icône */
+    .bubble{background:var(--panel-2);border:1px solid var(--border);padding:10px 12px;border-radius:12px;white-space:pre-wrap;word-break:break-word;line-height:1.6;max-width:min(820px,90vw); position: relative; overflow: hidden;}
+    .bubble.streaming {color: var(--muted);}
+    .bubble.streaming::after {content:'...';animation:dots-anim 1.4s infinite;display:inline-block;width:1.2em;text-align:left;}
+    @keyframes dots-anim {0%,20%{content:"."}40%{content:".."}60%,100%{content:"..."}}
+    .composer{padding:10px 14px;background:var(--panel);border-top:1px solid var(--border);display:flex;gap:10px; position: relative; overflow: hidden;}
+    textarea{flex:1;min-height:44px;resize:vertical;background:#0f1318;border:1px solid var(--border);border-radius:12px;color:var(--text);padding:10px;line-height:1.6}
+    textarea:disabled{opacity:0.6;cursor:not-allowed}
+    button{border:1px solid var(--border);background:var(--accent);color:#041019;font-weight:700;border-radius:12px;padding:0 16px;cursor:pointer}
+    button:disabled{background:var(--muted);cursor:not-allowed}
+    .header-actions button{background:transparent;color:var(--muted);padding:6px;min-height:32px;width:32px;font-size:20px;line-height:1;border-color:transparent;}
+    .header-actions button:hover{color:var(--text);background:var(--panel-2)}
+    .field{display:flex;align-items:center;gap:6px;padding:6px 8px;background:var(--panel-2);border:1px solid var(--border);border-radius:10px; margin-bottom: 10px;}
+    .field input{background:transparent;border:none;outline:none;color:var(--text);width:380px}
+    .pill{font-size:12px;color:var(--muted);white-space:nowrap;}
+
+    header.is-loading::before, .bubble.streaming::before {
+      content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+      background:linear-gradient(90deg, transparent, rgba(58, 168, 255, 0.2), transparent);
+      animation:scan 2s linear infinite;
+    }
+    @keyframes scan {0%{left:-100%}50%{left:100%}100%{left:100%}}
+    
+    @property --angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+    .composer.is-loading {
+      --angle: 0deg;
+      border: 2px solid transparent;
+      border-image: conic-gradient(from var(--angle), transparent 0%, #00ffff, #ff00ff, #ffff00, #00ffff, transparent 50%) 1;
+      animation: snake-crawl 4s linear infinite;
+    }
+    @keyframes snake-crawl { to { --angle: 360deg; } }
+    
+    .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:1000;}
+    .modal.hidden{display:none;}
+    .modal-content{background:var(--panel);padding:24px;border-radius:12px;border:1px solid var(--border);width:auto;}
+    .modal-content h3{margin:0 0 16px 0;font-size:16px;}
+  </style>
+</head>
+<body>
+
+<svg style="display: none;">
+  <symbol id="icon-robot-new" viewBox="0 0 512 512">
+    <path d="M432,96H80A64.07,64.07,0,0,0,16,160V352a64.07,64.07,0,0,0,64,64H432a64.07,64.07,0,0,0,64-64V160A64.07,64.07,0,0,0,432,96Zm-8,256H88a24,24,0,0,1-24-24V168a24,24,0,0,1,24-24H424a24,24,0,0,1,24,24V328A24,24,0,0,1,424,352Z"/>
+    <path d="M368,256a16,16,0,0,0-16-16H160a16,16,0,0,0,0,32H352A16,16,0,0,0,368,256Z"/>
+    <circle cx="184" cy="200" r="24"/>
+    <circle cx="328" cy="200" r="24"/>
+    <path d="M432,32H80A48.05,48.05,0,0,0,32,80v8H480V80A48.05,48.05,0,0,0,432,32Z"/>
+    <path d="M432,448H80a48.05,48.05,0,0,0-48,48v8H480v-8A48.05,48.05,0,0,0,432,448Z"/>
+  </symbol>
+</svg>
+
+<div class="app">
+  <header>
+    <div class="brand">CHAT AI 24/7 - Agent technique</div>
+    <div class="status" id="status">Prêt</div>
+    <div class="header-actions">
+      <button id="reset" type="button" title="Nouvelle session">🔄</button>
+      <button id="share-btn" type="button" title="Partager la conversation">📤</button>
+      <button id="settings-btn" type="button" title="Paramètres">⚙️</button>
+    </div>
+  </header>
+  <main id="chat"></main>
+  <div class="composer">
+    <textarea id="prompt" placeholder="Votre message… (Entrée = envoyer, Shift+Entrée = nouvelle ligne)"></textarea>
+    <button id="send" type="button">Envoyer</button>
+  </div>
+</div>
+
+<div id="settings-modal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Paramètres</h3>
+    <div class="field">
+      <span class="pill">Webhook URL</span>
+                      <input id="webhook" value="http://localhost:5678/webhook/a889d2ae-2159-402f-b326-5f61e90f602e/chat" />
+    </div>
+    <div class="field">
+      <span class="pill">Session</span>
+      <input id="session" value="demo-session" />
+    </div>
+    <button id="close-settings-btn" type="button" style="width:100%;margin-top:10px;">Fermer</button>
+  </div>
+</div>
+
+<script>
+const els = {
+  header: document.querySelector('header'),
+  composer: document.querySelector('.composer'),
+  chat: document.getElementById('chat'),
+  prompt: document.getElementById('prompt'),
+  send: document.getElementById('send'),
+  webhook: document.getElementById('webhook'),
+  session: document.getElementById('session'),
+  reset: document.getElementById('reset'),
+  status: document.getElementById('status'),
+  settingsBtn: document.getElementById('settings-btn'),
+  shareBtn: document.getElementById('share-btn'),
+  settingsModal: document.getElementById('settings-modal'),
+  closeSettingsBtn: document.getElementById('close-settings-btn')
+};
+
+// Configuration des serveurs
+const API_BASE = 'http://localhost:8000';
+const N8N_WEBHOOK = 'http://localhost:8000/make';
+
+let state = {
+  webhookUrl: els.webhook.value,
+  sessionId: els.session.value,
+  messages: []
+};
+
+function formatOutput(data) {
+  let text = data.output || data.text || JSON.stringify(data);
+  text = text.replace(/^\{"output":"/,'').replace(/"\}$/,'');
+  text = text.replace(/\\n/g, "\n");
+  return text;
+}
+
+function render(){
+  els.chat.innerHTML = '';
+  state.messages.forEach(m => {
+    const row = document.createElement('div');
+    row.className = 'row';
+    const who = document.createElement('div');
+    who.className = 'who';
+    
+    if (m.role === 'user') {
+      who.textContent = 'utilisateur';
+    } else {
+      // MODIFICATION ICI pour utiliser la nouvelle icône
+      who.innerHTML = `<svg class="who-icon"><use xlink:href="#icon-robot-new"></use></svg>`;
+    }
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    if (m.streaming) {
+      bubble.classList.add('streaming');
+      bubble.textContent = m.content || '';
+    } else {
+      bubble.textContent = m.content;
+    }
+    row.appendChild(who); row.appendChild(bubble); els.chat.appendChild(row);
+  });
+  els.chat.scrollTop = els.chat.scrollHeight;
+}
+
+// Fonction pour détecter les commandes BACnet
+function isBacnetCommand(text) {
+  const bacnetKeywords = [
+    'lire', 'écrire', 'chercher', 'ping', 'alarme', 'schedule', 'info', 
+    'liste', 'cov', 'destinataires', 's\'abonner', 'dédupe', 'version', 'debug',
+    'analogValue', 'binaryValue', 'device', 'notificationClass', 'trendLog'
+  ];
+  return bacnetKeywords.some(keyword => text.toLowerCase().includes(keyword));
+}
+
+// Fonction pour appeler le serveur MCP BACnet
+async function callBacnetMCP(text) {
+  try {
+    // Détecter le type de commande et appeler l'outil approprié
+    let toolName = 'ping'; // par défaut
+    let arguments = {};
+    
+    if (text.toLowerCase().includes('lire')) {
+      toolName = 'read_property';
+      arguments = { obj_type: 'analogValue', obj_instance: 1 };
+    } else if (text.toLowerCase().includes('écrire')) {
+      toolName = 'write_property';
+      arguments = { obj_type: 'analogValue', obj_instance: 1, property_name: 'presentValue', value: '0' };
+    } else if (text.toLowerCase().includes('chercher')) {
+      toolName = 'who_has';
+      arguments = { object_name: 'test' };
+    } else if (text.toLowerCase().includes('schedule')) {
+      toolName = 'read_schedule';
+      arguments = { obj_instance: 1 };
+    } else if (text.toLowerCase().includes('version')) {
+      toolName = 'version';
+      arguments = {};
+    }
+    
+    // Utiliser le format JSON-RPC correct pour MCP
+    const requestBody = {
+      jsonrpc: "2.0",
+      method: "tools/call",
+      params: {
+        name: toolName,
+        arguments: arguments
+      },
+      id: 1
+    };
+    
+    const response = await fetch(`${API_BASE}/mcp/tools/${toolName}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ arguments })
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      if (data.result) {
+        return `✅ Commande BACnet exécutée:\n${JSON.stringify(data.result, null, 2)}`;
+      } else if (data.error) {
+        return `❌ Erreur BACnet: ${data.error.message}`;
+      } else {
+        return `✅ Réponse BACnet:\n${JSON.stringify(data, null, 2)}`;
+      }
+    } else {
+      return `❌ Erreur HTTP: ${response.status}`;
+    }
+  } catch (error) {
+    return `❌ Erreur connexion BACnet: ${error.message}`;
+  }
+}
+
+async function sendMessage(text) {
+  if(!text) return;
+
+  els.header.classList.add('is-loading');
+  els.composer.classList.add('is-loading');
+  els.prompt.disabled = true;
+  els.send.disabled = true;
+  els.status.textContent = 'En attente...';
+
+  state.messages.push({role:'user', content:text});
+  state.messages.push({role:'assistant', content:'', streaming: true});
+  render();
+  
+  try {
+    let response;
+    
+    // Si c'est une commande BACnet, utiliser le serveur MCP
+    if (isBacnetCommand(text)) {
+      response = await callBacnetMCP(text);
+      const lastMessage = state.messages[state.messages.length - 1];
+      delete lastMessage.streaming;
+      lastMessage.content = response;
+    } else {
+      // Sinon, utiliser le webhook n8n normal
+      const res = await fetch(state.webhookUrl, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ chatInput: text, sessionId: state.sessionId })
+      });
+      const lastMessage = state.messages[state.messages.length - 1];
+      delete lastMessage.streaming;
+      if(res.ok){
+        const data = await res.json();
+        lastMessage.content = formatOutput(data);
+      } else {
+        lastMessage.content = 'Erreur serveur: ' + res.status;
+      }
+    }
+  } catch(e){
+    const lastMessage = state.messages[state.messages.length - 1];
+    delete lastMessage.streaming;
+    lastMessage.content = 'Erreur: ' + e.message;
+  } finally {
+    els.header.classList.remove('is-loading');
+    els.composer.classList.remove('is-loading');
+    els.prompt.disabled = false;
+    els.send.disabled = false;
+    els.status.textContent = 'Prêt';
+    els.prompt.focus();
+    render();
+  }
+}
+
+function handleSend() {
+  const text = els.prompt.value.trim();
+  sendMessage(text);
+  els.prompt.value = '';
+}
+
+async function shareConversation() {
+  if (state.messages.length === 0) {
+    alert("Il n'y a pas de conversation à partager.");
+    return;
+  }
+  
+  const history = "Conversation avec CHAT AI 24/7:\n\n---\n\n" + state.messages
+    .filter(m => !m.streaming)
+    .map(m => (m.role === 'user' ? 'Utilisateur' : 'ROBOT') + ': ' + m.content)
+    .join('\n\n');
+  
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: 'Conversation avec CHAT AI 24/7',
+        text: history,
+      });
+    } catch (err) {
+      console.error("Erreur lors du partage : ", err);
+    }
+  } else {
+    try {
+      await navigator.clipboard.writeText(history);
+      alert('Fonction de partage non supportée.\nLa conversation a été copiée dans le presse-papiers !');
+    } catch (err) {
+      alert('Impossible de copier la conversation.');
+    }
+  }
+}
+
+els.send.onclick = handleSend;
+els.prompt.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); handleSend(); }});
+els.webhook.onchange = ()=> state.webhookUrl = els.webhook.value;
+els.session.onchange = ()=> state.sessionId = els.session.value;
+
+els.reset.onclick = ()=>{ 
+  if (confirm('Voulez-vous vraiment démarrer une nouvelle session ? L\'historique actuel sera effacé.')) {
+    state.sessionId = 'sess-'+Date.now(); 
+    state.messages=[]; 
+    render(); 
+  }
+};
+
+els.settingsBtn.onclick = () => els.settingsModal.classList.remove('hidden');
+els.closeSettingsBtn.onclick = () => els.settingsModal.classList.add('hidden');
+els.settingsModal.onclick = (e) => { if (e.target === els.settingsModal) { els.settingsModal.classList.add('hidden'); }};
+
+els.shareBtn.onclick = shareConversation;
+
+</script>
+</body>
+</html>

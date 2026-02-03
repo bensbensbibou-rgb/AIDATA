@@ -1,0 +1,115 @@
+services:
+  # Serveur BACnet MCP principal
+  bacnet-mcp:
+    build: .
+    container_name: bacnet-mcp-server
+    ports:
+      - "8050:8050"
+    environment:
+      - N8N_WEBHOOK_URL=http://localhost:5678/webhook/a889d2ae-2159-402f-b326-5f61e90f602e/chat
+      - PYTHONUNBUFFERED=1
+      - MCP_SESSION_TIMEOUT=300
+      - MCP_MAX_SESSIONS=100
+    volumes:
+      - ./data:/app/data
+      - ./static:/app/static
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8050/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - bacnet-network
+
+  # n8n pour l'automatisation avec import des données existantes
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n-automation
+    ports:
+      - "5678:5678"
+    env_file:
+      - n8n.env
+    volumes:
+      - C:\Users\naine\.n8n:/home/node/.n8n:rw
+    user: "1000:1000"
+    restart: unless-stopped
+    networks:
+      - bacnet-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"  # Permet d'accéder à localhost du host
+      - "localhost:host-gateway"  # Alternative pour localhost
+
+  # Redis pour le cache et les sessions
+  redis:
+    image: redis:7-alpine
+    container_name: redis-cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - bacnet-network
+
+  # Adminer pour la gestion de base de données
+  adminer:
+    image: adminer:latest
+    container_name: adminer-db
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    networks:
+      - bacnet-network
+
+  # Nginx comme reverse proxy
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - bacnet-mcp
+      - n8n
+    restart: unless-stopped
+    networks:
+      - bacnet-network
+
+  # Prometheus pour le monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus-monitoring
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    restart: unless-stopped
+    networks:
+      - bacnet-network
+
+  # Grafana pour les dashboards
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana-dashboard
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
+    networks:
+      - bacnet-network
+
+volumes:
+  n8n_data:
+  redis_data:
+  grafana_data:
+
+networks:
+  bacnet-network:
+    driver: bridge

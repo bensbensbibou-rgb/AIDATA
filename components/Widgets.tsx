@@ -1,6 +1,6 @@
-import React, { ReactNode, useRef, useEffect, useState } from 'react';
+﻿import React, { ReactNode, useRef, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { RefreshCw, Maximize2, Download, Upload, ArrowLeftRight, Minimize2, GripHorizontal, Scaling, X, Link2, Lock, Send, Sparkles, User, Bot, PaintBucket, Palette, Database, Gauge, Zap, Leaf, Map, Info, Plus, Image as ImageIcon, Layers, MoreHorizontal, FileImage, Folder, ArrowLeft, Check, Settings, Trash2, Activity, Move, Eye, EyeOff, AlertTriangle, Clock, ArrowRight, ChevronsUpDown, Save, Calendar, SlidersHorizontal, List, TrendingUp, PlayCircle, StopCircle, MousePointerClick, Bell, Search, Filter, ArrowDownUp, Volume2, CheckSquare, Square, MoreVertical, Cloud, CloudRain, CloudSnow, Sun, Wind, Droplets, Fan as FanIcon, Thermometer as ThermometerIcon, Power, Disc, Settings2, Monitor, Flame, Snowflake, PenTool, MousePointer, Workflow, Siren, Waves, CloudSun, ZoomIn, ZoomOut, Hand, Minus, Type, ChevronDown, ChevronRight, BellRing, VolumeX, Maximize, LayoutTemplate, BoxSelect, Eraser, Unlock, File, MousePointer2, Pencil } from 'lucide-react';
+import { CheckCircle, RefreshCw, Maximize2, Download, Upload, ArrowLeftRight, Minimize2, GripHorizontal, Scaling, X, Link2, Lock, Send, Sparkles, User, Bot, PaintBucket, Palette, Database, Gauge, Zap, Leaf, Map, Info, Plus, Image as ImageIcon, Layers, MoreHorizontal, FileImage, Folder, ArrowLeft, Check, Settings, Trash2, Activity, Move, Eye, EyeOff, AlertTriangle, Clock, ArrowRight, ChevronsUpDown, Save, Calendar, SlidersHorizontal, List, TrendingUp, PlayCircle, StopCircle, MousePointerClick, Bell, Search, Filter, ArrowDownUp, Volume2, CheckSquare, Square, MoreVertical, Cloud, CloudRain, CloudSnow, Sun, Wind, Droplets, Fan as FanIcon, Thermometer as ThermometerIcon, Power, Disc, Settings2, Monitor, Flame, Snowflake, PenTool, MousePointer, Workflow, Siren, Waves, CloudSun, ZoomIn, ZoomOut, Hand, Minus, Type, ChevronDown, ChevronRight, BellRing, VolumeX, Maximize, LayoutTemplate, BoxSelect, Eraser, Unlock, File, MousePointer2, Pencil, Wrench } from 'lucide-react';
 import { Period, FloorPlanLayer, FloorPlanObject, ChatMessage, Alarm, DataboxNode, HVACSymbolType, SynopticConfig, ZoneConfig, LogicConfig, FloorPlanConfig, FloorPlanObjectType, Language } from '../types';
 import { HVACSymbol } from './HVACSymbols';
 import { SynopticEditor } from './SynopticEditor';
@@ -180,8 +180,8 @@ export const PeriodSelector: React.FC<PeriodSelectorProps> = ({ current, onChang
                     key={p.id}
                     onClick={() => onChange(p.id)}
                     className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${current === p.id
-                            ? 'bg-gray-100 dark:bg-gray-700 text-black dark:text-white shadow-sm'
-                            : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
+                        ? 'bg-gray-100 dark:bg-gray-700 text-black dark:text-white shadow-sm'
+                        : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
                         }`}
                 >
                     {p.label}
@@ -445,19 +445,37 @@ export const Card: React.FC<CardProps> = ({
                         )}
                     </div>
                 </div>
-                <div className="flex items-center gap-2 shrink-0 pointer-events-auto">
+                <div className="flex items-center gap-1 shrink-0 pointer-events-auto flex-wrap justify-end">
                     {tools && !isEditing && <ChartToolbar {...tools} />}
                     {isEditing && (
                         <>
+                            {tools?.onWiden && (
+                                <button
+                                    onClick={(e) => { e.stopPropagation(); tools.onWiden?.(); }}
+                                    className="p-1 text-gray-400 hover:text-blue-500 rounded bg-gray-50 dark:bg-white/5 hover:bg-blue-50"
+                                    title="Étendre largeur"
+                                >
+                                    <ArrowLeftRight size={12} />
+                                </button>
+                            )}
+                            {tools?.onExtend && (
+                                <button
+                                    onClick={(e) => { e.stopPropagation(); tools.onExtend?.(); }}
+                                    className="p-1 text-gray-400 hover:text-green-500 rounded bg-gray-50 dark:bg-white/5 hover:bg-green-50"
+                                    title="Étendre hauteur"
+                                >
+                                    <ChevronsUpDown size={12} />
+                                </button>
+                            )}
                             <button
                                 onClick={(e) => { e.stopPropagation(); onSwap?.(); }}
-                                className="p-1.5 text-gray-400 hover:text-blue-500 rounded-md bg-gray-50 dark:bg-white/5 hover:bg-blue-50"
-                                title="Swap Widget"
+                                className="p-1 text-gray-400 hover:text-purple-500 rounded bg-gray-50 dark:bg-white/5 hover:bg-purple-50"
+                                title="Changer Widget"
                             >
-                                <ArrowLeftRight size={14} />
+                                <LayoutTemplate size={12} />
                             </button>
                             <div className="relative">
-                                <button onClick={(e) => { e.stopPropagation(); setShowPalette(!showPalette); }} className="p-1.5 text-gray-400 hover:text-blue-500 rounded-md bg-gray-50 dark:bg-white/5 hover:bg-blue-50"><Palette size={14} /></button>
+                                <button onClick={(e) => { e.stopPropagation(); setShowPalette(!showPalette); }} className="p-1 text-gray-400 hover:text-blue-500 rounded bg-gray-50 dark:bg-white/5 hover:bg-blue-50"><Palette size={12} /></button>
                                 {showPalette && (
                                     <div className="absolute right-0 top-full mt-2 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-white/10 p-3 z-50 w-64">
                                         <div className="text-xs font-bold text-gray-500 mb-2 uppercase">{t.background || 'Background'}</div>
@@ -475,7 +493,7 @@ export const Card: React.FC<CardProps> = ({
                                     </div>
                                 )}
                             </div>
-                            {onRemove && <button onClick={(e) => { e.stopPropagation(); onRemove(); }} className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-md"><X size={16} /></button>}
+                            {onRemove && <button onClick={(e) => { e.stopPropagation(); onRemove(); }} className="p-1 text-red-400 hover:text-red-600 hover:bg-red-50 rounded"><X size={12} /></button>}
                         </>
                     )}
                 </div>
@@ -1961,7 +1979,7 @@ export const PredictiveAlarmsWidget: React.FC<{ alarms: any[] }> = ({ alarms }) 
                     <AlertTriangle className="text-red-500 shrink-0 mt-0.5" size={16} />
                     <div>
                         <div className="text-sm font-bold text-gray-800 dark:text-gray-200">{alarm.asset || 'System'} - {alarm.issue}</div>
-                        <div className="text-xs text-gray-500 mt-1">Probability: {alarm.prob || 'Unknown'} • Risk: {alarm.risk}</div>
+                        <div className="text-xs text-gray-500 mt-1">Probability: {alarm.prob || 'Unknown'} ÔÇó Risk: {alarm.risk}</div>
                     </div>
                 </div>
             ))}
@@ -2017,47 +2035,450 @@ export const ScheduleWidget: React.FC<{ config: any, isEditing?: boolean, onConf
     );
 };
 
-export const AlarmConsoleWidget: React.FC<{ config: any }> = () => {
-    const mockAlarms = [
-        { id: 1, time: '10:23', msg: 'AHU-01 Filter High DP', pri: 'Warning' },
-        { id: 2, time: '09:45', msg: 'Chiller Flow Low', pri: 'Critical' },
-        { id: 3, time: 'Yesterday', msg: 'Boiler 2 Comm Lost', pri: 'Info' },
-    ];
+export const AlarmConsoleWidget: React.FC<{
+    config: any;
+    onSelectAlarm?: (id: any) => void;
+    onAcknowledge?: (alarm: any, stillActive: boolean, comment?: string) => void;
+    onToggleMask?: (id: string, value: boolean, comment?: string) => void;
+    onToggleMaintenance?: (id: string, value: boolean, comment?: string) => void;
+    onOpenEquipment?: (id: string) => void;
+    onOpenPlan?: (id: string) => void;
+    onClearHistory?: () => void;
+    onImportHistory?: (entries: any[]) => void;
+}> = ({ config, onSelectAlarm, onAcknowledge, onToggleMask, onToggleMaintenance, onOpenEquipment, onOpenPlan, onClearHistory, onImportHistory }) => {
+    const entries = Array.isArray(config?.entries) ? config.entries : [];
+    const historyData = Array.isArray(config?.history) ? config.history : [];
+
+    const [tab, setTab] = React.useState<'live' | 'history' | 'masked' | 'maintenance'>('live');
+    const [search, setSearch] = React.useState('');
+    const [priFilters, setPriFilters] = React.useState<string[]>([]);
+    const [stateFilter, setStateFilter] = React.useState<'all' | 'normal' | 'offnormal' | 'fault' | 'masked' | 'maintenance' | 'inhibited'>('all');
+    const [sortKey, setSortKey] = React.useState<'time_desc' | 'time_asc' | 'pri_desc' | 'pri_asc'>('time_desc');
+    const [ackFilter, setAckFilter] = React.useState<'all' | 'ack' | 'unack'>('all');
+    const [wideCols, setWideCols] = React.useState(false);
+    const [visibleCols, setVisibleCols] = React.useState<Record<string, boolean>>({
+        time: true, msg: true, pri: true, state: true, source: true, count: true, lastAlarm: true, lastAck: true,
+        path: true, reliability: true, equipment: true, plan: true, actions: true
+    });
+    const [ackedActive, setAckedActive] = React.useState<Set<any>>(new Set());
+    const [cleared, setCleared] = React.useState<Set<any>>(new Set());
+    const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+
+    const normalizeState = (s: string) => {
+        const v = (s || '').toLowerCase();
+        if (v.startsWith('masqu')) return 'masked';
+        if (v.startsWith('maint')) return 'maintenance';
+        return v;
+    };
+
+    const resetFilters = () => {
+        setSearch('');
+        setPriFilters([]);
+        setStateFilter('all');
+        setSortKey('time_desc');
+        setAckFilter('all');
+    };
+
+    const formatTime = (t?: string) => {
+        if (!t) return '-';
+        const d = new Date(t);
+        if (isNaN(d.getTime())) return t;
+        return d.toLocaleString('fr-FR');
+    };
+
+    const applyFilters = (list: any[], priOverride?: string | string[], includeSuppressed = false, forcedState?: string) => list.filter(a => {
+        const stateRaw = (a.state || '').toLowerCase();
+        const state = normalizeState(stateRaw);
+        const isMasked = state === 'masked' || a.masked === true;
+        const isMaintenance = state === 'maintenance' || a.maintenance === true;
+        if (!includeSuppressed && (isMasked || isMaintenance)) return false;
+        if (state !== 'normal') {
+            cleared.delete(a.id);
+        }
+        if (!includeSuppressed && cleared.has(a.id)) return false;
+        const s = search.trim().toLowerCase();
+        const matchSearch = !s || a.msg?.toLowerCase().includes(s) || a.source?.toLowerCase().includes(s);
+        const priToUse = priOverride ?? priFilters;
+        const matchPri = (Array.isArray(priToUse) ? priToUse.length === 0 || priToUse.includes((a.pri || '').toLowerCase()) : priToUse === 'all' || (a.pri || '').toLowerCase() === priToUse);
+        const effectiveState = forcedState ?? stateFilter;
+        const matchState =
+            effectiveState === 'all'
+                ? true
+                : effectiveState === 'masked'
+                    ? isMasked
+                    : effectiveState === 'maintenance'
+                        ? isMaintenance
+                        : state === effectiveState;
+        const isActive = state !== 'normal';
+        const isAcked = ackedActive.has(a.id);
+        const ackStatus = isActive ? (isAcked ? 'ack' : 'unack') : 'ack';
+        const matchAck = ackFilter === 'all' || ackFilter === ackStatus;
+        return matchSearch && matchPri && matchState && matchAck;
+    });
+
+    const includeSuppressed = tab === 'masked' || tab === 'maintenance';
+    const forcedState = tab === 'masked' ? 'masked' : tab === 'maintenance' ? 'maintenance' : undefined;
+    const baseList = tab === 'history' ? historyData : entries;
+
+    const filtered = React.useMemo(() => {
+        const base = applyFilters(baseList, undefined, includeSuppressed, forcedState);
+        const priRank = (p: any) => {
+            const val = (p || '').toString().toLowerCase();
+            if (val === 'urgent') return 1;
+            if (val === 'non urgent') return 2;
+            if (val === 'info') return 3;
+            return 99;
+        };
+        return base.slice().sort((a, b) => {
+            const ta = new Date(a.time || 0).getTime();
+            const tb = new Date(b.time || 0).getTime();
+            switch (sortKey) {
+                case 'time_asc': return ta - tb;
+                case 'pri_desc': return priRank(a.pri) - priRank(b.pri);
+                case 'pri_asc': return priRank(b.pri) - priRank(a.pri);
+                default: return tb - ta;
+            }
+        });
+    }, [baseList, includeSuppressed, forcedState, sortKey, search, priFilters, stateFilter, ackFilter, cleared]);
+
+    const liveCounts = React.useMemo(() => {
+        const list = applyFilters(entries, [], false);
+        const active = list.filter(a => normalizeState(a.state || '') !== 'normal');
+        const countUrgent = active.filter(a => (a.pri || '').toLowerCase() === 'urgent').length;
+        const countNonUrgent = active.filter(a => (a.pri || '').toLowerCase() === 'non urgent').length;
+        const countInfo = active.filter(a => !a.pri || (a.pri || '').toLowerCase() === 'info').length;
+        const countMasked = applyFilters(entries, [], true, 'masked').length;
+        const countMaintenance = applyFilters(entries, [], true, 'maintenance').length;
+        return { countUrgent, countNonUrgent, countInfo, countMasked, countMaintenance };
+    }, [entries, search, stateFilter, ackFilter, cleared]);
+
+    const exportCsv = () => {
+        const rows = filtered.map(a => ({
+            time: a.time || '',
+            source: a.source || '',
+            msg: a.msg || '',
+            pri: a.pri || '',
+            state: a.state || ''
+        }));
+        if (!rows.length) return;
+        const header = 'time,source,msg,priority,state';
+        const csv = [header, ...rows.map(r => `"${r.time}","${r.source}","${r.msg}","${r.pri}","${r.state}"`)].join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `alarms_${tab}.csv`;
+        link.click();
+        URL.revokeObjectURL(url);
+    };
+
+    const exportJson = () => {
+        const rows = filtered;
+        if (!rows.length) return;
+        const blob = new Blob([JSON.stringify(rows, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `alarms_${tab}.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+    };
+
+    const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+            try {
+                const data = JSON.parse(reader.result as string);
+                if (Array.isArray(data)) onImportHistory?.(data);
+            } catch (err) {
+                console.error('Invalid history file', err);
+            }
+        };
+        reader.readAsText(file);
+    };
+
+    const acknowledge = (alarm: any) => {
+        const state = normalizeState(alarm.state || '');
+        const isActive = state !== 'normal';
+        const comment = window.prompt('Commentaire acquittement ?') || '';
+        if (isActive) {
+            setAckedActive(prev => {
+                const next = new Set(prev);
+                next.add(alarm.id);
+                return next;
+            });
+        } else {
+            setCleared(prev => {
+                const next = new Set(prev);
+                next.add(alarm.id);
+                return next;
+            });
+        }
+        onAcknowledge?.(alarm, isActive, comment);
+    };
+
+    const renderBadgeButton = (label: string, count: number, active: boolean, onClick: () => void, color: string) => (
+        <button
+            className={`flex items-center gap-1 px-2 py-1 rounded text-[11px] ${active ? 'ring-2 ring-white/80' : ''} ${color} text-white`}
+            onClick={onClick}
+        >
+            <Bell size={12} /> {label} {count}
+        </button>
+    );
+
     return (
-        <div className="h-full overflow-y-auto">
-            <table className="w-full text-left text-xs">
-                <thead className="bg-gray-50 dark:bg-white/5 sticky top-0">
-                    <tr>
-                        <th className="p-2 font-bold text-gray-500">Time</th>
-                        <th className="p-2 font-bold text-gray-500">Message</th>
-                        <th className="p-2 font-bold text-gray-500">Priority</th>
-                    </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100 dark:divide-white/5">
-                    {mockAlarms.map(a => (
-                        <tr key={a.id} className="hover:bg-gray-50 dark:hover:bg-white/5">
-                            <td className="p-2 text-gray-600 dark:text-gray-300 whitespace-nowrap">{a.time}</td>
-                            <td className="p-2 font-medium">{a.msg}</td>
-                            <td className="p-2">
-                                <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${a.pri === 'Critical' ? 'bg-red-100 text-red-600' : a.pri === 'Warning' ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'}`}>
-                                    {a.pri}
-                                </span>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div className="h-full overflow-y-auto space-y-3">
+            <div className="flex items-center justify-between text-xs">
+                <div className="flex gap-2 items-center flex-wrap">
+                    {renderBadgeButton('Urgent', liveCounts.countUrgent, priFilters.includes('urgent'), () => setPriFilters(prev => prev.includes('urgent') ? prev.filter(p => p !== 'urgent') : [...prev, 'urgent']), 'bg-red-500')}
+                    {renderBadgeButton('Info', liveCounts.countInfo, priFilters.includes('info'), () => setPriFilters(prev => prev.includes('info') ? prev.filter(p => p !== 'info') : [...prev, 'info']), 'bg-blue-500')}
+                    {renderBadgeButton('Non Urgent', liveCounts.countNonUrgent, priFilters.includes('non urgent'), () => setPriFilters(prev => prev.includes('non urgent') ? prev.filter(p => p !== 'non urgent') : [...prev, 'non urgent']), 'bg-orange-400')}
+                    {renderBadgeButton('Maintenance', liveCounts.countMaintenance, tab === 'maintenance', () => setTab('maintenance'), 'bg-purple-500')}
+                    {renderBadgeButton('Masquées', liveCounts.countMasked, tab === 'masked', () => setTab('masked'), 'bg-pink-500')}
+                </div>
+                <div className="flex gap-2 flex-wrap">
+                    <button
+                        onClick={() => {
+                            setCleared(new Set());
+                            setAckedActive(new Set());
+                            onClearHistory?.();
+                        }}
+                        className="px-2 py-1 rounded bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-gray-100 border border-gray-200 dark:border-white/10"
+                    >
+                        Vider historique
+                    </button>
+                    <button onClick={exportCsv} className="px-2 py-1 rounded bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-gray-100 border border-gray-200 dark:border-white/10">Export CSV</button>
+                    <button onClick={exportJson} className="px-2 py-1 rounded bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-gray-100 border border-gray-200 dark:border-white/10">Export JSON</button>
+                    <button onClick={() => fileInputRef.current?.click()} className="px-2 py-1 rounded bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-gray-100 border border-gray-200 dark:border-white/10">Import JSON</button>
+                    <input type="file" ref={fileInputRef} className="hidden" accept=".json" onChange={handleImport} />
+                </div>
+            </div>
+
+            <div className="flex items-center gap-2 text-xs relative flex-wrap">
+                <div className="inline-flex rounded-lg border border-gray-200 dark:border-white/10 overflow-hidden">
+                    <button className={`px-3 py-1.5 ${tab === 'live' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-white/5 text-gray-600 dark:text-gray-200'}`} onClick={() => setTab('live')}>Temps réel</button>
+                    <button className={`px-3 py-1.5 ${tab === 'history' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-white/5 text-gray-600 dark:text-gray-200'}`} onClick={() => setTab('history')}>Historique</button>
+                    <button className={`px-3 py-1.5 ${tab === 'masked' ? 'bg-pink-500 text-white' : 'bg-white dark:bg-white/5 text-gray-600 dark:text-gray-200'}`} onClick={() => setTab('masked')}>Masquées</button>
+                    <button className={`px-3 py-1.5 ${tab === 'maintenance' ? 'bg-purple-500 text-white' : 'bg-white dark:bg-white/5 text-gray-600 dark:text-gray-200'}`} onClick={() => setTab('maintenance')}>Maintenance</button>
+                </div>
+                <div className="grid grid-cols-5 gap-2 flex-1 min-w-[320px]">
+                    <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Filtrer par message ou source" className="px-2 py-1.5 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5" />
+                    <div className="px-2 py-1.5 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 flex flex-col gap-1">
+                        <div className="text-[11px] text-gray-500">Priorités (badges)</div>
+                        <div className="flex flex-wrap gap-1 text-xs">
+                            {priFilters.length === 0 && <span className="text-gray-700 dark:text-gray-200">Toutes</span>}
+                            {priFilters.map(p => (<span key={p} className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-200 text-[11px]">{p}</span>))}
+                        </div>
+                    </div>
+                    <select value={stateFilter} onChange={e => setStateFilter(e.target.value as any)} className="px-2 py-1.5 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5">
+                        <option value="all">Tous états</option>
+                        <option value="normal">Normal</option>
+                        <option value="offnormal">Offnormal</option>
+                        <option value="fault">Fault</option>
+                        <option value="masked">Masqué</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="inhibited">Inhibited</option>
+                    </select>
+                    <select value={sortKey} onChange={e => setSortKey(e.target.value as any)} className="px-2 py-1.5 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5">
+                        <option value="time_desc">Tri: Date ↓</option>
+                        <option value="time_asc">Tri: Date ↑</option>
+                        <option value="pri_desc">Tri: Priorité Urgent → Info</option>
+                        <option value="pri_asc">Tri: Priorité Info → Urgent</option>
+                    </select>
+                    <select value={ackFilter} onChange={e => setAckFilter(e.target.value as any)} className="px-2 py-1.5 rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5">
+                        <option value="all">Ack/Unack</option>
+                        <option value="unack">Unacknowledged</option>
+                        <option value="ack">Acknowledged</option>
+                    </select>
+                </div>
+                <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1">
+                        <label className="text-gray-500 dark:text-gray-300 text-[11px]">Colonnes larges</label>
+                        <input type="checkbox" checked={wideCols} onChange={e => setWideCols(e.target.checked)} />
+                    </div>
+                    <div className="relative">
+                        <button className="px-2 py-1 rounded border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5" onClick={() => setVisibleCols(prev => ({ ...prev }))}>
+                            Colonnes
+                        </button>
+                    </div>
+                    <button onClick={resetFilters} className="px-2 py-1 rounded border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 text-xs">Reset filtres</button>
+                </div>
+            </div>
+
+            <div className="text-[11px] text-gray-500 dark:text-gray-300 flex flex-wrap gap-3 mb-1">
+                <span className="font-semibold">Filtres actifs :</span>
+                <span>Pri: {priFilters.length ? priFilters.join(', ') : 'Toutes'}</span>
+                <span>État: {stateFilter}</span>
+                <span>Ack: {ackFilter}</span>
+                {search.trim() ? <span>Recherche: "{search.trim()}"</span> : null}
+            </div>
+
+            {(() => {
+                const rowsForRender = filtered.map((a: any) => {
+                    const msgFallback =
+                        a.msg ||
+                        (a.type === 'state' ? `Transition ${a.prevState || '-'} -> ${a.state || '-'}` :
+                            a.type === 'ack' ? 'Acquittement' :
+                                a.type === 'mask' ? 'Masquage' :
+                                    a.type === 'unmask' ? 'Demasquage' :
+                                        a.type === 'maintenance_on' ? 'Maintenance on' :
+                                            a.type === 'maintenance_off' ? 'Maintenance off' :
+                                                'Evenement');
+                    const commentSuffix = a.comment ? ` (Commentaire: ${a.comment})` : '';
+                    return {
+                        ...a,
+                        msg: msgFallback + commentSuffix,
+                        pri: a.pri || 'Info',
+                        source: a.source || '-',
+                        state: a.state || (a.type === 'ack' ? 'ack' : '')
+                    };
+                });
+                return (
+                    <table className="w-full text-left text-xs">
+                        <thead className="bg-gray-50 dark:bg-white/5 sticky top-0">
+                            <tr>
+                                {visibleCols.time && <th className={`${wideCols ? 'p-3' : 'p-2'} font-bold text-gray-500`}>Time</th>}
+                                {visibleCols.msg && <th className={`${wideCols ? 'p-3' : 'p-2'} font-bold text-gray-500`}>Message</th>}
+                                {visibleCols.pri && <th className={`${wideCols ? 'p-3' : 'p-2'} font-bold text-gray-500`}>Priority</th>}
+                                {visibleCols.state && <th className={`${wideCols ? 'p-3' : 'p-2'} font-bold text-gray-500`}>State</th>}
+                                {visibleCols.source && <th className={`${wideCols ? 'p-3' : 'p-2'} font-bold text-gray-500`}>Source</th>}
+                                {visibleCols.count && <th className={`${wideCols ? 'p-3' : 'p-2'} font-bold text-gray-500`}>Occurrences</th>}
+                                {visibleCols.lastAlarm && <th className={`${wideCols ? 'p-3' : 'p-2'} font-bold text-gray-500`}>Derni?re alarme</th>}
+                                {visibleCols.lastAck && <th className={`${wideCols ? 'p-3' : 'p-2'} font-bold text-gray-500`}>Dernier acquittement</th>}
+                                {visibleCols.path && <th className={`${wideCols ? 'p-3' : 'p-2'} font-bold text-gray-500`}>Chemin</th>}
+                                {visibleCols.reliability && <th className={`${wideCols ? 'p-3' : 'p-2'} font-bold text-gray-500`}>Fiabilit?</th>}
+                                {visibleCols.equipment && <th className={`${wideCols ? 'p-3' : 'p-2'} font-bold text-gray-500`}>?quipement</th>}
+                                {visibleCols.plan && <th className={`${wideCols ? 'p-3' : 'p-2'} font-bold text-gray-500`}>Plan</th>}
+                                {visibleCols.actions && <th className={`${wideCols ? 'p-3' : 'p-2'} font-bold text-gray-500 text-right`}>Actions</th>}
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100 dark:divide-white/5">
+                            {rowsForRender.length === 0 && <tr><td className="p-3 text-center text-gray-400" colSpan={12}>Aucune alarme avec ces filtres</td></tr>}
+                            {rowsForRender.map((a: any) => {
+                                const state = normalizeState(a.state || '');
+                                const isActive = state !== 'normal';
+                                const isMasked = state === 'masked' || a.masked === true;
+                                const isMaintenance = state === 'maintenance' || a.maintenance === true;
+                                const isAcked = ackedActive.has(a.id);
+                                return (
+                                    <tr
+                                        key={a.id}
+                                        className="hover:bg-gray-50 dark:hover:bg-white/5 cursor-pointer"
+                                        onClick={() => onSelectAlarm?.(a.id)}
+                                    >
+                                        {visibleCols.time && <td className={`${wideCols ? 'p-3' : 'p-2'} text-gray-600 dark:text-gray-300 whitespace-nowrap`}>{formatTime(a.time)}</td>}
+                                        {visibleCols.msg && <td className={`${wideCols ? 'p-3' : 'p-2'} font-medium whitespace-pre-wrap`}>{a.msg}</td>}
+                                        {visibleCols.pri && (
+                                            <td className={`${wideCols ? 'p-3' : 'p-2'}`}>
+                                                <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${a.pri?.toLowerCase() === 'urgent' ? 'bg-red-100 text-red-600' : a.pri?.toLowerCase() === 'non urgent' ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'}`}>
+                                                    {a.pri}
+                                                </span>
+                                            </td>
+                                        )}
+                                        {visibleCols.state && <td className={`${wideCols ? 'p-3' : 'p-2'}`}>{state}</td>}
+                                        {visibleCols.source && <td className={`${wideCols ? 'p-3' : 'p-2'}`}>{a.source || '-'}</td>}
+                                        {visibleCols.count && <td className={`${wideCols ? 'p-3' : 'p-2'}`}>{a.count ?? '-'}</td>}
+                                        {visibleCols.lastAlarm && <td className={`${wideCols ? 'p-3' : 'p-2'}`}>{formatTime(a.lastAlarm || a.time)}</td>}
+                                        {visibleCols.lastAck && <td className={`${wideCols ? 'p-3' : 'p-2'}`}>{formatTime(a.lastAck)}</td>}
+                                        {visibleCols.path && <td className={`${wideCols ? 'p-3' : 'p-2'}`}>{a.path || '-'}</td>}
+                                        {visibleCols.reliability && <td className={`${wideCols ? 'p-3' : 'p-2'}`}>
+                                            <span className={`px-2 py-0.5 rounded-full text-[10px] ${((a.reliability || '').toLowerCase() === 'good') ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}`}>{a.reliability || '-'}</span>
+                                        </td>}
+                                        {visibleCols.equipment && <td className={`${wideCols ? 'p-3' : 'p-2'}`}>
+                                            {a.linkedEquipmentId ? (
+                                                <button className="text-blue-600 hover:underline cursor-pointer" onClick={(e) => { e.stopPropagation(); onOpenEquipment?.(a.linkedEquipmentId); }}>Voir Équipement</button>
+                                            ) : (
+                                                <span className="text-gray-400">Non lié</span>
+                                            )}
+                                        </td>}
+                                        {visibleCols.plan && <td className={`${wideCols ? 'p-3' : 'p-2'} text-blue-600 cursor-pointer`} onClick={(e) => { e.stopPropagation(); onOpenPlan?.(a.id); }}>Plan</td>}
+                                        {visibleCols.actions && (
+                                            <td className={`${wideCols ? 'p-3' : 'p-2'} text-right`}>
+                                                <button className={`px-2 py-1 text-xs rounded ${isActive ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-emerald-600 hover:bg-emerald-700 text-white'} transition-colors`} onClick={(e) => { e.stopPropagation(); acknowledge(a); }}>
+                                                    Acquitter
+                                                </button>
+                                                <div className="flex justify-end gap-1 mt-1">
+                                                    <button
+                                                        className={`p-2 rounded-lg text-xs transition-colors ${isMasked ? 'bg-pink-100 text-pink-600' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
+                                                        title={isMasked ? 'D?masquer' : 'Masquer'}
+                                                        onClick={(e) => { e.stopPropagation(); const comment = window.prompt('Commentaire (d?)masquage ?') || ''; onToggleMask?.(a.id, !isMasked, comment); }}
+                                                    >
+                                                        <EyeOff size={14} />
+                                                    </button>
+                                                    <button
+                                                        className={`p-2 rounded-lg text-xs transition-colors ${isMaintenance ? 'bg-purple-100 text-purple-600' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
+                                                        title={isMaintenance ? 'Fin maintenance' : 'Maintenance'}
+                                                        onClick={(e) => { e.stopPropagation(); const comment = window.prompt('Commentaire maintenance ?') || ''; onToggleMaintenance?.(a.id, !isMaintenance, comment); }}
+                                                    >
+                                                        <Wrench size={14} />
+                                                    </button>
+                                                </div>
+                                                {isActive && isAcked && <div className="text-[10px] text-gray-400 mt-1">Acquitt?e (active)</div>}
+                                            </td>
+                                        )}
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                );
+            })()}
         </div>
     );
 };
+export const WeatherWidget: React.FC<{ config: { location: string, units: string, temperature?: number, condition?: string, high?: number, low?: number, humidity?: number, wind?: number } }> = ({ config }) => {
+    const temp = config.temperature ?? 22;
+    const condition = config.condition ?? 'Partly cloudy';
+    const high = config.high ?? 24;
+    const low = config.low ?? 18;
+    const humidity = config.humidity ?? 48;
+    const wind = config.wind ?? 12;
 
-export const WeatherWidget: React.FC<{ config: { location: string, units: string } }> = ({ config }) => {
     return (
-        <div className="h-full flex flex-col items-center justify-center p-4 text-center">
-            <CloudSun size={48} className="text-yellow-500 mb-2" />
-            <div className="text-3xl font-light">22°{config.units}</div>
-            <div className="text-sm font-bold text-gray-500 uppercase tracking-wide">{config.location}</div>
-            <div className="text-xs text-gray-400 mt-2">Partly Cloudy • H:24 L:18</div>
+        <div className="h-full w-full bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-[#1f2937] dark:via-[#111827] dark:to-[#0f172a] rounded-3xl border border-gray-100 dark:border-white/10 shadow-sm p-5 flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+                <div className="text-xs font-semibold uppercase text-gray-500 dark:text-gray-300 tracking-wider">Site Conditions</div>
+                <div className="flex items-center gap-2 text-gray-400">
+                    <Download size={14} className="hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer" />
+                    <RefreshCw size={14} className="hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer" />
+                    <Maximize2 size={14} className="hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer" />
+                </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-yellow-100 text-yellow-600 dark:bg-yellow-500/10 dark:text-yellow-300 flex items-center justify-center shadow-inner">
+                    <CloudSun size={36} />
+                </div>
+                <div>
+                    <div className="text-5xl font-semibold text-gray-900 dark:text-white leading-none">
+                        {temp}
+                        <span className="text-2xl align-top ml-1 font-medium text-gray-500 dark:text-gray-300">°{config.units}</span>
+                    </div>
+                    <div className="text-sm font-bold text-gray-600 dark:text-gray-200 uppercase tracking-wider">{config.location}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 capitalize">{condition}</div>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 text-xs text-gray-600 dark:text-gray-300">
+                <div className="flex items-center gap-2 rounded-xl bg-white/70 dark:bg-white/5 border border-gray-100 dark:border-white/10 px-3 py-2">
+                    <ThermometerIcon size={14} className="text-orange-500" />
+                    <span>Max {high}° / Min {low}°</span>
+                </div>
+                <div className="flex items-center gap-2 rounded-xl bg-white/70 dark:bg-white/5 border border-gray-100 dark:border-white/10 px-3 py-2">
+                    <Droplets size={14} className="text-blue-500" />
+                    <span>Humid. {humidity}%</span>
+                </div>
+                <div className="flex items-center gap-2 rounded-xl bg-white/70 dark:bg-white/5 border border-gray-100 dark:border-white/10 px-3 py-2">
+                    <Wind size={14} className="text-teal-500" />
+                    <span>Vent {wind} km/h</span>
+                </div>
+                <div className="flex items-center gap-2 rounded-xl bg-white/70 dark:bg-white/5 border border-gray-100 dark:border-white/10 px-3 py-2">
+                    <Sun size={14} className="text-amber-500" />
+                    <span>Ciel {condition}</span>
+                </div>
+            </div>
         </div>
     );
 };
@@ -2112,48 +2533,144 @@ export const ZoneWidget: React.FC<{
     isEditing?: boolean;
     onConfigChange?: (cfg: ZoneConfig) => void;
 }> = ({ config, variables, isEditing, onConfigChange }) => {
-    // Helper to find value from variables list passed to widget
     const getVal = (id?: string) => variables?.find(v => v.id === id)?.value;
-
-    const temp = getVal(config.tempId) ?? 21.5;
-    const sp = getVal(config.setpointId) ?? 22.0;
-    const co2 = getVal(config.co2Id);
+    const temp = getVal(config.tempId) ?? 23;
+    const sp = getVal(config.setpointId) ?? 22;
+    const co2 = getVal(config.co2Id) ?? 450;
+    const mode = config.mode || 'Auto';
+    const unit = variables?.find(v => v.id === config.tempId)?.unit || '°C';
 
     return (
-        <div className="h-full flex flex-col items-center justify-center p-4">
-            <div className="relative w-40 h-40 rounded-full border-4 border-gray-100 dark:border-white/10 flex items-center justify-center mb-4">
-                <div className="text-center">
-                    <div className="text-4xl font-light text-gray-800 dark:text-white">{temp}°</div>
-                    <div className="text-xs text-gray-400 uppercase tracking-wider mt-1">Current</div>
+        <div className="h-full w-full bg-white dark:bg-[#0f172a] rounded-3xl border border-gray-100 dark:border-white/10 shadow-sm p-5 flex flex-col gap-5">
+            <div className="flex items-center justify-between">
+                <div>
+                    <div className="text-lg font-bold text-gray-900 dark:text-white">Lobby Climate</div>
+                    <div className="text-xs text-gray-400">Zone Control</div>
                 </div>
-                <div className="absolute bottom-[-10px] bg-white dark:bg-[#1c1c1e] px-2 py-1 rounded-full border border-gray-200 dark:border-white/10 text-xs font-bold flex items-center gap-1 shadow-sm">
-                    <span className="text-gray-400">SET</span>
-                    <span className="text-blue-600 dark:text-blue-400">{sp}°</span>
+                <div className="flex gap-2 text-gray-400">
+                    <Download size={14} className="hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer" />
+                    <RefreshCw size={14} className="hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer" />
+                    <Maximize2 size={14} className="hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer" />
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 w-full">
-                {co2 !== undefined && (
-                    <div className="bg-gray-50 dark:bg-white/5 p-2 rounded text-center">
-                        <div className="text-xs text-gray-400 uppercase">CO2</div>
-                        <div className={`font-bold ${co2 > 1000 ? 'text-red-500' : 'text-green-500'}`}>{co2} ppm</div>
+            <div className="flex flex-col items-center">
+                <div className="relative w-48 h-48 rounded-full border-4 border-gray-100 dark:border-white/10 flex items-center justify-center mb-4">
+                    <div className="text-center">
+                        <div className="text-5xl font-semibold text-gray-900 dark:text-white leading-none">{temp}</div>
+                        <div className="text-sm text-gray-400 uppercase tracking-wider mt-1">Current {unit}</div>
                     </div>
-                )}
-                {isEditing ? (
-                    <div className="col-span-2 bg-yellow-50 p-2 rounded text-xs border border-yellow-200">
-                        <div className="font-bold text-yellow-700 mb-1">Mapping Config</div>
-                        <div className="grid grid-cols-2 gap-1">
-                            <input placeholder="Temp ID" value={config.tempId || ''} onChange={e => onConfigChange?.({ tempId: e.target.value })} className="border p-1" />
-                            <input placeholder="Setpt ID" value={config.setpointId || ''} onChange={e => onConfigChange?.({ setpointId: e.target.value })} className="border p-1" />
-                        </div>
+                    <div className="absolute bottom-[-10px] bg-white dark:bg-[#0f172a] px-3 py-1.5 rounded-full border border-gray-200 dark:border-white/10 text-xs font-bold flex items-center gap-2 shadow-sm">
+                        <span className="text-gray-400">SET</span>
+                        <span className="text-blue-600 dark:text-blue-400">{sp}{unit}</span>
                     </div>
-                ) : (
-                    <div className="bg-gray-50 dark:bg-white/5 p-2 rounded text-center">
-                        <div className="text-xs text-gray-400 uppercase">Mode</div>
-                        <div className="font-bold text-blue-500">Auto</div>
+                </div>
+                <div className="grid grid-cols-2 gap-3 w-full mt-2">
+                    <div className="bg-gray-50 dark:bg-white/5 p-3 rounded-2xl text-center border border-gray-100 dark:border-white/10">
+                        <div className="text-[11px] text-gray-400 uppercase">CO₂</div>
+                        <div className={`text-lg font-extrabold ${co2 > 1000 ? 'text-red-500' : 'text-green-500'}`}>{co2} ppm</div>
                     </div>
-                )}
+                    <div className="bg-gray-50 dark:bg-white/5 p-3 rounded-2xl text-center border border-gray-100 dark:border-white/10">
+                        <div className="text-[11px] text-gray-400 uppercase">Mode</div>
+                        <div className="text-lg font-bold text-blue-600">{mode}</div>
+                    </div>
+                </div>
+            </div>
+
+            {isEditing && (
+                <div className="bg-yellow-50 dark:bg-yellow-900/10 p-3 rounded-2xl border border-yellow-200 dark:border-yellow-800 text-xs space-y-2">
+                    <div className="font-bold text-yellow-700 dark:text-yellow-300">Mappings</div>
+                    <div className="grid grid-cols-2 gap-2">
+                        <input placeholder="Temp ID" value={config.tempId || ''} onChange={e => onConfigChange?.({ tempId: e.target.value })} className="border border-gray-200 dark:border-white/10 rounded px-2 py-1 bg-white dark:bg-white/5" />
+                        <input placeholder="Setpoint ID" value={config.setpointId || ''} onChange={e => onConfigChange?.({ setpointId: e.target.value })} className="border border-gray-200 dark:border-white/10 rounded px-2 py-1 bg-white dark:bg-white/5" />
+                        <input placeholder="CO2 ID" value={config.co2Id || ''} onChange={e => onConfigChange?.({ co2Id: e.target.value })} className="border border-gray-200 dark:border-white/10 rounded px-2 py-1 bg-white dark:bg-white/5" />
+                        <input placeholder="Mode" value={mode} onChange={e => onConfigChange?.({ mode: e.target.value })} className="border border-gray-200 dark:border-white/10 rounded px-2 py-1 bg-white dark:bg-white/5" />
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export const OEEWidget: React.FC<{
+    availability: number;
+    performance: number;
+    quality: number;
+    label?: string;
+    subLabel?: string;
+    isEditing?: boolean;
+    onValuesChange?: (values: { availability: number, performance: number, quality: number }) => void;
+}> = ({ availability, performance, quality, label = "TRG Monobloc", subLabel = "Station de Pompage 1", isEditing, onValuesChange }) => {
+    const oee = Math.round((availability * performance * quality) / 10000);
+
+    const getColor = (val: number) => {
+        if (val >= 85) return 'text-emerald-500';
+        if (val >= 65) return 'text-amber-500';
+        return 'text-red-500';
+    };
+
+    const renderMetric = (title: string, val: number, icon: React.ReactNode) => (
+        <div className="flex flex-col items-center gap-1 p-2 rounded-xl bg-gray-50 dark:bg-white/5 flex-1 border border-gray-100 dark:border-white/10">
+            <div className="text-gray-400 mb-1">{icon}</div>
+            <div className="text-[10px] uppercase font-bold text-gray-500">{title}</div>
+            <div className={`text-lg font-bold ${getColor(val)}`}>{val}%</div>
+            {isEditing && (
+                <input
+                    type="range"
+                    min="0" max="100"
+                    value={val}
+                    onChange={(e) => onValuesChange?.({
+                        availability: title === 'Disponibilité' ? parseInt(e.target.value) : availability,
+                        performance: title === 'Performance' ? parseInt(e.target.value) : performance,
+                        quality: title === 'Qualité' ? parseInt(e.target.value) : quality
+                    })}
+                    className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500 mt-1"
+                />
+            )}
+        </div>
+    );
+
+    return (
+        <div className="h-full flex flex-col p-5 bg-white dark:bg-[#0f172a] rounded-3xl border border-gray-100 dark:border-white/10 shadow-sm">
+            <div className="flex justify-between items-start mb-4">
+                <div>
+                    <h3 className="font-bold text-gray-900 dark:text-white">{label}</h3>
+                    <p className="text-xs text-gray-400">{subLabel}</p>
+                </div>
+                <div className={`px-2 py-1 rounded text-xs font-bold ${oee >= 85 ? 'bg-emerald-100 text-emerald-700' : oee >= 65 ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'}`}>
+                    Cible: 85%
+                </div>
+            </div>
+
+            <div className="flex-1 flex items-center justify-center mb-6 relative">
+                {/* Circular Progress for OEE */}
+                <div className="relative w-32 h-32 flex items-center justify-center">
+                    <svg className="w-full h-full transform -rotate-90">
+                        <circle cx="64" cy="64" r="56" stroke="currentColor" strokeWidth="12" fill="transparent" className="text-gray-100 dark:text-gray-800" />
+                        <circle
+                            cx="64" cy="64" r="56"
+                            stroke="currentColor"
+                            strokeWidth="12"
+                            fill="transparent"
+                            strokeDasharray={2 * Math.PI * 56}
+                            strokeDashoffset={2 * Math.PI * 56 * (1 - oee / 100)}
+                            strokeLinecap="round"
+                            className={getColor(oee)}
+                        />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <span className={`text-3xl font-extrabold ${getColor(oee)}`}>{oee}%</span>
+                        <span className="text-[10px] font-bold text-gray-400 uppercase">Score TRG</span>
+                    </div>
+                </div>
+            </div>
+
+            <div className="flex gap-2">
+                {renderMetric('Disponibilité', availability, <Clock size={16} />)}
+                {renderMetric('Performance', performance, <Activity size={16} />)}
+                {renderMetric('Qualité', quality, <CheckCircle size={16} />)}
             </div>
         </div>
     );
 };
+

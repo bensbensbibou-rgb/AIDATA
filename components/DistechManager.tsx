@@ -23,6 +23,7 @@ export const DistechManager: React.FC<DistechManagerProps> = ({ treeData, setTre
                 await distechDriver.connect();
                 setMcpConnected(distechDriver.isConnectedToMCP());
             } catch (error) {
+                0
                 console.error('Failed to connect to Distech MCP server:', error);
                 setMcpConnected(false);
             }

@@ -1,0 +1,18 @@
+{
+  "name": "bacnet-driver-service",
+  "version": "0.1.0",
+  "private": true,
+  "description": "BACnet driver microservice (EDE parsing, polling, history, write) independent from MCP.",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@biancoroyal/bacstack": "^0.0.1-beta.22",
+    "csv-parser": "^3.0.0",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.11.3",
+    "socket.io": "^4.7.5",
+    "dotenv": "^16.4.5"
+  }
+}

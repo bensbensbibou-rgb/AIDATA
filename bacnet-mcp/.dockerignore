@@ -1,0 +1,65 @@
+# Fichiers de développement
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Fichiers de configuration locaux
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Fichiers de logs
+*.log
+logs/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Fichiers Git
+.git/
+.gitignore
+
+# Fichiers Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Fichiers de documentation
+README.md
+*.md
+
+# Fichiers de test
+test_*.py
+*_test.py
+tests/
+
+# Fichiers de données
+data/
+*.db
+*.sqlite
+
+# Fichiers de cache
+.cache/
+.pytest_cache/
+
+# Fichiers IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Fichiers de sauvegarde
+*.bak
+*.backup

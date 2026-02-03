@@ -1,0 +1,12 @@
+﻿services:
+  mcp:
+    build: .
+    container_name: bacnet-mcp
+    ports:
+      - "3000:8080/tcp"
+      - "47808:47808/udp"
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+    command: ["uvicorn", "run:app", "--host", "0.0.0.0", "--port", "8080"]
+    restart: unless-stopped

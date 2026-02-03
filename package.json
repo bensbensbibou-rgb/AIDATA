@@ -4,20 +4,25 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "npm run dev:full",
+    "dev:ui": "vite",
+    "dev:full": "concurrently -k \"npm --prefix gmao-api start\" \"npm run dev:ui -- --host 0.0.0.0 --port 3000 --clearScreen false\"",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google/genai": "^1.30.0",
+    "lucide-react": "^0.344.0",
+    "mqtt": "^5.14.1",
     "react": "18.3.1",
-    "recharts": "2.12.3",
     "react-dom": "18.3.1",
-    "lucide-react": "0.344.0",
-    "@google/genai": "^1.30.0"
+    "recharts": "2.12.3",
+    "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
     "@types/node": "^20.11.20",
     "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^9.2.1",
     "typescript": "^5.3.3",
     "vite": "^5.1.4"
   }

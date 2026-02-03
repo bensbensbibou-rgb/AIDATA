@@ -28,7 +28,7 @@ export interface BACnetDevice {
 type DeviceSubscriber = (devices: BACnetDevice[]) => void;
 
 const DEFAULT_BACNET_CONFIG: BACnetDriverConfig = {
-  url: (import.meta as any).env?.VITE_MCP_BACNET_URL || 'http://localhost:8000',
+  url: (import.meta as any).env?.VITE_MCP_BACNET_URL || '/proxy/bacnet',
   apiKey: (import.meta as any).env?.VITE_MCP_BACNET_KEY || '',
   timeoutMs: 12000,
   deviceEndpoint: '/devices',

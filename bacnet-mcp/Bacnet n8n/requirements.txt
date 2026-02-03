@@ -1,0 +1,9 @@
+﻿fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+python-dotenv
+aiofiles
+httpx
+bacpypes3==0.0.102
+fastmcp

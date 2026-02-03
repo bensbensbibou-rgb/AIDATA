@@ -60,15 +60,72 @@ export interface ChatMessage {
   timestamp: Date;
 }
 
-export type NodeType = 'site' | 'building' | 'floor' | 'space' | 'equipment' | 'variable' | 'folder';
+export type NodeType = 'site' | 'building' | 'floor' | 'space' | 'equipment' | 'variable' | 'folder' | 'alarm';
+
+export interface AlarmConfig {
+  enabled: boolean;
+  alarmInhibit: boolean;
+  inhibitTime: string;
+  alarmState: 'Normal' | 'Offnormal' | 'Fault';
+  masked?: boolean;
+  maintenance?: boolean;
+  timeDelay: string;
+  timeDelayToNormal: string;
+  alarmEnable: { toOffnormal: boolean; toFault: boolean };
+  toOffnormalText: string;
+  toFaultText: string;
+  toNormalText: string;
+  sourceName: string;
+  hyperlinkOrd?: string | null;
+  soundFile?: string | null;
+  priority?: string;
+  reliability?: string;
+  timestamp?: string;
+  inhibitionStartedAt?: number;
+  booleanBinding?: {
+    enabled: boolean;
+    invert: boolean;
+    normalValue?: number;
+  };
+  numericThreshold?: {
+    enabled: boolean;
+    highLimit?: number;
+    lowLimit?: number;
+    deadband?: number;
+  };
+  highLimitText?: string;
+  lowLimitText?: string;
+  booleanFacetTrue?: string;
+  booleanFacetFalse?: string;
+  // GMAO Equipment linking
+  linkedEquipmentId?: string;
+}
 
 export interface DataNode {
   id: string;
   label: string;
   type: NodeType;
+  dataType?: 'boolean' | 'number' | 'string';
   value?: any;
   unit?: string;
+  historyEnabled?: boolean;
+  alarmConfig?: AlarmConfig;
+  mqttTopic?: string;
+  overrideMode?: 'auto' | 'manu';
+  // Priority Array Logic
+  priorityArray?: Record<number, boolean | null>; // 1-16
+  fallbackValue?: boolean; // Default value (Priority 16 implicit fallback if not set)
   children?: DataNode[];
+}
+
+export interface LogicVariable {
+  id: string;
+  label: string;
+  value: any;
+  type?: 'number' | 'boolean' | 'string';
+  unit?: string;
+  alarmActive?: boolean;
+  alarmPriority?: string;
 }
 
 // --- FLOOR PLAN TYPES ---
@@ -99,18 +156,18 @@ export interface FloorPlanObject {
   width?: number; // Percentage, for zones/icons
   height?: number; // Percentage, for zones/icons
   rotation?: number;
-  
+
   // For Polygons
   shape?: 'rect' | 'circle' | 'polygon';
-  points?: {x: number, y: number}[]; // Array of percentage coordinates for polygons
-  
+  points?: { x: number, y: number }[]; // Array of percentage coordinates for polygons
+
   // Content
   label?: string; // For Text or Zone hover
   contentUrl?: string; // For Icons/Images
-  
+
   // Binding
   variableId?: string; // Linked data
-  
+
   // Style Overrides
   backgroundColor?: string; // Hex override
   color?: string; // Hex (Text color or Border color)
@@ -150,31 +207,31 @@ export interface ZoneConfig {
   modeId?: string;     // Variable ID for Mode (Heat/Cool)
 }
 
-export type HVACSymbolType = 
+export type HVACSymbolType =
   // Pumps & Fans
-  | 'pump' 
-  | 'pump_circulator' 
+  | 'pump'
+  | 'pump_circulator'
   | 'pump_vacuum'
-  | 'fan' 
+  | 'fan'
   | 'fan_axial'
   | 'compressor'
   | 'compressor_piston'
   | 'compressor_scroll'
   // Valves
-  | 'valve_2way' 
-  | 'valve_3way' 
-  | 'valve_ball' 
+  | 'valve_2way'
+  | 'valve_3way'
+  | 'valve_ball'
   | 'valve_check'
   | 'valve_solenoid'
   // Dampers
-  | 'damper_rect' 
-  | 'damper_round' 
+  | 'damper_rect'
+  | 'damper_round'
   | 'damper_louver'
-  | 'fire_damper' 
+  | 'fire_damper'
   | 'vav_box'
   // Heat Exchangers
-  | 'coil_heat' 
-  | 'coil_cool' 
+  | 'coil_heat'
+  | 'coil_cool'
   | 'heat_recovery'
   | 'heat_exchanger_rotary'
   | 'heater_electric'
@@ -186,14 +243,20 @@ export type HVACSymbolType =
   // Plant Equipment
   | 'radiator'
   | 'boiler'
+  | 'boiler_buderus'
+  | 'boiler_camus_dynamax'
+  | 'boiler_cleaver'
+  | 'boiler_crest_condensing'
+  | 'boiler_fulton'
+  | 'boiler_murray'
   | 'tank'
   | 'cooling_tower'
   | 'chiller'
   | 'condenser'
   // Sensors
-  | 'sensor_temp' 
+  | 'sensor_temp'
   | 'sensor_humidity'
-  | 'sensor_pressure' 
+  | 'sensor_pressure'
   | 'sensor_flow'
   | 'sensor_co2'
   | 'sensor_air_quality'
@@ -249,11 +312,19 @@ export interface SynopticSymbol extends SynopticElementBase {
   height: number;
   rotation: number; // Enforced for symbols
   label?: string;
+  pumpBindings?: {
+    commandId?: string;
+    modeId?: string;
+    feedbackId?: string;
+    alarmId?: string;
+    manualId?: string;
+    displayId?: string;
+  };
 }
 
 export interface SynopticPipe extends SynopticElementBase {
   type: 'pipe';
-  points: {x: number, y: number}[]; // Polyline points
+  points: { x: number, y: number }[]; // Polyline points
   strokeWidth: number;
   animated?: boolean; // Flow animation
 }
@@ -336,7 +407,7 @@ export interface LogicConfig {
 
 export interface DashboardWidget {
   id: string;
-  type: 'kpi' | 'chart' | 'list' | 'ai' | 'custom' | 'thermometer' | 'table' | 'flow' | 'dpe' | 'gauge' | 'floorplan' | 'predictive' | 'slider' | 'schedule' | 'databox' | 'alarm' | 'weather' | 'hvac' | 'synoptic' | 'zone' | 'logic';
+  type: 'kpi' | 'chart' | 'list' | 'ai' | 'custom' | 'thermometer' | 'table' | 'flow' | 'dpe' | 'gauge' | 'floorplan' | 'predictive' | 'slider' | 'schedule' | 'databox' | 'alarm' | 'weather' | 'hvac' | 'synoptic' | 'zone' | 'logic' | 'knowledge' | 'gmao' | 'mqtt_demo' | 'settings_control' | 'oee' | 'workorders_widget' | 'requests_widget' | 'gmao_reports';
   chartType?: 'bar' | 'line' | 'area' | 'pie' | 'donut' | 'radial' | 'scatter' | 'heatmap' | 'radar';
   title: string;
   subtitle?: string;
@@ -347,10 +418,10 @@ export interface DashboardWidget {
   noPadding?: boolean;
   content?: React.ReactNode;
   customData?: any[];
-  variables?: { 
-    id: string; 
-    label: string; 
-    unit?: string; 
+  variables?: {
+    id: string;
+    label: string;
+    unit?: string;
     color?: string;
     fontSize?: string; // e.g. "text-xl"
     fontFamily?: string; // e.g. "font-mono"
@@ -362,6 +433,9 @@ export interface DashboardWidget {
     min?: number;
     max?: number;
     unit?: string;
+    availability?: number;
+    performance?: number;
+    quality?: number;
   };
   floorPlanConfig?: FloorPlanConfig;
   scheduleConfig?: {
@@ -409,5 +483,6 @@ export interface AppModule {
   isRemovable: boolean;
   isPinned: boolean; // If true, shows in Sidebar
   children?: AppModule[]; // Nesting support
-  isOpen?: boolean; // Accordion state
+  isOpen?: boolean; // Accordion state;
 }
+

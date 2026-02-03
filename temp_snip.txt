@@ -1,0 +1,220 @@
+
+                // Recursively update children
+                if (node.children) {
+                    return {
+                        ...node,
+                        children: updateNodeValues(node.children)
+                    };
+                }
+
+                return node;
+            });
+        };
+
+        setTreeData(prevTree => updateNodeValues(prevTree));
+    };
+
+    // WebSocket effect (placeholder for future implementation)
+    useEffect(() => {
+        if (realTimeMode !== 'websocket') return;
+
+        // TODO: Implement WebSocket connection
+        console.log('WebSocket mode enabled - implementation pending');
+
+        return () => {
+            // TODO: Close WebSocket connection
+        };
+    }, [realTimeMode]);
+
+    // COV effect (placeholder for future implementation)
+    useEffect(() => {
+        if (realTimeMode !== 'cov') return;
+
+        // TODO: Implement COV subscriptions
+        console.log('COV mode enabled - implementation pending');
+
+        return () => {
+            // TODO: Unsubscribe from COV
+        };
+    }, [realTimeMode]);
+
+    const handleTestConnection = async (driver: 'bacnet' | 'distech' | 'mqtt') => {
+        if (!config[driver].enabled) {
+            alert(localize('Communication disabled for this driver.'));
+            return;
+        }
+        setTestingDriver(driver);
+
+        try {
+            if (driver === 'bacnet') {
+                bacnetDriver.disconnect();
+                await bacnetDriver.connect();
+                setConfig(prev => ({
+                    ...prev,
+                    bacnet: { ...prev.bacnet, connected: bacnetDriver.isConnectedToMCP() },
+                }));
+            } else if (driver === 'distech') {
+                distechDriver.disconnect();
+                await distechDriver.connect();
+                setConfig(prev => ({
+                    ...prev,
+                    distech: { ...prev.distech, connected: distechDriver.isConnectedToMCP() },
+                }));
+            } else if (driver === 'mqtt') {
+                mqttDriver.disconnect();
+                await mqttDriver.connect();
+                setConfig(prev => ({
+                    ...prev,
+                    mqtt: { ...prev.mqtt, connected: mqttDriver.isConnectedToMCP() },
+                }));
+            }
+        } catch (error) {
+            console.error(`Failed to connect to ${driver}:`, error);
+            alert(`Failed to connect to ${driver} MCP server`);
+        } finally {
+            setTestingDriver(null);
+        }
+    };
+
+    const handleConfigChange = (driver: 'bacnet' | 'distech' | 'mqtt', field: string, value: string | number) => {
+        setConfig(prev => ({
+            ...prev,
+            [driver]: {
+                ...prev[driver],
+                [field]: value,
+            },
+        }));
+    };
+
+    const handleEDEFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        try {
+            const text = await file.text();
+            const devices = parseEDEFile(text);
+            setEdeDevices(devices);
+            const totalObjects = devices.reduce((sum, d) => sum + d.objects.length, 0);
+            const successMessage = language === 'fr'
+                ? `Analyse reussie : ${devices.length} equipement(s), ${totalObjects} objets.`
+                : `Parsed ${devices.length} device(s) with ${totalObjects} total objects.`;
+            alert(successMessage);
+        } catch (error) {
+            console.error('Failed to parse EDE file:', error);
+            alert(language === 'fr'
+                ? 'Impossible de lire le fichier EDE. Verifiez le format.'
+                : 'Failed to parse EDE file. Please check the format.');
+        }
+
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
+    };
+
+    const handleBacnetIpScan = async () => {
+        setIsScanningIp(true);
+        try {
+            await bacnetIPDriver.scan({
+                ipRange: bacnetIpScanParams.ipRange,
+                port: bacnetIpScanParams.port,
+                objectTypes: bacnetIpScanParams.objectTypes.split(',').map(s => s.trim()).filter(Boolean),
+                limitPerDevice: bacnetIpScanParams.limitPerDevice,
+            });
+        } catch (error) {
+            console.error('BACnet IP scan failed:', error);
+            alert(language === 'fr' ? 'Scan BACnet IP echoue.' : 'BACnet IP scan failed.');
+        } finally {
+            setIsScanningIp(false);
+        }
+    };
+
+    const handleImportAllEDE = () => {
+        let importedCount = 0;
+        let newTree = [...treeData];
+
+        // Find or create Network folder
+        let networkFolder = newTree.find(n => n.id === 'network_folder');
+        if (!networkFolder) {
+            networkFolder = {
+                id: 'network_folder',
+                label: 'Network',
+                type: 'folder',
+                children: []
+            };
+            newTree.push(networkFolder);
+        }
+
+        // Find or create BACnet folder
+        let bacnetFolder = networkFolder.children?.find(n => n.id === 'bacnet_network');
+        if (!bacnetFolder) {
+            bacnetFolder = {
+                id: 'bacnet_network',
+                label: 'BACnet',
+                type: 'folder',
+                children: []
+            };
+            if (!networkFolder.children) networkFolder.children = [];
+            networkFolder.children.push(bacnetFolder);
+        }
+
+        // Import all devices and objects
+        for (const device of edeDevices) {
+            // Find or create device folder
+            let deviceFolder = bacnetFolder.children?.find(n => n.id === `bacnet_ede_${device.deviceInstance}`);
+            if (!deviceFolder) {
+                deviceFolder = {
+                    id: `bacnet_ede_${device.deviceInstance}`,
+                    label: device.deviceName,
+                    type: 'equipment',
+                    children: []
+                };
+                if (!bacnetFolder.children) bacnetFolder.children = [];
+                bacnetFolder.children.push(deviceFolder);
+            }
+
+            // Import all objects for this device
+            for (const obj of device.objects) {
+                const objId = `bacnet_ede_${device.deviceInstance}_${obj.objectType}_${obj.objectInstance}`;
+
+                // Check if already exists
+                const exists = findNodeInTree(newTree, objId);
+                if (exists) continue;
+
+                const newNode: DataNode = {
+                    id: objId,
+                    label: obj.objectName,
+                    type: 'variable',
+                    value: obj.presentValue || 0,
+                    unit: obj.units || ''
+                };
+
+                if (!deviceFolder.children) deviceFolder.children = [];
+                deviceFolder.children.push(newNode);
+                importedCount++;
+            }
+        }
+
+        setTreeData(newTree);
+        const importMessage = language === 'fr'
+            ? `Import termine : ${importedCount} objets ajoutes.\n\nValeurs issues du fichier EDE. Utilisez MCP pour les valeurs temps reel.`
+            : `Imported ${importedCount} objects from the EDE file.\n\nNote: Values come from the EDE file. Use MCP for live data.`;
+        alert(importMessage);
+        setEdeDevices([]);
+        setShowEdeImport(false);
+    };
+
+    const toggleDriverEnabled = (driver: 'bacnet' | 'distech' | 'mqtt') => {
+        setConfig(prev => ({
+            ...prev,
+            [driver]: {
+                ...prev[driver],
+                enabled: !prev[driver].enabled,
+            }
+        }));
+    };
+
+    const findNodeInTree = (nodes: DataNode[], id: string): DataNode | undefined => {
+        for (const node of nodes) {
+            if (node.id === id) return node;
+            if (node.children) {
+                const found = findNodeInTree(node.children, id);

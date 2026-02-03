@@ -156,9 +156,11 @@ export const DataboxWidget: React.FC<{
                                {row.showUnit && row.unit && <span className="text-xs text-gray-500 font-medium">{row.unit}</span>}
                             </div>
                             {row.showPriority && <div className="text-[10px] text-orange-500 font-bold uppercase border border-orange-200 px-1 rounded">Pri 8</div>}
-                            <button className="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-100 dark:hover:bg-white/10 text-gray-400 hover:text-blue-600 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100">
-                                <MoreVertical size={16} />
-                            </button>
+                            {isEditing && (
+                              <button className="w-6 h-6 flex items-center justify-center rounded hover:bg-gray-100 dark:hover:bg-white/10 text-gray-400 hover:text-blue-600 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100">
+                                  <MoreVertical size={16} />
+                              </button>
+                            )}
                          </div>
                       </div>
                    ))}

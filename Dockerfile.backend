@@ -1,0 +1,35 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements and install
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY server.py .
+# Copy local_utils and other necessary directories
+COPY local_utils/ ./local_utils/
+COPY drivers/ ./drivers/
+COPY google_file_search_service.py .
+COPY google_rag_service.py .
+COPY rag_service.py .
+COPY haystack_service.py .
+COPY trendlog_service.py .
+COPY mqtt_service.py .
+COPY ede_parser.py .
+COPY bacnet_config.json .
+
+# Expose port
+EXPOSE 8001
+
+# Environment variables
+ENV PYTHONUNBUFFERED=1
+
+# Command to run
+CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8001"]
